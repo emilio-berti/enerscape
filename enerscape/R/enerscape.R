@@ -1,22 +1,32 @@
 #   Install Package:           'Ctrl + Shift + B'
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
-#' @param slope is the slope raster
-#' @param m is the body size of the species
-#' @return raster file of the energetic landscape of locomotory costs
+#' @inherit slope_to_dem
+#' @inherit calc_work
 
-enerscape <- function(slope, m) {
-  g <- 9.80665 #gravitational pull
-  eff <- m ^ 0.15 #efficiency of locomotion - filler, to be determined
-  h <- sin(0.01745329 * slope) #0.01745329 = degrees to radians conversion
-  W <- m * g * h * eff #work (Joule)
-  return(W)
-}
-
-# don't run
-par(mfrow = c(2, 2))
-for (x in 10^seq_len(4)) {
-  r <- enerscape(slope, x)
-  r[r >= x * 10] <- NA
-  plot(r)
+enerscape <- function(
+  dem,
+  m,
+  output_to_disk = FALSE,
+  output_file = NULL
+) {
+  if (output_to_disk & is.null(output_file)) {
+    stop("Specify a destination directory for the output.")
+  }
+  message("Calculating slope")
+  slope <- dem_to_slope(dem, output_to_disk, output_file)
+  message("Calculating work")
+  work <- calc_work(slope, m, output_to_disk, output_file)
+  if (class(dem) == "character") {
+    dem <- raster::raster(dem)
+    ans <- raster::stack(c(dem, slope, work))
+  } else if (class(dem) == "RasterLayer") {
+    ans <- raster::stack(c(dem, slope, work))
+  } else {
+    slope <- terra::rast(slope)
+    work <- terra::rast(work)
+    ans <- c(dem, slope, work)
+  }
+  names(ans) <- c("dem", "slope", "work")
+  return(ans)
 }

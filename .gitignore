@@ -1,1 +1,7 @@
 enerscape/w46*
+.Rproj.user
+*Rproj*
+data
+*.tif
+*.tiff
+*.tar*gz
