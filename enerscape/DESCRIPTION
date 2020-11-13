@@ -13,4 +13,5 @@ Imports:
     raster,
     gdalUtils
 Suggests:
-    terra
+    terra,
+    shiny
