@@ -1,17 +1,4 @@
-#' Plot enerscape object
-#'
-#' @param enerscape is the output of the enerscape() function
-#' @param what specifies what to plot. Available are "work", "slope", or "all"
-#' @param contour specifies if DEM contour plots should be overlayed on the plot
-#' @param n_contour specifies how many levels of DEM contours should be plotted,
-#'   if any
-#' @param axes specifies if axes should be added to the plot
-#' @param max_quantile specifies the maximum quantile to be displayed, i.e.
-#'   values above this quantile are re-assigned to the maximum value within the
-#'   quantile. This is useful for plotting, as sometimes few cells have
-#'   extremely high values, due to almost vertical displacement. In such cases,
-#'   a max_quantile = 0.99 removes these outliers.
-plot_enerscape <- function(
+plot_enerscape_terra <- function(
   en,
   what = "all",
   contour = TRUE,
@@ -48,8 +35,7 @@ plot_enerscape <- function(
     terra::plot(p,
                 col = terrain.colors(100),
                 axes = axes,
-                main = "DEM",
-                pal = list(shrink = 0.7))
+                main = "DEM")
     if (contour) {
       terra::contour(en$dem,
                      add = TRUE,
@@ -66,8 +52,7 @@ plot_enerscape <- function(
     terra::plot(p,
                 col = topo.colors(100),
                 axes = axes,
-                main = "slope",
-                pal = list(shrink = 0.7))
+                main = "slope")
     if (contour) {
       terra::contour(en$dem,
                      add = TRUE,
@@ -84,8 +69,7 @@ plot_enerscape <- function(
     terra::plot(p,
                 col = topo.colors(100),
                 axes = axes,
-                main = "work",
-                pal = list(shrink = 0.7))
+                main = "work")
     if (contour) {
       terra::contour(en$dem,
                      add = TRUE,

@@ -1,5 +1,3 @@
-#' Plot enerscape object
-#'
 #' @param enerscape is the output of the enerscape() function
 #' @param what specifies what to plot. Available are "work", "slope", or "all"
 #' @param contour specifies if DEM contour plots should be overlayed on the plot

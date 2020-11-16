@@ -1,5 +1,3 @@
-#' Calculate slope from digital elevation model
-#'
 #' @param dem raster file of the digital elevation model, either a raster
 #'   or a full path location of the file
 #' @param output_to_disc (optional) specifies if the slope raster should be also
@@ -10,6 +8,7 @@
 #' @details If @param output_to_disc = FALSE, the raster output will be saved in
 #'   the temporary R folder, which is deleted at reboot. If @output_to_disc =
 #'   TRUE, then @output_file must be specified.
+#' @examples dem_to_slope("w46585_s10/w46585_s10.tif", "w46585_s10/w46585_s10_slope.tif")
 
 dem_to_slope <- function(
   dem,

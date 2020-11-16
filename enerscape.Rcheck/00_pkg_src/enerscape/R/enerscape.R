@@ -1,6 +1,7 @@
-#' Calculate the energy landscape
-#'
-#' @inherit dem_to_slope
+#   Install Package:           'Ctrl + Shift + B'
+#   Check Package:             'Ctrl + Shift + E'
+#   Test Package:              'Ctrl + Shift + T'
+#' @inherit slope_to_dem
 #' @inherit calc_work
 
 enerscape <- function(

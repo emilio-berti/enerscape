@@ -1,5 +1,3 @@
-#' Calculate work from slope raster and body size
-#'
 #' @param slope is the slope raster
 #' @param m is the body mass (kg) of the species
 #' @return a raster of the energetic costs of locomotion
