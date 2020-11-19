@@ -1,6 +1,6 @@
 #' Plot enerscape object
 #'
-#' @param enerscape is the output of the enerscape() function
+#' @param en is the output of the enerscape() function
 #' @param what specifies what to plot. Available are "work", "slope", or "all"
 #' @param contour specifies if DEM contour plots should be overlayed on the plot
 #' @param n_contour specifies how many levels of DEM contours should be plotted,
@@ -22,7 +22,7 @@ plot_enerscape <- function(
   if (what != "all") {
     p <- en[what]
     if (max_quantile != 1){
-      v <- values(p)
+      v <- terra::values(p)
       v <- v[!is.na(v)]
       p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
     }
@@ -41,7 +41,7 @@ plot_enerscape <- function(
     par(mfrow = c(1, 3))
     p <- en$dem
     if (max_quantile != 1){
-      v <- values(p)
+      v <- terra::values(p)
       v <- v[!is.na(v)]
       p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
     }
@@ -59,7 +59,7 @@ plot_enerscape <- function(
     }
     p <- en$slope
     if (max_quantile != 1){
-      v <- values(p)
+      v <- terra::values(p)
       v <- v[!is.na(v)]
       p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
     }
@@ -77,7 +77,7 @@ plot_enerscape <- function(
     }
     p <- en$work
     if (max_quantile != 1){
-      v <- values(p)
+      v <- terra::values(p)
       v <- v[!is.na(v)]
       p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
     }

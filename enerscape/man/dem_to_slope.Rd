@@ -10,11 +10,11 @@ dem_to_slope(dem, output_to_disk = FALSE, output_file = NULL)
 \item{dem}{raster file of the digital elevation model, either a raster
 or a full path location of the file}
 
+\item{output_to_disk}{(optional) specifies if the slope raster should be also
+saved to disk}
+
 \item{output_file}{(optional) specifies the location of the output file. This
 must be a full path, e.g. "/home/user/Documents"}
-
-\item{output_to_disc}{(optional) specifies if the slope raster should be also
-saved to disk}
 }
 \value{
 raster of slope in degrees

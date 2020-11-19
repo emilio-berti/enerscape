@@ -2,6 +2,7 @@
 #'
 #' @inherit dem_to_slope
 #' @inherit calc_work
+#' @param units if Joules ("J") or kilocalories ("kcal)
 
 enerscape <- function(
   dem,

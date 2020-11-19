@@ -2,6 +2,12 @@
 #'
 #' @param slope is the slope raster
 #' @param m is the body mass (kg) of the species
+#' @param output_to_disk if to write output to disk
+#' @param output_file is the output destiation, if @param output_to_disc == TRUE
+#' @param g is the gravity force
+#' @param deg_to_rad is the degree to radiant conversion constant
+#' @param J_to_Kcal is the Joule to kilocalory conversion contant
+#' @param work_in_kcal if the output should be expressed in kcal
 #' @return a raster of the energetic costs of locomotion
 calc_work <- function(
   slope = NULL,
@@ -18,7 +24,7 @@ calc_work <- function(
   }
   # split this in parts to be comparable with the paper
   if (class(slope) == "SpatRaster") {
-    require(terra) #without loading terra, the raster calculation fails
+    requireNamespace("terra") #without loading terra, the raster calculation fails
   }
   E_cot <- 8 * m^(-0.34) + 100 * (1 + sin(deg_to_rad * 2 * slope - deg_to_rad * 74)) * m^(-0.12) #joule / (kg * m)
   if (class(slope) == "RasterLayer") { #raster
@@ -38,7 +44,13 @@ calc_work <- function(
     if (is.null(output_file)) {
       stop("Specify a destination directory for the output.")
     }
-    writeRaster(work, file.path(output_file, "work.tif"), overwrite = TRUE)
+    if (class(slope) == "RasterLayer") {
+      raster::writeRaster(work, file.path(output_file, "work.tif"), overwrite = TRUE)
+    } else if (class(slope) == "SpatRaster") {
+      terra::writeRaster(work, file.path(output_file, "work.tif"), overwrite = TRUE)
+    } else {
+      stop("Error, not writing to file.")
+    }
   }
   return(work)
 }

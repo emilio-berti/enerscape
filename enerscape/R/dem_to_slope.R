@@ -2,7 +2,7 @@
 #'
 #' @param dem raster file of the digital elevation model, either a raster
 #'   or a full path location of the file
-#' @param output_to_disc (optional) specifies if the slope raster should be also
+#' @param output_to_disk (optional) specifies if the slope raster should be also
 #'   saved to disk
 #' @param output_file (optional) specifies the location of the output file. This
 #'   must be a full path, e.g. "/home/user/Documents"

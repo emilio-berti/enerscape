@@ -19,6 +19,18 @@ calc_work(
 \item{slope}{is the slope raster}
 
 \item{m}{is the body mass (kg) of the species}
+
+\item{output_to_disk}{if to write output to disk}
+
+\item{output_file}{is the output destiation, if @param output_to_disc == TRUE}
+
+\item{g}{is the gravity force}
+
+\item{deg_to_rad}{is the degree to radiant conversion constant}
+
+\item{J_to_Kcal}{is the Joule to kilocalory conversion contant}
+
+\item{work_in_kcal}{if the output should be expressed in kcal}
 }
 \value{
 a raster of the energetic costs of locomotion

@@ -1,0 +1,222 @@
+\nonstopmode{}
+\documentclass[letterpaper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\usepackage[utf8]{inputenc} % @SET ENCODING@
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `enerscape'}}
+\par\bigskip{\large \today}
+\end{center}
+\begin{description}
+\raggedright{}
+\inputencoding{utf8}
+\item[Type]\AsIs{Package}
+\item[Title]\AsIs{What the Package Does (Title Case)}
+\item[Version]\AsIs{0.1.0}
+\item[Author]\AsIs{Emilio Berti}
+\item[Maintainer]\AsIs{Emilio Berti }\email{emilio.berti@idiv.de}\AsIs{}
+\item[Description]\AsIs{More about what it does (maybe more than one line)
+Use four spaces when indenting paragraphs within the Description.}
+\item[License]\AsIs{GPL-3}
+\item[Encoding]\AsIs{UTF-8}
+\item[LazyData]\AsIs{true}
+\item[Imports]\AsIs{raster, gdalUtils, shiny}
+\item[Suggests]\AsIs{terra}
+\item[RoxygenNote]\AsIs{7.1.1}
+\end{description}
+\Rdcontents{\R{} topics documented:}
+\inputencoding{utf8}
+\HeaderA{calc\_work}{Calculate work from slope raster and body size}{calc.Rul.work}
+%
+\begin{Description}\relax
+Calculate work from slope raster and body size
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calc_work(
+  slope = NULL,
+  m = NULL,
+  output_to_disk = FALSE,
+  output_file = NULL,
+  g = 9.80665,
+  deg_to_rad = 0.01745329,
+  J_to_Kcal = 4184,
+  work_in_kcal = FALSE
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{slope}] is the slope raster
+
+\item[\code{m}] is the body mass (kg) of the species
+
+\item[\code{output\_to\_disk}] if to write output to disk
+
+\item[\code{output\_file}] is the output destiation, if @param output\_to\_disc == TRUE
+
+\item[\code{g}] is the gravity force
+
+\item[\code{deg\_to\_rad}] is the degree to radiant conversion constant
+
+\item[\code{J\_to\_Kcal}] is the Joule to kilocalory conversion contant
+
+\item[\code{work\_in\_kcal}] if the output should be expressed in kcal
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+a raster of the energetic costs of locomotion
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{dem\_to\_slope}{Calculate slope from digital elevation model}{dem.Rul.to.Rul.slope}
+%
+\begin{Description}\relax
+Calculate slope from digital elevation model
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+dem_to_slope(dem, output_to_disk = FALSE, output_file = NULL)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dem}] raster file of the digital elevation model, either a raster
+or a full path location of the file
+
+\item[\code{output\_to\_disk}] (optional) specifies if the slope raster should be also
+saved to disk
+
+\item[\code{output\_file}] (optional) specifies the location of the output file. This
+must be a full path, e.g. "/home/user/Documents"
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+If @param output\_to\_disc = FALSE, the raster output will be saved in
+the temporary R folder, which is deleted at reboot. If @output\_to\_disc =
+TRUE, then @output\_file must be specified.
+\end{Details}
+%
+\begin{Value}
+raster of slope in degrees
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{enerscape}{Calculate the energy landscape}{enerscape}
+%
+\begin{Description}\relax
+Calculate the energy landscape
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+enerscape(dem, m, output_to_disk = FALSE, output_file = NULL, units = "J")
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dem}] raster file of the digital elevation model, either a raster
+or a full path location of the file
+
+\item[\code{m}] is the body mass (kg) of the species
+
+\item[\code{output\_to\_disk}] (optional) specifies if the slope raster should be also
+saved to disk
+
+\item[\code{output\_file}] (optional) specifies the location of the output file. This
+must be a full path, e.g. "/home/user/Documents"
+
+\item[\code{units}] if Joules ("J") or kilocalories ("kcal)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+If @param output\_to\_disc = FALSE, the raster output will be saved in
+the temporary R folder, which is deleted at reboot. If @output\_to\_disc =
+TRUE, then @output\_file must be specified.
+\end{Details}
+%
+\begin{Value}
+raster of slope in degrees
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{hello}{Hello, World!}{hello}
+%
+\begin{Description}\relax
+Prints 'Hello, world!'.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+hello()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Examples}
+\begin{ExampleCode}
+hello()
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{launch\_shiny}{Shiny application for enerscape}{launch.Rul.shiny}
+%
+\begin{Description}\relax
+Shiny application for enerscape
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+launch_shiny()
+\end{verbatim}
+\end{Usage}
+\inputencoding{utf8}
+\HeaderA{plot\_enerscape}{Plot enerscape object}{plot.Rul.enerscape}
+%
+\begin{Description}\relax
+Plot enerscape object
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+plot_enerscape(
+  en,
+  what = "all",
+  contour = TRUE,
+  n_contour = 10,
+  axes = FALSE,
+  max_quantile = 1
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{en}] is the output of the enerscape() function
+
+\item[\code{what}] specifies what to plot. Available are "work", "slope", or "all"
+
+\item[\code{contour}] specifies if DEM contour plots should be overlayed on the plot
+
+\item[\code{n\_contour}] specifies how many levels of DEM contours should be plotted,
+if any
+
+\item[\code{axes}] specifies if axes should be added to the plot
+
+\item[\code{max\_quantile}] specifies the maximum quantile to be displayed, i.e.
+values above this quantile are re-assigned to the maximum value within the
+quantile. This is useful for plotting, as sometimes few cells have
+extremely high values, due to almost vertical displacement. In such cases,
+a max\_quantile = 0.99 removes these outliers.
+\end{ldescription}
+\end{Arguments}
+\printindex{}
+\end{document}

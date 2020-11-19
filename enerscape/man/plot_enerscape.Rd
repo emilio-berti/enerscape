@@ -14,6 +14,8 @@ plot_enerscape(
 )
 }
 \arguments{
+\item{en}{is the output of the enerscape() function}
+
 \item{what}{specifies what to plot. Available are "work", "slope", or "all"}
 
 \item{contour}{specifies if DEM contour plots should be overlayed on the plot}
@@ -28,8 +30,6 @@ values above this quantile are re-assigned to the maximum value within the
 quantile. This is useful for plotting, as sometimes few cells have
 extremely high values, due to almost vertical displacement. In such cases,
 a max_quantile = 0.99 removes these outliers.}
-
-\item{enerscape}{is the output of the enerscape() function}
 }
 \description{
 Plot enerscape object

@@ -12,8 +12,13 @@ or a full path location of the file}
 
 \item{m}{is the body mass (kg) of the species}
 
+\item{output_to_disk}{(optional) specifies if the slope raster should be also
+saved to disk}
+
 \item{output_file}{(optional) specifies the location of the output file. This
 must be a full path, e.g. "/home/user/Documents"}
+
+\item{units}{if Joules ("J") or kilocalories ("kcal)}
 }
 \value{
 raster of slope in degrees

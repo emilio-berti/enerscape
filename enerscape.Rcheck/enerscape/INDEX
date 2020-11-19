@@ -1,0 +1,6 @@
+calc_work               Calculate work from slope raster and body size
+dem_to_slope            Calculate slope from digital elevation model
+enerscape               Calculate the energy landscape
+hello                   Hello, World!
+launch_shiny            Shiny application for enerscape
+plot_enerscape          Plot enerscape object
