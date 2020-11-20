@@ -15,7 +15,6 @@ calc_work <- function(
   output_to_disk = FALSE,
   output_file = NULL,
   g = 9.80665, #gravitational pull
-  deg_to_rad = 0.01745329, #degrees to radians conversion
   J_to_Kcal = 4184, #Joules to kilocalories
   work_in_kcal = FALSE
 ) {
@@ -26,7 +25,7 @@ calc_work <- function(
   if (class(slope) == "SpatRaster") {
     requireNamespace("terra") #without loading terra, the raster calculation fails
   }
-  E_cot <- 8 * m^(-0.34) + 100 * (1 + sin(deg_to_rad * 2 * slope - deg_to_rad * 74)) * m^(-0.12) #joule / (kg * m)
+  E_cot <- 8 * m^(-0.34) + 100 * (1 + sin((2 * slope - 74) * pi / 180)) * m^(-0.12) #joule / (kg * m)
   if (class(slope) == "RasterLayer") { #raster
     dx <- dx <- raster::res(slope)[1]
   } else if (class(slope) == "SpatRaster") { #terra

@@ -1,5 +1,0 @@
-exportPattern("^[[:alpha:]]+")
-
-importFrom("grDevices", "terrain.colors", "topo.colors")
-importFrom("graphics", "par")
-importFrom("stats", "quantile")
