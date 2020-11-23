@@ -24,10 +24,10 @@ plot_enerscape <- function(
     if (max_quantile != 1){
       v <- terra::values(p)
       v <- v[!is.na(v)]
-      p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
+      p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
     terra::plot(p,
-                col = topo.colors(100),
+                col = grDevices::topo.colors(100),
                 axes = axes,
                 main = what)
     if (contour) {
@@ -38,15 +38,15 @@ plot_enerscape <- function(
                      lw = 2)
     }
   } else {
-    par(mfrow = c(1, 3))
+    graphics::par(mfrow = c(1, 3))
     p <- en$dem
     if (max_quantile != 1){
       v <- terra::values(p)
       v <- v[!is.na(v)]
-      p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
+      p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
     terra::plot(p,
-                col = terrain.colors(100),
+                col = grDevices::terrain.colors(100),
                 axes = axes,
                 main = "DEM",
                 pal = list(shrink = 0.7))
@@ -61,10 +61,10 @@ plot_enerscape <- function(
     if (max_quantile != 1){
       v <- terra::values(p)
       v <- v[!is.na(v)]
-      p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
+      p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
     terra::plot(p,
-                col = topo.colors(100),
+                col = grDevices::topo.colors(100),
                 axes = axes,
                 main = "slope",
                 pal = list(shrink = 0.7))
@@ -79,10 +79,10 @@ plot_enerscape <- function(
     if (max_quantile != 1){
       v <- terra::values(p)
       v <- v[!is.na(v)]
-      p[p > quantile(v, max_quantile)] <- quantile(v, max_quantile)
+      p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
     terra::plot(p,
-                col = topo.colors(100),
+                col = grDevices::topo.colors(100),
                 axes = axes,
                 main = "work",
                 pal = list(shrink = 0.7))
@@ -93,6 +93,6 @@ plot_enerscape <- function(
                      col = "grey10",
                      lw = 2)
     }
-    par(mfrow = c(1, 1))
+    graphics::par(mfrow = c(1, 1))
   }
 }

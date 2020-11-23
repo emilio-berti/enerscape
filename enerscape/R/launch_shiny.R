@@ -94,7 +94,7 @@ launch_shiny <- function() {
       })
       en <- shiny::reactive({
         if (compute()) {
-          enerscape::enerscape(dem(), mass(), units = "kcal")
+          enerscape(dem(), mass(), units = "kcal")
         }
       })
       # output --------------------
@@ -106,7 +106,7 @@ launch_shiny <- function() {
       output$enerscape <- shiny::renderPlot({
         if (mass() != 0 & !is.null(dem_file())) {
           if (compute()) {
-            raster::plot(en()$work, col = topo.colors(100))
+            raster::plot(en()$work, col = grDevices::topo.colors(100))
           }
         }
       })

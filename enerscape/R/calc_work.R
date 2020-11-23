@@ -5,7 +5,6 @@
 #' @param output_to_disk if to write output to disk
 #' @param output_file is the output destiation, if @param output_to_disc == TRUE
 #' @param g is the gravity force
-#' @param deg_to_rad is the degree to radiant conversion constant
 #' @param J_to_Kcal is the Joule to kilocalory conversion contant
 #' @param work_in_kcal if the output should be expressed in kcal
 #' @return a raster of the energetic costs of locomotion
@@ -23,9 +22,9 @@ calc_work <- function(
   }
   # split this in parts to be comparable with the paper
   if (class(slope) == "SpatRaster") {
-    requireNamespace("terra") #without loading terra, the raster calculation fails
+    requireNamespace("terra") #without this the calculation fail
   }
-  E_cot <- 8 * m^(-0.34) + 100 * (1 + sin((2 * slope - 74) * pi / 180)) * m^(-0.12) #joule / (kg * m)
+  E_cot <- 8 * m ^ (-0.34) + 100 * (1 + sin((2 * slope - 74) * pi / 180)) * m^(-0.12)
   if (class(slope) == "RasterLayer") { #raster
     dx <- dx <- raster::res(slope)[1]
   } else if (class(slope) == "SpatRaster") { #terra

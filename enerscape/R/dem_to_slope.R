@@ -16,12 +16,12 @@ dem_to_slope <- function(
   output_to_disk = FALSE,
   output_file = NULL
 ) {
-  if (class(dem) == "RasterLayer") { #raster
+  if (class(dem) == "RasterLayer") {
     slope <- raster::terrain(dem,
                              "slope",
                              neighbors = 4,
                              unit = "degrees")
-  } else if (class(dem) == "SpatRaster") { #terra
+  } else if (class(dem) == "SpatRaster") {
     slope <- terra::slope(dem,
                           neighbors = 4,
                           unit = "degrees")

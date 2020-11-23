@@ -10,7 +10,6 @@ calc_work(
   output_to_disk = FALSE,
   output_file = NULL,
   g = 9.80665,
-  deg_to_rad = 0.01745329,
   J_to_Kcal = 4184,
   work_in_kcal = FALSE
 )
@@ -25,8 +24,6 @@ calc_work(
 \item{output_file}{is the output destiation, if @param output_to_disc == TRUE}
 
 \item{g}{is the gravity force}
-
-\item{deg_to_rad}{is the degree to radiant conversion constant}
 
 \item{J_to_Kcal}{is the Joule to kilocalory conversion contant}
 
