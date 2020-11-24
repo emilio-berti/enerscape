@@ -2,7 +2,7 @@
 #' @param x a digital elevation model raster layer
 .calc_slope <- function(x){
   diff <- x[2] - x[1]
-  ipo <- sqrt(resolution ^ 2 + diff ^ 2)
+  ipo <- sqrt(en_res ^ 2 + diff ^ 2)
   alpha <- asin(diff / ipo) * 180 / pi
   return(alpha)
 }
@@ -19,7 +19,7 @@
   } else {
     work <- 8 * m ^ (-0.34)
   }
-  work <- m * work * resolution
+  work <- m * work * en_res
   if (work_in_kcal) {
     work <- work / J_to_kcal
   }
@@ -48,7 +48,11 @@ en_shortest_path <- function(
   # transition layers cannot accept optional arguments. The resolution is saved
   # as global variable and deleted before return. Deletion takes place in the
   # parent environment of the function.
-  resolution <<- raster::res(x)[1]
+  if ("en_res" %in% ls()) {
+    stop("You have a variable called `en_res`\n
+         Please rename it as something else")
+  }
+  en_res <<- raster::res(x)[1]
   oldw <- getOption("warn")
   options(warn = -1)
   slope <- gdistance::transition(x, .calc_slope, neigh, symm=FALSE)
@@ -89,7 +93,7 @@ en_shortest_path <- function(
                      col = grDevices::adjustcolor("grey20", alpha.f = 0.75))
     graphics::lines(ans[["sims"]][["Paths"]],
                     lt = 2, col = grDevices::adjustcolor("grey10", alpha.f = 0.75))
-    rm(resolution, pos = 1)
+    rm(en_res, pos = 1)
     return(ans)
   } else {
     p <- rbind(or, dest)
@@ -111,6 +115,7 @@ en_shortest_path <- function(
     graphics::points(p[1, 1], p[1, 2], pch = 20, col = grDevices::adjustcolor("blue", alpha.f = 0.75))
     graphics::points(p[2, 1], p[2, 2], pch = 20, col = grDevices::adjustcolor("grey20", alpha.f = 0.75))
     graphics::lines(shortest, lt = 2, col = grDevices::adjustcolor("grey10", alpha.f = 0.75))
+    rm(en_res, pos = 1)
     return(ans)
   }
 }
