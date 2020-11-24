@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 ```{r download data}
 library(raster)
 library(enerscape)
-source("~/Proj/enerscape/R/movement.R")
+
 # download and load the digital elevation model for Stromboli island 
 tmp <- tempfile()
 download.file("http://tinitaly.pi.ingv.it/data/w43010_s10/w43010_s10.zip",

@@ -111,7 +111,6 @@ en_shortest_path <- function(
     graphics::points(p[1, 1], p[1, 2], pch = 20, col = grDevices::adjustcolor("blue", alpha.f = 0.75))
     graphics::points(p[2, 1], p[2, 2], pch = 20, col = grDevices::adjustcolor("grey20", alpha.f = 0.75))
     graphics::lines(shortest, lt = 2, col = grDevices::adjustcolor("grey10", alpha.f = 0.75))
-    rm(resolution, pos = 1)
     return(ans)
   }
 }
