@@ -4,19 +4,13 @@
 \alias{enerscape}
 \title{Calculate the energy landscape}
 \usage{
-enerscape(dem, m, output_to_disk = FALSE, output_file = NULL, units = "J")
+enerscape(dem, m, units = "J")
 }
 \arguments{
 \item{dem}{raster file of the digital elevation model, either a raster
 or a full path location of the file}
 
 \item{m}{is the body mass (kg) of the species}
-
-\item{output_to_disk}{(optional) specifies if the slope raster should be also
-saved to disk}
-
-\item{output_file}{(optional) specifies the location of the output file. This
-must be a full path, e.g. "/home/user/Documents"}
 
 \item{units}{if Joules ("J") or kilocalories ("kcal)}
 }
@@ -25,9 +19,4 @@ raster of slope in degrees
 }
 \description{
 Calculate the energy landscape
-}
-\details{
-If @param output_to_disc = FALSE, the raster output will be saved in
-  the temporary R folder, which is deleted at reboot. If @output_to_disc =
-  TRUE, then @output_file must be specified.
 }

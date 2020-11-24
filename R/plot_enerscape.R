@@ -22,16 +22,16 @@ plot_enerscape <- function(
   if (what != "all") {
     p <- en[what]
     if (max_quantile != 1){
-      v <- terra::values(p)
+      v <- raster::values(p)
       v <- v[!is.na(v)]
       p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
-    terra::plot(p,
+    raster::plot(p,
                 col = grDevices::topo.colors(100),
                 axes = axes,
                 main = what)
     if (contour) {
-      terra::contour(en$dem,
+      raster::contour(en$dem,
                      add = TRUE,
                      nlevels = n_contour,
                      col = "grey10",
@@ -41,17 +41,17 @@ plot_enerscape <- function(
     graphics::par(mfrow = c(1, 3))
     p <- en$dem
     if (max_quantile != 1){
-      v <- terra::values(p)
+      v <- raster::values(p)
       v <- v[!is.na(v)]
       p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
-    terra::plot(p,
+    raster::plot(p,
                 col = grDevices::terrain.colors(100),
                 axes = axes,
                 main = "DEM",
                 pal = list(shrink = 0.7))
     if (contour) {
-      terra::contour(en$dem,
+      raster::contour(en$dem,
                      add = TRUE,
                      nlevels = n_contour,
                      col = "grey10",
@@ -59,17 +59,17 @@ plot_enerscape <- function(
     }
     p <- en$slope
     if (max_quantile != 1){
-      v <- terra::values(p)
+      v <- raster::values(p)
       v <- v[!is.na(v)]
       p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
-    terra::plot(p,
+    raster::plot(p,
                 col = grDevices::topo.colors(100),
                 axes = axes,
                 main = "slope",
                 pal = list(shrink = 0.7))
     if (contour) {
-      terra::contour(en$dem,
+      raster::contour(en$dem,
                      add = TRUE,
                      nlevels = n_contour,
                      col = "grey10",
@@ -77,17 +77,17 @@ plot_enerscape <- function(
     }
     p <- en$work
     if (max_quantile != 1){
-      v <- terra::values(p)
+      v <- raster::values(p)
       v <- v[!is.na(v)]
       p[p > stats::quantile(v, max_quantile)] <- stats::quantile(v, max_quantile)
     }
-    terra::plot(p,
+    raster::plot(p,
                 col = grDevices::topo.colors(100),
                 axes = axes,
                 main = "work",
                 pal = list(shrink = 0.7))
     if (contour) {
-      terra::contour(en$dem,
+      raster::contour(en$dem,
                      add = TRUE,
                      nlevels = n_contour,
                      col = "grey10",

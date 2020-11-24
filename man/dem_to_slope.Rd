@@ -4,26 +4,15 @@
 \alias{dem_to_slope}
 \title{Calculate slope from digital elevation model}
 \usage{
-dem_to_slope(dem, output_to_disk = FALSE, output_file = NULL)
+dem_to_slope(dem)
 }
 \arguments{
 \item{dem}{raster file of the digital elevation model, either a raster
 or a full path location of the file}
-
-\item{output_to_disk}{(optional) specifies if the slope raster should be also
-saved to disk}
-
-\item{output_file}{(optional) specifies the location of the output file. This
-must be a full path, e.g. "/home/user/Documents"}
 }
 \value{
 raster of slope in degrees
 }
 \description{
 Calculate slope from digital elevation model
-}
-\details{
-If @param output_to_disc = FALSE, the raster output will be saved in
-  the temporary R folder, which is deleted at reboot. If @output_to_disc =
-  TRUE, then @output_file must be specified.
 }

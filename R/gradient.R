@@ -61,5 +61,9 @@ gradient <- function(dem, origin, destination) {
     asp[asp <= alpha_min & asp >= alpha_max] <- -1
   }
   asp[asp != -1] <- 1
+  # ext <- extent(rbind(origin, destination))
+  # asp <- crop(asp, ext)
+  # asp <- projectRaster(asp, dem)
+  # asp[is.na(asp)] <- 1
   return(asp)
 }

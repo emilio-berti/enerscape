@@ -11,9 +11,10 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     raster,
-    shiny
+    shiny,
+    gdistance,
+    rgdal
 Suggests:
-    terra,
     knitr,
     rmarkdown
 RoxygenNote: 7.1.1

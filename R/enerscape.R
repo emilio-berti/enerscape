@@ -7,20 +7,15 @@
 enerscape <- function(
   dem,
   m,
-  output_to_disk = FALSE,
-  output_file = NULL,
   units = "J"
 ) {
-  if (output_to_disk & is.null(output_file)) {
-    stop("Specify a destination directory for the output.")
-  }
   message("Calculating slope")
-  slope <- dem_to_slope(dem, output_to_disk, output_file)
+  slope <- raster::terrain(dem, "slope")
   message("Calculating work")
   if (units == "J"){
-    work <- calc_work(slope, m, output_to_disk, output_file)
+    work <- calc_work(slope, m)
   } else if (units == "kcal") {
-    work <- calc_work(slope, m, output_to_disk, output_file, work_in_kcal = TRUE)
+    work <- calc_work(slope, m, work_in_kcal = TRUE)
   } else {
     stop("Units not J or kcal.")
   }
@@ -30,8 +25,6 @@ enerscape <- function(
   } else if (class(dem) == "RasterLayer") {
     ans <- raster::stack(c(dem, slope, work))
   } else {
-    # slope <- terra::rast(slope)
-    # work <- terra::rast(work)
     ans <- c(dem, slope, work)
   }
   names(ans) <- c("dem", "slope", "work")
