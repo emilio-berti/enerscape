@@ -94,7 +94,7 @@ launch_shiny <- function() {
       })
       en <- shiny::reactive({
         if (compute()) {
-          enerscape(dem(), mass(), units = "kcal")
+          enerscape(dem(), mass(), unit = "kcal")
         }
       })
       # output --------------------

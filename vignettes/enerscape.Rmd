@@ -17,29 +17,29 @@ knitr::opts_chunk$set(
 ```
   
 ```{r download data}
-library(raster)
-library(enerscape)
-
-# download and load the digital elevation model for Stromboli island 
-tmp <- tempfile()
-download.file("http://tinitaly.pi.ingv.it/data/w43010_s10/w43010_s10.zip",
-tmp)
-
-unzip(tmp, exdir = tempdir())
-d <- unzip(tmp, list = TRUE)
-dem <- raster(file.path(tempdir(), d$Name))
-dem <- aggregate(dem, 10)
-dem <- trim(crop(dem, extent(1037488, 1042488, 4309837, 4314455)))
-# remove sea-level locations
-dem[dem == 0] <- NA
-plot(dem)
+# library(raster)
+# library(enerscape)
+# 
+# # download and load the digital elevation model for Stromboli island 
+# tmp <- tempfile()
+# download.file("http://tinitaly.pi.ingv.it/data/w43010_s10/w43010_s10.zip",
+# tmp)
+# 
+# unzip(tmp, exdir = tempdir())
+# d <- unzip(tmp, list = TRUE)
+# dem <- raster(file.path(tempdir(), d$Name))
+# dem <- aggregate(dem, 10)
+# dem <- trim(crop(dem, extent(1037488, 1042488, 4309837, 4314455)))
+# # remove sea-level locations
+# dem[dem == 0] <- NA
+# plot(dem)
 ```
   
 ```{r energy landscape}
-# get energy landscape for a 10 kg terrestrial animal
-en <- enerscape(dem, 10, units = "kcal")
-# plot_enerscape(en, n_contour = 5)
-plot(en$work, col = topo.colors(100))
+# # get energy landscape for a 10 kg terrestrial animal
+# en <- enerscape(dem, 10, units = "kcal")
+# # plot_enerscape(en, n_contour = 5)
+# plot(en$work, col = topo.colors(100))
 ```
 
 # Least cost paths
@@ -51,11 +51,11 @@ There are two ways to get the least cost paths. In the first, we specify origin 
 If we specify two points, we just pass them to *en_shortest_path()* as *or* (origin) and *dest* (destination) arguments.
 
 ```{r en_shortest_path example}
-p <- data.frame(x = c(1038500, 1041000),
-                y = c(4312000, 4312000))
-A <- p[1, ]
-B <- p[2, ]
-short <- en_shortest_path(dem, 1, or = A, dest = B)
+# p <- data.frame(x = c(1038500, 1041000),
+#                 y = c(4312000, 4312000))
+# A <- p[1, ]
+# B <- p[2, ]
+# short <- en_shortest_path(dem, 1, or = A, dest = B)
 ```
 
 The object returned by *en_shortest_path()* is a list with elements:
@@ -70,34 +70,35 @@ The object returned by *en_shortest_path()* is a list with elements:
       * Path = path as SpatialLines
 
 ```{r short plot}
-plot(short$rasters$Conductance)
-lines(short$`shortest path`$Path, lw = 2, lt = 2)
+# plot(short$rasters$Conductance)
+# lines(short$`shortest path`$Path, lw = 2, lt = 2)
 ```
 
 Notably, the direction of the movement is important, and it is wise to expect the least cost path between two points to change when the direction is reversed. Moreover, energy costs of animal of different body mass vary, also affecting least cost paths. In the example below, least cost paths between two points *A* and *B* for two animals of 1 kg and 50 kg are computed and shown.
 
 ```{r least cost paths}
-# 1 kg animal
-short_1kg_AB <- en_shortest_path(dem, 1, or = A, dest = B)
-short_1kg_BA <- en_shortest_path(dem, 1, or = B, dest = A)
-# 50 kg animal
-short_50kg_AB <- en_shortest_path(dem, 50, or = A, dest = B)
-short_50kg_BA <- en_shortest_path(dem, 50, or = B, dest = A)
-
-results <- list(short_1kg_AB, short_50kg_AB, short_1kg_BA, short_50kg_BA)
-
-results <- data.frame(
-  Origin = rep(c("A", "B"), each = 2),
-  Destination = rep(c("B", "A"), each = 2),
-  Mass = rep(c("1kg", "50kg"), 2),
-  Distance = sapply(results, function(x) {
-    SpatialLinesLengths(x[["shortest path"]][["Path"]])
-  }),
-  Cost_kcal = sapply(results, function(x) {
-    x[["shortest path"]][["Cost"]]
-  })
-)
-results
+# # 1 kg animal
+# short_1kg_AB <- en_shortest_path(dem, 1, or = A, dest = B)
+# short_1kg_BA <- en_shortest_path(dem, 1, or = B, dest = A)
+# # 50 kg animal
+# short_50kg_AB <- en_shortest_path(dem, 50, or = A, dest = B)
+# short_50kg_BA <- en_shortest_path(dem, 50, or = B, dest = A)
+# 
+# results <- list(short_1kg_AB, short_50kg_AB, short_1kg_BA, short_50kg_BA)
+# 
+# results <- data.frame(
+#   Origin = rep(c("A", "B"), each = 2),
+#   Destination = rep(c("B", "A"), each = 2),
+#   Mass = rep(c("1kg", "50kg"), 2),
+#   Distance = sapply(results, function(x) {
+#     SpatialLinesLengths(x[["shortest path"]][["Path"]])
+#   }),lines(short$`shortest path`$Path, lw = 2, lt = 2)
+# 
+#   Cost_kcal = sapply(results, function(x) {
+#     x[["shortest path"]][["Cost"]]
+#   })
+# )
+# results
 ```
 
 ## Specifying the number of random points
@@ -105,11 +106,10 @@ results
 If we want to generate the least cost path between *n* number of random points, we need to specify *simulate_random_points = TRUE* in *en_shortest_path()*. The optional argument *rep* (default = 10) specify the number of pairs to generate.
 
 ```{r least cost path random points}
-short <- en_shortest_path(dem, 
-                             50, 
-                             simulate_random_points = TRUE,
-                             rep = 20)
-
+# short <- en_shortest_path(dem, 
+#                              50, 
+#                              simulate_random_points = TRUE,
+#                              rep = 20)
 ```
 
 In this case, the object returned by *en_shortest_path()* is a list with elements:

@@ -4,18 +4,18 @@
 \alias{enerscape}
 \title{Calculate the energy landscape}
 \usage{
-enerscape(dem, m, units = "J")
+enerscape(dem, m, unit = "joule", neigh = 4)
 }
 \arguments{
-\item{dem}{raster file of the digital elevation model, either a raster
-or a full path location of the file}
+\item{dem}{raster file of the digital elevation model, either a raster or a
+full path location of the file.}
 
-\item{m}{is the body mass (kg) of the species}
+\item{m}{species body mass (kg).}
 
-\item{units}{if Joules ("J") or kilocalories ("kcal)}
-}
-\value{
-raster of slope in degrees
+\item{unit}{if joules ('joule') or kilocalories ('kcal').}
+
+\item{neigh}{number of neighbors used to calculate slope and work. See
+?raster::terrain for details.}
 }
 \description{
 Calculate the energy landscape

@@ -17,7 +17,7 @@ en_shortest_path(
 \arguments{
 \item{x}{a digital elevation model raster layer}
 
-\item{m}{is the body mass (kg) of the species}
+\item{m}{species body mass (kg).}
 
 \item{neigh}{number of neighbours cells to consider}
 
@@ -30,9 +30,6 @@ points. default = FALSE}
 
 \item{rep}{number or random origin and destination points if
 simulate_random_points = TRUE. default = 10}
-}
-\value{
-a raster of the energetic costs of locomotion
 }
 \description{
 Calculate shortest path between origin and destination
