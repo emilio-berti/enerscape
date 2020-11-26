@@ -21,7 +21,7 @@ enerscape <- function(
   if (!unit %in% c("joule", "kcal")) {
     stop("unit must be one of 'joule' or 'kcal'")
   }
-  work_in_kcal <- ifelse(unit == "joule", FALSE, TRUE)
+  work_in_kcal <- ifelse(unit == "kcal", TRUE, FALSE)
   # transition layers cannot accept optional arguments. The resolution is saved
   # as global variable and deleted before return. Deletion takes place in the
   # parent environment of the function.
@@ -47,9 +47,9 @@ enerscape <- function(
   s <- raster::raster(slope)
   s[is.na(s)] <- 0
   w <- raster::raster(work)
-  w[is.na(w)] <- 8 * m ^ (-0.34) + 100 * (1 + sin((-74) / 180 * pi)) * m ^ (-0.12) * m * en_res
+  w[is.na(w)] <- .calc_work(0, m, work_in_kcal = work_in_kcal)
   con <- raster::raster(cond)
-  con[is.na(con)] <- 1 / 8 * m ^ (-0.34) + 100 * (1 + sin((-74) / 180 * pi)) * m ^ (-0.12) * m * en_res
+  con[is.na(con)] <- 1 / .calc_work(0, m, work_in_kcal = work_in_kcal)
   ans <- stack(dem, s, w, con)
   names(ans) <- c("DEM", "Slope", "Work", "Conductance")
   ans <- list(neighbors = neigh,

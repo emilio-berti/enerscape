@@ -3,13 +3,14 @@
 launch_shiny <- function() {
   options(shiny.maxRequestSize = 1024^3)
   shiny::shinyApp(
+    # ui ---------------
     ui = shiny::fluidPage(
       shiny::column(3, offset = 4,
                     shiny::titlePanel("",
                                       "Enerscape")),
       shiny::br(),
       shiny::fluidRow(
-        shiny::column(6,
+        shiny::column(2,
                       shiny::numericInput(
                         "mass",
                         "Body mass (kg)",
@@ -20,6 +21,15 @@ launch_shiny <- function() {
                         width = NULL
                       )
         ),
+        shiny::column(4,
+                      shiny::selectInput(
+                        "neigh",
+                        "Neighbors cells for calculations",
+                        selected = "4",
+                        choices = c("4" = 4,
+                                    "8" = 8,
+                                    "16" = 16)
+                      )),
         shiny::column(6,
                       shiny::br(),
                       shiny::actionButton("compute",
@@ -78,9 +88,11 @@ launch_shiny <- function() {
         )
       )
     ),
+    # server ----------------
     server = server <- function(input, output) {
       compute <- shiny::reactive(input$compute)
       mass <- shiny::reactive(input$mass)
+      neigh <- shiny::reactive(input$neigh)
       dem_file <- shiny::reactive(input$dem)
       dem <- shiny::reactive({
         if (!is.null(dem_file())) {
@@ -94,7 +106,7 @@ launch_shiny <- function() {
       })
       en <- shiny::reactive({
         if (compute()) {
-          enerscape(dem(), mass(), unit = "kcal")
+          enerscape(dem(), mass(), unit = "kcal", neigh = neigh())
         }
       })
       # output --------------------
@@ -106,7 +118,7 @@ launch_shiny <- function() {
       output$enerscape <- shiny::renderPlot({
         if (mass() != 0 & !is.null(dem_file())) {
           if (compute()) {
-            raster::plot(en()$work, col = grDevices::topo.colors(100))
+            raster::plot(en()$rasters$Work, col = grDevices::topo.colors(100))
           }
         }
       })
@@ -115,7 +127,7 @@ launch_shiny <- function() {
           "enerscape.tif"
         },
         content = function(file) {
-          raster::writeRaster(en()$work,
+          raster::writeRaster(en()$rasters$Work,
                               file,
                               overwrite = TRUE)
         }
