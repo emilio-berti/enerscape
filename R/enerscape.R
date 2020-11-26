@@ -4,29 +4,47 @@
   diff <- x[2] - x[1]
   ipo <- sqrt(en_res ^ 2 + diff ^ 2)
   alpha <- asin(diff / ipo) * 180 / pi
+  if (is.na(alpha)) {
+    alpha <- 0
+  }
   return(alpha)
 }
-#' Internal function for enerscape - calculate work
+#' Internal function for enerscape - calculate work.
 #' @inherit enerscape
-#' @param x a slope transition layer
-#' @param work_in_kcal if work should be expressed in kilocalories
-#' @param j_to_kcal joules to kilocalories conversion constant
+#' @param slope slope transition matrix.
+#' @param x a slope transition layer.
+#' @param work_in_kcal if work should be expressed in kilocalories.
+#' @param j_to_kcal joules to kilocalories conversion constant.
 .calc_work <- function(
-  dem,
+  slope,
   m,
   work_in_kcal = TRUE,
   j_to_kcal = 4184
 ) {
-  if (!all(is.na(dem))) {
-    work <- 8 * m ^ (-0.34) + 100 * (1 + sin((2 * dem - 74) / 180 * pi)) * m ^ (-0.12)
-  } else {
-    work <- 8 * m ^ (-0.34)
-  }
-  work <- m * work * en_res
+  E_ar <- 8 * m ^ (-0.34)
+  E_mec <- 100 * (1 + sin((2 * slope - 74) / 180 * pi)) * m ^ (-0.12)
+  work <- (E_ar + E_mec) * m * en_res / cos(slope * pi / 180)
   if (work_in_kcal) {
     work <- work / j_to_kcal
   }
   return(work)
+}
+#' Internal function for enerscape - calculate conductance
+#' @inherit work
+.calc_cond <- function(
+  slope,
+  m,
+  work_in_kcal = TRUE,
+  j_to_kcal = 4184
+) {
+  E_ar <- 8 * m ^ (-0.34)
+  E_mec <- 100 * (1 + sin((2 * slope - 74) / 180 * pi)) * m ^ (-0.12)
+  work <- (E_ar + E_mec) * m * en_res / cos(slope * pi / 180)
+  if (work_in_kcal) {
+    work <- work / j_to_kcal
+  }
+  cond <- 1 / work
+  return(cond)
 }
 #' Calculate the energy landscape
 #'
@@ -61,22 +79,26 @@ enerscape <- function(
   }
   en_res <<- raster::res(dem)[1]
   oldw <- getOption("warn")
-  options(warn = -1) #silence gdistance::transition warning for negative slopes
   message("Calculating slope")
-  slope <- gdistance::transition(dem, .calc_slope, directions = neigh, symm=FALSE)
-  options(warn = oldw)
-  slope <- gdistance::geoCorrection(slope, scl = TRUE)
+  slope <- gdistance::transition(dem, .calc_slope,
+                                 directions = neigh,
+                                 symm = FALSE)
   adj <- gdistance::adjacencyFromTransition(slope)
   message("Calculating work")
   work <- slope
   work[adj] <- .calc_work(slope[adj], m, work_in_kcal = work_in_kcal)
   message("Calculating conductance (1 / work)")
   cond <- slope
-  cond[adj] <- 1 / .calc_work(slope[adj], m)
-  ans <- stack(dem,
-               raster::raster(slope),
-               raster::raster(work),
-               raster::raster(cond))
+  cond[adj] <- 1 / .calc_cond(slope[adj], m)
+  # transition matrices are ok, but conversion to rasters introduces NAs for
+  # exactly zero inclines. Correcting manually.
+  s <- raster::raster(slope)
+  s[is.na(s)] <- 0
+  w <- raster::raster(work)
+  w[is.na(w)] <- 8 * m ^ (-0.34) + 100 * (1 + sin((-74) / 180 * pi)) * m ^ (-0.12) * m * en_res
+  con <- raster::raster(cond)
+  con[is.na(con)] <- 1 / 8 * m ^ (-0.34) + 100 * (1 + sin((-74) / 180 * pi)) * m ^ (-0.12) * m * en_res
+  ans <- stack(dem, s, w, con)
   names(ans) <- c("DEM", "Slope", "Work", "Conductance")
   ans <- list(neighbors = neigh,
               mass = m,
@@ -84,5 +106,8 @@ enerscape <- function(
               cond_tr = cond)
   class(ans) <- "enerscape"
   rm(en_res, pos = 1) #remove global variable
+  message("  -------------- enerscape ---------------
+  do not use slope for distance calculations
+  as it has negative values (see below).")
   return(ans)
 }
