@@ -124,3 +124,96 @@ In this case, the object returned by *en_shortest_path()* is a list with element
       * Origins = random origin points
       * Destinations = random destination points
       * Paths = paths as SpatialLines
+      
+# Circuitscape
+
+Circuitscape is 
+
+Download for different platforms can be found at: https://circuitscape.org/downloads. 
+
+# Circuitscape with Julia
+
+https://github.com/Circuitscape/Circuitscape.jl
+
+```{r, eval=FALSE}
+[Circuitscape Mode]
+data_type = raster
+scenario = pairwise
+
+[Version]
+version = 5.0.0
+
+[Habitat raster or graph]
+habitat_file = /home/eb97ziwi/Proj/enerscape-paper/data/orso-work.tif
+habitat_map_is_resistances = true
+
+[Connection Scheme for raster habitat data]
+connect_four_neighbors_only = false
+connect_using_avg_resistances = false
+
+[Short circuit regions (aka polygons)]
+use_polygons = true
+polygon_file = /home/eb97ziwi/Proj/enerscape-paper/data/orso-loc.tif
+
+[Options for advanced mode]
+ground_file_is_resistances = true
+source_file = (Browse for a current source file)
+remove_src_or_gnd = keepall
+ground_file = (Browse for a ground point file)
+use_unit_currents = false
+use_direct_grounds = false
+
+[Mask file]
+use_mask = false
+mask_file = None
+
+[Options for one-to-all and all-to-one modes]
+use_variable_source_strengths = false
+variable_source_file = None
+
+[Options for pairwise and one-to-all and all-to-one modes]
+included_pairs_file = (Browse for a file with pairs to include or exclude)
+use_included_pairs = false
+point_file = /home/eb97ziwi/Proj/enerscape-paper/data/orso-loc.tif
+
+[Calculation options]
+solver = cg+amg
+
+[Output options]
+write_cum_cur_map_only = false
+log_transform_maps = false
+output_file = /home/eb97ziwi/Proj/enerscape-paper/circuitscape/cs
+write_max_cur_maps = false
+write_volt_maps = true
+set_null_currents_to_nodata = false
+set_null_voltages_to_nodata = false
+compress_grids = false
+write_cur_maps = true
+```
+
+Save this file as the simple text file */home/eb97ziwi/Proj/enerscape-paper/orso-circuitscape* and then open a julia terminal and type:
+
+```{r, eval=FALSE}
+using Circuitscape
+compute("/home/eb97ziwi/Proj/enerscape-paper/orso-circuitscape")
+```
+
+```{r, eval=FALSE}
+[ Info: 2020-11-27 09:15:34 : Precision used: Double
+[ Info: 2020-11-27 09:15:38 : Reading maps
+[ Info: 2020-11-27 09:15:39 : Resistance/Conductance map has 575361 nodes
+[ Info: 2020-11-27 09:15:46 : Solver used: AMG accelerated by CG
+[ Info: 2020-11-27 09:15:46 : Graph has 575361 nodes, 2 focal points and 1 connected components
+[ Info: 2020-11-27 09:15:46 : Total number of pair solves = 1
+[ Info: 2020-11-27 09:15:49 : Time taken to construct preconditioner = 2.293156562 seconds
+[ Info: 2020-11-27 09:15:49 : Time taken to construct local nodemap = 0.070405472 seconds
+[ Info: 2020-11-27 09:15:49 : Solving pair 1 of 1
+[ Info: 2020-11-27 09:15:50 : Time taken to solve linear system = 1.282343393 seconds
+[ Info: 2020-11-27 09:15:51 : Time taken to write voltage maps = 0.504518614 seconds
+[ Info: 2020-11-27 09:15:51 : Time taken to write current maps = 0.716189859 seconds
+[ Info: 2020-11-27 09:15:52 : Time taken to complete job = 17.743505455
+3×3 Array{Float64,2}:
+ 0.0   1.0      2.0
+ 1.0   0.0     15.5381
+ 2.0  15.5381   0.0
+```

@@ -13,7 +13,8 @@ Imports:
     raster,
     shiny,
     gdistance,
-    rgdal
+    rgdal,
+    sp
 Suggests:
     knitr,
     rmarkdown

@@ -12,7 +12,6 @@
 #' Internal function for enerscape - calculate work.
 #' @inherit enerscape
 #' @param slope slope transition matrix.
-#' @param x a slope transition layer.
 #' @param work_in_kcal if work should be expressed in kilocalories.
 #' @param j_to_kcal joules to kilocalories conversion constant.
 .calc_work <- function(
@@ -30,7 +29,7 @@
   return(work)
 }
 #' Internal function for enerscape - calculate conductance
-#' @inherit work
+#' @inherit .calc_work
 .calc_cond <- function(
   slope,
   m,
