@@ -2,7 +2,7 @@
 % Please edit documentation in R/enerscape_internals.R
 \name{.calc_work}
 \alias{.calc_work}
-\title{Internal function for enerscape - calculate work.}
+\title{Compute energy costs}
 \usage{
 .calc_work(slope, m, work_in_kcal = TRUE, j_to_kcal = 4184)
 }
@@ -15,6 +15,13 @@
 
 \item{j_to_kcal}{joules to kilocalories conversion constant.}
 }
+\value{
+A transition layer with values the energy cost of movement between
+  cells (J or kcal).
+}
 \description{
 Internal function for enerscape - calculate work.
+}
+\details{
+Internal function of enerscape, don't call directly.
 }

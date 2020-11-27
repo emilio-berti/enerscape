@@ -2,13 +2,19 @@
 % Please edit documentation in R/enerscape_internals.R
 \name{.calc_slope}
 \alias{.calc_slope}
-\title{Internal function for enerscape - calculate slope}
+\title{Compute slope}
 \usage{
 .calc_slope(x)
 }
 \arguments{
 \item{x}{a digital elevation model raster layer}
 }
+\value{
+A transition layer with values the inclines between cells (degrees).
+}
 \description{
 Internal function for enerscape - calculate slope
+}
+\details{
+Internal function of enerscape, don't call directly.
 }

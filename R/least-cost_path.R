@@ -1,14 +1,23 @@
+#' Compute least-cost paths
+#'
 #' Calculate the least-cost path (lcp) between origin and destination
-#' @inherit .calc_slope
-#' @inherit .calc_work
-#' @inherit enerscape
-#' @param en an enerscape object obtained with enerscape::enerscape().
+#' @param en an enerscape object obtained with \code{enerscape()}.
+#' @param neigh number of neighbor cells that are connected together.
 #' @param or origin point.
 #' @param dest destination point.
 #' @param simulate_random_points if to simulate least-cost path among random
 #'   points. default = FALSE.
 #' @param rep number or random origin and destination points if
-#'   simulate_random_points = TRUE. default = 10.
+#'   \code{simulate_random_points = TRUE}. default = 10.
+#' @return A list with point locations, least-cost path as SpatialLines, energy
+#'   costs and distances.
+#' @details If \code{or} and \code{dest} are not specified, the least-cost path is
+#' specified by setting \code{simulate_random_points = TRUE} and \code{rep} equal to the
+#' number of random paths to compute.
+#' @examples
+#' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
+#' p <- xyFromCell(dem, sample(ncell(dem), 2))
+#' lcp <- en_lcp(en, neigh = 16, or = p[1, ], dest = p[2, ])
 en_lcp <- function(
   en,
   neigh = 4,

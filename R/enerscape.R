@@ -1,11 +1,30 @@
-#' Calculate the energy landscape
+#' Compute the energy landscape
 #'
+#' This is the main function to compute energy landscapes from a digital
+#' elevation model and body mass of animals based on the model from Pontzer
+#' (2016). The core of the computations are done using the \emph{gdistance}
+#' (Etten, 2017) package.
 #' @param dem raster file of the digital elevation model, either a raster or a
 #'   full path location of the file.
 #' @param m species body mass (kg).
 #' @param unit if joules ('joule') or kilocalories ('kcal').
-#' @param neigh number of neighbors used to calculate slope and work. See
-#'   ?raster::terrain for details.
+#' @param neigh number of neighbor cells that are connected together.
+#' @return A list with elements a rasterStack of the digital elevation model,
+#'   slope, work, and conductance and the conductance as a transitionLayer for
+#'   path analysis.
+#' @details From the digital elevation model, transition slopes, energy costs
+#'   and conductances (1 / work) are computed based on the model described in
+#'   Pontzer (2016).
+#' @examples
+#' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
+#' @export
+#' @references Etten, J. van. (2017). R Package gdistance: Distances and Routes
+#' on Geographical Grids. Journal of Statistical Software, 76(1), 1–21.
+#' \url{https://doi.org/10.18637/jss.v076.i13}.
+#'
+#' Pontzer, H. (2016). A unified theory for the energy cost of legged
+#' locomotion. Biology Letters, 12(2), 20150935. \url{
+#' https://doi.org/10.1098/rsbl.2015.0935}.
 enerscape <- function(
   dem,
   m,

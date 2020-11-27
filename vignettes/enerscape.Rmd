@@ -109,7 +109,7 @@ text(1040500, 4312800, paste(round(lcp_BA$`least-cost path`$Distance / 1000, 2),
 
 Here, the least-cost path from A to B is comparable to the one from B to A, with minimal differences in trajectory, distance travelled, and total costs.
 
-Notably, the direction of the movement is important, and it is wise to expect the least cost path between two points to change when the direction is reversed. Moreover, energy costs of animal of different body mass vary, also affecting least cost paths. In the example below, least cost paths between two points *A* and *B* for two animals of 1 kg and 50 kg are computed and shown.
+<!-- Notably, the direction of the movement is important, and it is wise to expect the least cost path between two points to change when the direction is reversed. Moreover, energy costs of animal of different body mass vary, also affecting least cost paths. In the example below, least cost paths between two points *A* and *B* for two animals of 1 kg and 50 kg are computed and shown. -->
 
 ```{r least cost paths}
 # # 1 kg animal
@@ -136,9 +136,9 @@ Notably, the direction of the movement is important, and it is wise to expect th
 # results
 ```
 
-## Specifying the number of random points
+<!-- ## Specifying the number of random points -->
 
-If we want to generate the least cost path between *n* number of random points, we need to specify *simulate_random_points = TRUE* in *en_shortest_path()*. The optional argument *rep* (default = 10) specify the number of pairs to generate.
+<!-- If we want to generate the least cost path between *n* number of random points, we need to specify *simulate_random_points = TRUE* in *en_shortest_path()*. The optional argument *rep* (default = 10) specify the number of pairs to generate. -->
 
 ```{r least cost path random points}
 # short <- en_shortest_path(dem, 
@@ -147,18 +147,18 @@ If we want to generate the least cost path between *n* number of random points, 
 #                              rep = 20)
 ```
 
-In this case, the object returned by *en_shortest_path()* is a list with elements:
+<!-- In this case, the object returned by *en_shortest_path()* is a list with elements: -->
 
-   1. *$rasters* - four raster layers showing: 
-      * DEM = digital elevation model
-      * Slope = slope
-      * Work = energy cost of locomotion
-      * Conductance = conductance, i.e. 1 / Work
-   2. *$sims* - the shortest path:
-      * Costs = energetic costs (in kcal)
-      * Origins = random origin points
-      * Destinations = random destination points
-      * Paths = paths as SpatialLines
+<!--    1. *$rasters* - four raster layers showing:  -->
+<!--       * DEM = digital elevation model -->
+<!--       * Slope = slope -->
+<!--       * Work = energy cost of locomotion -->
+<!--       * Conductance = conductance, i.e. 1 / Work -->
+<!--    2. *$sims* - the shortest path: -->
+<!--       * Costs = energetic costs (in kcal) -->
+<!--       * Origins = random origin points -->
+<!--       * Destinations = random destination points -->
+<!--       * Paths = paths as SpatialLines -->
       
 # Circuitscape
 
@@ -166,7 +166,7 @@ Circuitscape is
 
 Download for different platforms can be found at: https://circuitscape.org/downloads. 
 
-# Circuitscape with Julia
+## Circuitscape with Julia
 
 https://github.com/Circuitscape/Circuitscape.jl
 
@@ -251,4 +251,23 @@ compute("/home/eb97ziwi/Proj/enerscape-paper/orso-circuitscape")
  0.0   1.0      2.0
  1.0   0.0     15.5381
  2.0  15.5381   0.0
+```
+
+```{r cs results}
+# cs <- raster("/home/eb97ziwi/Proj/enerscape-paper/circuitscape/cs_cum_curmap.asc")
+# cs <- projectRaster(cs, dem)
+# hist(log10(cs), breaks = 50)
+# q <- quantile(log10(cs), c(0.1, 0.5, 0.9))
+# cs_mask <- list()
+# for (th in seq_along(q)) {
+#   ans <- log10(cs)
+#   ans[ans < q[th]] <- NA
+#   ans[!is.na(ans)] <- 1
+#   cs_mask[[th]] <- ans
+# }
+# names(cs_mask) <- names(q)
+# cs_mask <- stack(cs_mask)
+# plot(dem)
+# plot(cs_mask$X90., add = TRUE, legend = FALSE,
+#      col = adjustcolor("blue", alpha.f = 1))
 ```

@@ -2,7 +2,7 @@
 % Please edit documentation in R/enerscape_internals.R
 \name{.calc_cond}
 \alias{.calc_cond}
-\title{Internal function for enerscape - calculate conductance}
+\title{Compute conductance}
 \usage{
 .calc_cond(slope, m, work_in_kcal = TRUE, j_to_kcal = 4184)
 }
@@ -15,6 +15,13 @@
 
 \item{j_to_kcal}{joules to kilocalories conversion constant.}
 }
+\value{
+A transition layer with values the conductance between cells, i.e.
+  the distance that can be travelled per unit of energy (1 / J or 1 / kcal).
+}
 \description{
 Internal function for enerscape - calculate conductance
+}
+\details{
+Internal function of enerscape, don't call directly.
 }
