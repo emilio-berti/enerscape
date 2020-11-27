@@ -41,7 +41,7 @@ enerscape <- function(
   work[adj] <- .calc_work(slope[adj], m, work_in_kcal = work_in_kcal)
   message("Calculating conductance (1 / work)")
   cond <- slope
-  cond[adj] <- 1 / .calc_cond(slope[adj], m)
+  cond[adj] <- .calc_cond(slope[adj], m)
   # transition matrices are ok, but conversion to rasters introduces NAs for
   # exactly zero inclines. Correcting manually.
   s <- raster::raster(slope)
@@ -49,7 +49,7 @@ enerscape <- function(
   w <- raster::raster(work)
   w[is.na(w)] <- .calc_work(0, m, work_in_kcal = work_in_kcal)
   con <- raster::raster(cond)
-  con[is.na(con)] <- 1 / .calc_work(0, m, work_in_kcal = work_in_kcal)
+  con[is.na(con)] <- .calc_cond(0, m, work_in_kcal = work_in_kcal)
   ans <- raster::stack(dem, s, w, con)
   names(ans) <- c("DEM", "Slope", "Work", "Conductance")
   ans <- list(neighbors = neigh,

@@ -15,64 +15,99 @@ knitr::opts_chunk$set(
   fig.height = 6
 )
 ```
-  
+
+# Example 1 - calculating energy landscape of the Stromboli Island
+
+In this example, we want to derive the energy landscape on the volcanic island of Stromboli (Sicily) and compute the least cost paths between two points laying on opposite sides of the volcano. We first download the digital elevation model (DEM) from TINITALY(http://tinitaly.pi.ingv.it).
+
 ```{r download data}
-# library(raster)
-# library(enerscape)
-# 
-# # download and load the digital elevation model for Stromboli island 
-# tmp <- tempfile()
-# download.file("http://tinitaly.pi.ingv.it/data/w43010_s10/w43010_s10.zip",
-# tmp)
-# 
-# unzip(tmp, exdir = tempdir())
-# d <- unzip(tmp, list = TRUE)
-# dem <- raster(file.path(tempdir(), d$Name))
-# dem <- aggregate(dem, 10)
-# dem <- trim(crop(dem, extent(1037488, 1042488, 4309837, 4314455)))
-# # remove sea-level locations
-# dem[dem == 0] <- NA
-# plot(dem)
+library(raster)
+library(enerscape)
+
+tmp <- tempfile()
+download.file("http://tinitaly.pi.ingv.it/data/w43010_s10/w43010_s10.zip", tmp)
+unzip(tmp, exdir = tempdir())
+d <- unzip(tmp, list = TRUE)
+dem <- raster(file.path(tempdir(), d$Name))
+dem <- trim(crop(dem, extent(1037488, 1042488, 4309837, 4314455)))
+# remove sea-level locations
+dem[dem == 0] <- NA
+m <- dem
+m[!is.na(dem)] <- 1 #just a mask
+plot(dem)
 ```
-  
+
+We use the `enerscape()` function to calculate the energy landscape.
+
 ```{r energy landscape}
-# # get energy landscape for a 10 kg terrestrial animal
-# en <- enerscape(dem, 10, units = "kcal")
-# # plot_enerscape(en, n_contour = 5)
-# plot(en$work, col = topo.colors(100))
+en <- enerscape(dem, 10, unit = "kcal")
+```
+```{r explore en}
+names(en)
+```
+ * `neighbors` is the number of neighbor cells to consider when building the transition matrix This can be 4 (chess rook's moves of 1, default), 8 (chess king's moves) or 16 (chess king's + knight's moves). You can find more help in the documentation of the *gdistance* package. 
+  * `mass` is the body mass (kg) specified as input
+  * `rasters` is a rasterstack with DEM, slope, work, and conductance
+  * `cont_tr` is the transition matrix (from *gdistance*) that can be used for connectivity analyses.
+
+As 16 neighbors may increase accuracy of the calculations, we re-ran calculations with `neigh = 16`.
+
+```{r en 16}
+en <- enerscape(dem, 20, unit = "kcal", neigh = 16)
 ```
 
-# Least cost paths
+We plot the output rasters.
 
-There are two ways to get the least cost paths. In the first, we specify origin and destination points, whereas in the second we specify the number of random points to evaluate. Both ways are implemented in the *en_shortest_path()* function. *en_shortest_path()* has always two mandatory input, *dem* (a digital elevation model raster layer) and *m* (the body mass of the animal).
+```{r plot en}
+s <- en$rasters * m
+names(s) <- names(en$rasters)
+plot(s) #mask NA values
+```
 
-## Specifying two points
+We then calculate the least cost paths between two points A and B. We calculate both from A to B and from B to A, as energy costs of transport depend on inclines and the two paths can thus differ.
 
-If we specify two points, we just pass them to *en_shortest_path()* as *or* (origin) and *dest* (destination) arguments.
+<!-- There are two ways to get the least cost paths. In the first, we specify origin and destination points, whereas in the second we specify the number of random points to evaluate. Both ways are implemented in the *en_shortest_path()* function. *en_shortest_path()* has always two mandatory input, *dem* (a digital elevation model raster layer) and *m* (the body mass of the animal). -->
+
+<!-- ## Specifying two points -->
+
+<!-- If we specify two points, we just pass them to *en_shortest_path()* as *or* (origin) and *dest* (destination) arguments. -->
 
 ```{r en_shortest_path example}
-# p <- data.frame(x = c(1038500, 1041000),
-#                 y = c(4312000, 4312000))
-# A <- p[1, ]
-# B <- p[2, ]
-# short <- en_shortest_path(dem, 1, or = A, dest = B)
+p <- data.frame(x = c(1038500, 1041000),
+                y = c(4312000, 4312000))
+A <- p[1, ]
+B <- p[2, ]
+lcp_AB <- en_lcp(en, neigh = 16, or = A, dest = B)
+lcp_BA <- en_lcp(en, neigh = 16, or = B, dest = A)
 ```
 
-The object returned by *en_shortest_path()* is a list with elements:
+<!-- The object returned by *en_shortest_path()* is a list with elements: -->
 
-   1. *$rasters* - four raster layers showing: 
-      * DEM = digital elevation model
-      * Slope = slope
-      * Work = energy cost of locomotion
-      * Conductance = conductance, i.e. 1 / Work
-   2. *$`shortest path`* - the shortest path:
-      * Cost = energetic costs (in kcal)
-      * Path = path as SpatialLines
+<!--    1. *$rasters* - four raster layers showing:  -->
+<!--       * DEM = digital elevation model -->
+<!--       * Slope = slope -->
+<!--       * Work = energy cost of locomotion -->
+<!--       * Conductance = conductance, i.e. 1 / Work -->
+<!--    2. *$`shortest path`* - the shortest path: -->
+<!--       * Cost = energetic costs (in kcal) -->
+<!--       * Path = path as SpatialLines -->
+
+And plot them together with costs and distances.
 
 ```{r short plot}
-# plot(short$rasters$Conductance)
-# lines(short$`shortest path`$Path, lw = 2, lt = 2)
+plot(dem)
+points(p, pch = 20, col = "steelblue")
+text(1038500, 4311800, "A")
+text(1041000, 4311800, "B")
+lines(lcp_AB$`least-cost path`$Path, lw = 2, lt = 2)
+text(1041000, 4313500, paste(round(lcp_AB$`least-cost path`$Cost), "kcal"))
+text(1041000, 4313800, paste(round(lcp_AB$`least-cost path`$Distance / 1000, 2), "km"))
+lines(lcp_BA$`least-cost path`$Path, lw = 2, lt = 4)
+text(1040500, 4312500, paste(round(lcp_BA$`least-cost path`$Cost), "kcal"))
+text(1040500, 4312800, paste(round(lcp_BA$`least-cost path`$Distance / 1000, 2), "km"))
 ```
+
+Here, the least-cost path from A to B is comparable to the one from B to A, with minimal differences in trajectory, distance travelled, and total costs.
 
 Notably, the direction of the movement is important, and it is wise to expect the least cost path between two points to change when the direction is reversed. Moreover, energy costs of animal of different body mass vary, also affecting least cost paths. In the example below, least cost paths between two points *A* and *B* for two animals of 1 kg and 50 kg are computed and shown.
 
