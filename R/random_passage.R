@@ -11,6 +11,7 @@
 #'   points. default = FALSE.
 #' @param rep number or random origin and destination points if
 #'   \code{simulate_random_points = TRUE}. default = 10.
+#' @param plot if to plot the output.
 #' @return A list with point locations, rasterLayer of net passage of random
 #'   walks, and rasterLayer of cumulative net passage if
 #'   \code{simulate_random_points = TRUE}.
@@ -30,7 +31,8 @@ en_passage <- function(
   dest,
   theta = 4,
   simulate_random_points = FALSE,
-  rep = 10
+  rep = 10,
+  plot = TRUE
 ) {
   if (class(en) != "enerscape") {
     stop("en must be an enerscape object")
@@ -56,16 +58,18 @@ en_passage <- function(
     rp <- sum(rp)
     rp <- rp / max(raster::values(rp), na.rm = TRUE)
     ans[["Cumulative net passage"]] <- rp
-    raster::plot(rp, col = grDevices::topo.colors(100),
-                 main = paste0("Cumulative net passage for ", rep,
-                               " random points"))
-    raster::contour(x, nlevels = 10, add = TRUE, col = "gainsboro")
-    graphics::points(ans[["Origins"]],
-                     pch = 20,
-                     col = grDevices::adjustcolor("gold", alpha.f = 0.75))
-    graphics::points(ans[["Destinations"]],
-                     pch = 20,
-                     col = grDevices::adjustcolor("tomato", alpha.f = 0.75))
+    if (plot == TRUE) {
+      raster::plot(rp, col = grDevices::topo.colors(100),
+                   main = paste0("Cumulative net passage for ", rep,
+                                 " random points"))
+      raster::contour(x, nlevels = 5, add = TRUE, col = "gainsboro", lt = 2)
+      graphics::points(ans[["Origins"]],
+                       pch = 20,
+                       col = grDevices::adjustcolor("gold", alpha.f = 0.75))
+      graphics::points(ans[["Destinations"]],
+                       pch = 20,
+                       col = grDevices::adjustcolor("tomato", alpha.f = 0.75))
+    }
     return(ans)
   } else { #with defined coordinates
     p <- rbind(or, dest)
@@ -78,15 +82,17 @@ en_passage <- function(
       names(p) <- c("x", "y")
     }
     rp <- gdistance::passage(cond, p[1, ], p[2, ], theta)
-    raster::plot(rp, col = grDevices::topo.colors(100),
-                 main = paste0("Cumulative net passage for ", rep, " random points"))
-    raster::contour(x, nlevels = 10, add = TRUE, col = "gainsboro")
-    graphics::points(ans[["Origins"]],
-                     pch = 20,
-                     col = grDevices::adjustcolor("gold", alpha.f = 0.75))
-    graphics::points(ans[["Destinations"]],
-                     pch = 20,
-                     col = grDevices::adjustcolor("tomato", alpha.f = 0.75))
+    if (plot == TRUE) {
+      raster::plot(rp, col = grDevices::topo.colors(100),
+                   main = paste0("Cumulative net passage"))
+      raster::contour(x, nlevels = 5, add = TRUE, col = "gainsboro", lt = 2)
+      graphics::points(ans[["Origins"]],
+                       pch = 20,
+                       col = grDevices::adjustcolor("gold", alpha.f = 0.75))
+      graphics::points(ans[["Destinations"]],
+                       pch = 20,
+                       col = grDevices::adjustcolor("tomato", alpha.f = 0.75))
+    }
     ans[["Origins"]] <- p[1, ]
     ans[["Destination"]] <- p[2, ]
     ans[["Passage"]] <- rp

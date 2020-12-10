@@ -4,12 +4,10 @@
 \alias{en_lcp}
 \title{Compute least-cost paths}
 \usage{
-en_lcp(en, neigh = 4, or, dest, simulate_random_points = FALSE, rep = 10)
+en_lcp(en, or, dest, simulate_random_points = FALSE, rep = 10, plot = TRUE)
 }
 \arguments{
 \item{en}{an enerscape object obtained with \code{enerscape()}.}
-
-\item{neigh}{number of neighbor cells that are connected together.}
 
 \item{or}{origin point.}
 
@@ -20,6 +18,8 @@ points. default = FALSE.}
 
 \item{rep}{number or random origin and destination points if
 \code{simulate_random_points = TRUE}. default = 10.}
+
+\item{plot}{if to plot the output.}
 }
 \value{
 A list with point locations, least-cost path as SpatialLines, energy
@@ -29,9 +29,9 @@ A list with point locations, least-cost path as SpatialLines, energy
 Calculate the least-cost path (lcp) between origin and destination
 }
 \details{
-If \code{or} and \code{dest} are not specified, the least-cost path is
-specified by setting \code{simulate_random_points = TRUE} and \code{rep} equal to the
-number of random paths to compute.
+If \code{or} and \code{dest} are not specified, the least-cost path
+  is specified by setting \code{simulate_random_points = TRUE} and \code{rep}
+  equal to the number of random paths to compute.
 }
 \examples{
 library(raster)
@@ -39,5 +39,5 @@ data("volcano")
 dem <- raster(volcano)
 en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
 p <- xyFromCell(dem, sample(ncell(dem), 2))
-lcp <- en_lcp(en, neigh = 16, or = p[1, ], dest = p[2, ])
+lcp <- en_lcp(en, or = p[1, ], dest = p[2, ])
 }

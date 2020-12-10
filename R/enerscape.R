@@ -32,7 +32,7 @@ enerscape <- function(
   dem,
   m,
   unit = "joule",
-  neigh = 4
+  neigh = 16
 ) {
   if (is.null(dem) | is.null(m)) {
     stop("Missing mandatory input - see ?enerscape::enerscape for details")
@@ -57,25 +57,33 @@ enerscape <- function(
   oldw <- getOption("warn")
   options("warn" = -1)
   message("  | Calculating slope")
-  slope <- gdistance::transition(dem, .calc_slope,
-                                 directions = neigh,
-                                 symm = FALSE)
+  # slope <- gdistance::transition(dem, .calc_slope,
+  #                                directions = neigh,
+  #                                symm = FALSE)
+  height <- gdistance::transition(dem,
+                                  function(x){x[2] - x[1]},
+                                  directions = neigh,
+                                  symm = FALSE)
+  slope <- gdistance::geoCorrection(height, scl = FALSE)
+  # convertion slope ratio to degrees
+  slope <- atan(slope) * 180 / pi
   options("warn" = oldw)
-  adj <- gdistance::adjacencyFromTransition(slope)
+  # adj <- gdistance::adjacencyFromTransition(slope)
+  adj <- raster::adjacent(dem,
+                          1:raster::ncell(dem),
+                          pairs = TRUE,
+                          directions = neigh)
   message("  | Calculating work")
   work <- slope
   work[adj] <- .calc_work(slope[adj], m, work_in_kcal = work_in_kcal)
   message("  | Calculating conductance (1 / work)")
   cond <- slope
-  cond[adj] <- .calc_cond(slope[adj], m)
+  cond[adj] <- .calc_cond(slope[adj], m, work_in_kcal = work_in_kcal)
   # transition matrices are ok, but conversion to rasters introduces NAs for
   # exactly zero inclines. Correcting manually.
-  s <- raster::raster(slope)
-  s[is.na(s)] <- 0
-  w <- raster::raster(work)
-  w[s == 0] <- .calc_work(0, m, work_in_kcal = work_in_kcal)
-  con <- raster::raster(cond)
-  con[s == 0] <- .calc_cond(0, m, work_in_kcal = work_in_kcal)
+  s <- gdistance::raster(slope, "colSums") / neigh
+  w <- gdistance::raster(work, "colSums") / neigh
+  con <- gdistance::raster(cond, "colSums") / neigh
   ans <- raster::stack(dem, s, w, con)
   names(ans) <- c("DEM", "Slope", "Work", "Conductance")
   ans <- list(neighbors = neigh,

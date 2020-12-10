@@ -4,7 +4,15 @@
 \alias{en_passage}
 \title{Compute probability of passage of random walks}
 \usage{
-en_passage(en, or, dest, theta = 4, simulate_random_points = FALSE, rep = 10)
+en_passage(
+  en,
+  or,
+  dest,
+  theta = 4,
+  simulate_random_points = FALSE,
+  rep = 10,
+  plot = TRUE
+)
 }
 \arguments{
 \item{en}{an enerscape object obtained with \code{enerscape()}.}
@@ -21,6 +29,8 @@ points. default = FALSE.}
 
 \item{rep}{number or random origin and destination points if
 \code{simulate_random_points = TRUE}. default = 10.}
+
+\item{plot}{if to plot the output.}
 }
 \value{
 A list with point locations, rasterLayer of net passage of random

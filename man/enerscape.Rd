@@ -4,7 +4,7 @@
 \alias{enerscape}
 \title{Compute the energy landscape}
 \usage{
-enerscape(dem, m, unit = "joule", neigh = 4)
+enerscape(dem, m, unit = "joule", neigh = 16)
 }
 \arguments{
 \item{dem}{raster file of the digital elevation model, either a raster or a
