@@ -18,9 +18,12 @@
 #'   is specified by setting \code{simulate_random_points = TRUE} and \code{rep}
 #'   equal to the number of random paths to compute.
 #' @examples
+#' library(raster)
+#' data("volcano")
+#' dem <- raster(volcano)
 #' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
 #' p <- xyFromCell(dem, sample(ncell(dem), 2))
-#' lcp <- en_passage(en, or = p[1, ], dest = p[2, ], theta = 4)
+#' walk <- en_passage(en, or = p[1, ], dest = p[2, ], theta = 4)
 en_passage <- function(
   en,
   or,
@@ -48,14 +51,15 @@ en_passage <- function(
       ans[["Origins"]] <- rbind(ans[["Origins"]], p[1, ])
       ans[["Destinations"]] <- rbind(ans[["Destinations"]], p[2, ])
     }
-    rp <- stack(rp)
+    rp <- raster::stack(rp)
     ans[["Passages"]] <- rp
     rp <- sum(rp)
     rp <- rp / max(raster::values(rp), na.rm = TRUE)
     ans[["Cumulative net passage"]] <- rp
-    raster::plot(rp, col = topo.colors(100),
-                 main = paste0("Cumulative net passage for ", rep, " random points"))
-    raster::contour(r, nlevels = 10, add = TRUE, col = "gainsboro")
+    raster::plot(rp, col = grDevices::topo.colors(100),
+                 main = paste0("Cumulative net passage for ", rep,
+                               " random points"))
+    raster::contour(x, nlevels = 10, add = TRUE, col = "gainsboro")
     graphics::points(ans[["Origins"]],
                      pch = 20,
                      col = grDevices::adjustcolor("gold", alpha.f = 0.75))
@@ -74,9 +78,9 @@ en_passage <- function(
       names(p) <- c("x", "y")
     }
     rp <- gdistance::passage(cond, p[1, ], p[2, ], theta)
-    raster::plot(rp, col = topo.colors(100),
+    raster::plot(rp, col = grDevices::topo.colors(100),
                  main = paste0("Cumulative net passage for ", rep, " random points"))
-    raster::contour(r, nlevels = 10, add = TRUE, col = "gainsboro")
+    raster::contour(x, nlevels = 10, add = TRUE, col = "gainsboro")
     graphics::points(ans[["Origins"]],
                      pch = 20,
                      col = grDevices::adjustcolor("gold", alpha.f = 0.75))

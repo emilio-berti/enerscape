@@ -16,6 +16,9 @@
 #'   and conductances (1 / work) are computed based on the model described in
 #'   Pontzer (2016).
 #' @examples
+#' library(raster)
+#' data("volcano")
+#' dem <- raster(volcano)
 #' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
 #' @export
 #' @references Etten, J. van. (2017). R Package gdistance: Distances and Routes
@@ -70,9 +73,9 @@ enerscape <- function(
   s <- raster::raster(slope)
   s[is.na(s)] <- 0
   w <- raster::raster(work)
-  w[is.na(w)] <- .calc_work(0, m, work_in_kcal = work_in_kcal)
+  w[s == 0] <- .calc_work(0, m, work_in_kcal = work_in_kcal)
   con <- raster::raster(cond)
-  con[is.na(con)] <- .calc_cond(0, m, work_in_kcal = work_in_kcal)
+  con[s == 0] <- .calc_cond(0, m, work_in_kcal = work_in_kcal)
   ans <- raster::stack(dem, s, w, con)
   names(ans) <- c("DEM", "Slope", "Work", "Conductance")
   ans <- list(neighbors = neigh,

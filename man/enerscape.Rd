@@ -33,6 +33,9 @@ From the digital elevation model, transition slopes, energy costs
   Pontzer (2016).
 }
 \examples{
+library(raster)
+data("volcano")
+dem <- raster(volcano)
 en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
 }
 \references{

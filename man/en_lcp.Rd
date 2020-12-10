@@ -34,6 +34,9 @@ specified by setting \code{simulate_random_points = TRUE} and \code{rep} equal t
 number of random paths to compute.
 }
 \examples{
+library(raster)
+data("volcano")
+dem <- raster(volcano)
 en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
 p <- xyFromCell(dem, sample(ncell(dem), 2))
 lcp <- en_lcp(en, neigh = 16, or = p[1, ], dest = p[2, ])
