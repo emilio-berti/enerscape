@@ -49,16 +49,20 @@ enerscape <- function(
          Please rename it as something else")
   }
   en_res <<- raster::res(dem)[1]
+  message(" - Raster cells are assumed to have same horizontal and vertical size",
+          " and with planar coordinate reference system (e.g. UTM)")
   oldw <- getOption("warn")
-  message("Calculating slope")
+  options("warn" = -1)
+  message("  | Calculating slope")
   slope <- gdistance::transition(dem, .calc_slope,
                                  directions = neigh,
                                  symm = FALSE)
+  options("warn" = oldw)
   adj <- gdistance::adjacencyFromTransition(slope)
-  message("Calculating work")
+  message("  | Calculating work")
   work <- slope
   work[adj] <- .calc_work(slope[adj], m, work_in_kcal = work_in_kcal)
-  message("Calculating conductance (1 / work)")
+  message("  | Calculating conductance (1 / work)")
   cond <- slope
   cond[adj] <- .calc_cond(slope[adj], m)
   # transition matrices are ok, but conversion to rasters introduces NAs for
@@ -77,8 +81,6 @@ enerscape <- function(
               cond_tr = cond)
   class(ans) <- "enerscape"
   rm(en_res, pos = 1) #remove global variable
-  message("  -------------- enerscape ---------------
-  do not use slope for distance calculations
-  as it has negative values (see below).")
+  message(" - Do not use slope with negative values for distance calculations")
   return(ans)
 }

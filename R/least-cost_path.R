@@ -43,10 +43,10 @@ en_lcp <- function(
       lcp <- gdistance::shortestPath(cond, p[1, ], p[2, ], output = "SpatialLines")
       cost <- raster::extract(work, lcp)
       cost <- sum(cost[[1]], na.rm = TRUE)
-      ans[["Costs"]] <- rbind(ans[["Costs"]], cost)
       ans[["Origins"]] <- rbind(ans[["Origins"]], p[1, ])
       ans[["Destinations"]] <- rbind(ans[["Destinations"]], p[2, ])
       ans[["Paths"]][[i]] <- lcp
+      ans[["Costs"]] <- rbind(ans[["Costs"]], cost)
     }
     ans[["Paths"]] <- do.call(rbind, ans[["Paths"]])
     ans[["Distances"]] <- sp::SpatialLinesLengths(ans[["Paths"]])
@@ -74,9 +74,11 @@ en_lcp <- function(
     lcp <- gdistance::shortestPath(cond, p[1, ], p[2, ], output = "SpatialLines")
     cost <- raster::extract(work, lcp)
     cost <- sum(cost[[1]], na.rm = TRUE)
-    ans[["least-cost path"]] <- list(Cost = cost,
-                                   Path = lcp,
-                                   "Distance" = sp::SpatialLinesLengths(lcp))
+    ans[["least-cost path"]] <- list(Origin = p[1, ],
+                                     Destination = p[2, ],
+                                     Path = lcp,
+                                     Cost = cost,
+                                     Distance = sp::SpatialLinesLengths(lcp))
     raster::plot(x, main = "Least-cost paths between two points")
     graphics::points(p[1, 1], p[1, 2], pch = 20, col = grDevices::adjustcolor("blue", alpha.f = 0.75))
     graphics::points(p[2, 1], p[2, 2], pch = 20, col = grDevices::adjustcolor("grey20", alpha.f = 0.75))
