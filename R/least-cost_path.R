@@ -40,6 +40,7 @@ en_lcp <- function(
   if (simulate_random_points) { #random points
     ans[["Paths"]] <- list()
     for (i in seq_len(rep)) {
+      message(i, " of ", rep, "random points ...")
       p <- raster::xyFromCell(x, sample(raster::ncell(x), 2))
       while (any(is.na(raster::extract(x, p)))) {
         p <- raster::xyFromCell(x, sample(raster::ncell(x), 2))

@@ -51,7 +51,7 @@ enerscape <- function(
     stop("You have a variable called `en_res`\n
          Please rename it as something else")
   }
-  en_res <<- raster::res(dem)[1]
+  assign("en_res", raster::res(dem)[1], envir = .GlobalEnv)
   message(" - Raster cells are assumed to have same horizontal and vertical",
           " resolution and with planar coordinate reference system (e.g. UTM)")
   oldw <- getOption("warn")
@@ -89,7 +89,7 @@ enerscape <- function(
               rasters = ans,
               cond_tr = cond)
   class(ans) <- "enerscape"
-  rm(en_res, pos = 1) #remove global variable
+  rm(en_res, envir = .GlobalEnv) #remove global variable
   message(" - Do not use slope with negative values for distance calculations")
   return(ans)
 }
