@@ -1,18 +1,3 @@
-#' Compute slope
-#'
-#' Internal function for enerscape - calculate slope
-#' @param x a digital elevation model raster layer
-#' @return A transition layer with values the inclines between cells (degrees).
-#' @details Internal function of enerscape, don't call directly.
-.calc_slope <- function(x) {
-  diff <- x[2] - x[1]
-  ipo <- sqrt(en_res ^ 2 + diff ^ 2)
-  alpha <- asin(diff / ipo) * 180 / pi
-  if (is.na(alpha)) {
-    alpha <- 0
-  }
-  return(alpha)
-}
 #' Compute energy costs
 #'
 #' Internal function for enerscape - calculate work.

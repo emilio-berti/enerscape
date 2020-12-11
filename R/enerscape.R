@@ -52,8 +52,8 @@ enerscape <- function(
          Please rename it as something else")
   }
   en_res <<- raster::res(dem)[1]
-  message(" - Raster cells are assumed to have same horizontal and vertical size",
-          " and with planar coordinate reference system (e.g. UTM)")
+  message(" - Raster cells are assumed to have same horizontal and vertical",
+          " resolution and with planar coordinate reference system (e.g. UTM)")
   oldw <- getOption("warn")
   options("warn" = -1)
   message("  | Calculating slope")
@@ -61,14 +61,14 @@ enerscape <- function(
   #                                directions = neigh,
   #                                symm = FALSE)
   height <- gdistance::transition(dem,
-                                  function(x){x[2] - x[1]},
+                                  function(x) {
+                                    x[2] - x[1]
+                                  },
                                   directions = neigh,
                                   symm = FALSE)
   slope <- gdistance::geoCorrection(height, scl = FALSE)
-  # convertion slope ratio to degrees
-  slope <- atan(slope) * 180 / pi
+  slope <- atan(slope) * 180 / pi #convert slope ratio to degrees
   options("warn" = oldw)
-  # adj <- gdistance::adjacencyFromTransition(slope)
   adj <- raster::adjacent(dem,
                           1:raster::ncell(dem),
                           pairs = TRUE,
@@ -79,8 +79,6 @@ enerscape <- function(
   message("  | Calculating conductance (1 / work)")
   cond <- slope
   cond[adj] <- .calc_cond(slope[adj], m, work_in_kcal = work_in_kcal)
-  # transition matrices are ok, but conversion to rasters introduces NAs for
-  # exactly zero inclines. Correcting manually.
   s <- gdistance::raster(slope, "colSums") / neigh
   w <- gdistance::raster(work, "colSums") / neigh
   con <- gdistance::raster(cond, "colSums") / neigh
