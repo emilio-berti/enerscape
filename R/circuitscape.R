@@ -1,9 +1,9 @@
 #' Create the initialization file for the julia package Circuitscape
 #'
 #' This creates the init file for the julia package Circuitscape:
-#' \url{https://docs.circuitscape.org/Omniscape.jl/stable/}.
+#' \url{https://juliapackages.com/p/circuitscape}.
 #' @param en an enerscape object.
-#' @param path full where to write the .ini file.
+#' @param path full path where to write the .ini file.
 #' @param points data.frame with origin and destination coordinates.
 #' @return Nothing, only write the circuitscape.ini file to disk.
 #' @export
@@ -23,11 +23,11 @@ circuitscape_skeleton <- function(
     }
   }
   pr <- raster::rasterize(points, en$rasters$Work, na.rm = TRUE)
-  raster::writeRaster(en$rasters$Work, file.path(path, "/work.tif"), 
+  raster::writeRaster(en$rasters$Work, file.path(path, "/work.tif"),
                       overwrite = TRUE)
-  raster::writeRaster(pr, file.path(path, "/loc.tif"), 
+  raster::writeRaster(pr, file.path(path, "/loc.tif"),
                       overwrite = TRUE)
-  loc <- 
+  loc <-
   cs_file <- file(file.path(path, "circuitscape.ini"), open = "w")
   if (!isOpen(cs_file)) {
     stop("Connection to file cannot be established")

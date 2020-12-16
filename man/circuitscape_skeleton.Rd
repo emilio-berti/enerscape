@@ -9,7 +9,7 @@ circuitscape_skeleton(en = NULL, path = NULL, points = NULL)
 \arguments{
 \item{en}{an enerscape object.}
 
-\item{path}{full where to write the .ini file.}
+\item{path}{full path where to write the .ini file.}
 
 \item{points}{data.frame with origin and destination coordinates.}
 }
@@ -18,5 +18,5 @@ Nothing, only write the circuitscape.ini file to disk.
 }
 \description{
 This creates the init file for the julia package Circuitscape:
-\url{https://docs.circuitscape.org/Omniscape.jl/stable/}.
+\url{https://juliapackages.com/p/circuitscape}.
 }

@@ -1,14 +1,14 @@
 #' Create the initialization file for the julia package Omniscape
 #'
 #' This creates the init file for the julia package Omniscape:
-#' \url{https://docs.circuitscape.org/Omniscape.jl/stable/}.
+#' \url{https://juliapackages.com/p/omniscape}.
 #' @param en an enerscape object.
-#' @param path full where to write the .ini file.
+#' @param path full path where to write the .ini file.
 #' @param radius radius in pixels of the moving window.
 #' @param aggr_fact the block size to compute the Omniscape.
 #' @return Nothing, only write the omniscape.ini file to disk.
 #' @export
-ominscape_skeleton <- function(
+omniscape_skeleton <- function(
   en = NULL,
   path = NULL,
   radius = NULL,
@@ -17,7 +17,7 @@ ominscape_skeleton <- function(
   if (is.null(en) | is.null(path) | is.null(radius)) {
     stop("Missing mandatory input")
   }
-  raster::writeRaster(en$rasters$Work, file.path(path, "/work.tif"), 
+  raster::writeRaster(en$rasters$Work, file.path(path, "/work.tif"),
                       overwrite = TRUE)
   omni_file <- file(file.path(path, "omniscape.ini"), open = "w")
   if (!isOpen(omni_file)) {
@@ -25,7 +25,7 @@ ominscape_skeleton <- function(
   }
   writeLines(text = c(
     "[Required arguments]",
-    paste0("resistance_file = ", path, "/work.tif"), 
+    paste0("resistance_file = ", path, "/work.tif"),
     paste0("radius = ", radius),
     paste0("block_size = ", aggr_fact),
     paste0("project_name = ", path, "/omniscape"),
@@ -35,7 +35,7 @@ ominscape_skeleton <- function(
     "calc_normalized_current = true",
     "",
     "parallelize = true",
-    paste0("parallel_batch_size = ", 
+    paste0("parallel_batch_size = ",
            parallel::detectCores() - 1),
     "",
     "[Output options]",
