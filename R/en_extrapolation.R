@@ -23,20 +23,20 @@
 #'   https://doi.org/10.1098/rsbl.2015.0935}.
 en_extrapolation <- function(en,
                              plot = TRUE) {
-  extr_mass <- ifelse (en$mass >= min(enerscape::pontzer$Mass) & 
+  extr_mass <- ifelse(en$mass >= min(enerscape::pontzer$Mass) &
                          en$mass <= max(enerscape::pontzer$Mass),
                        FALSE,
                        TRUE)
   v <- raster::values(en$rasters$Slope)
   min_slope <- min(v, na.rm = TRUE)
   max_slope <- max(v, na.rm = TRUE)
-  extr_slope <- ifelse(min_slope >= min(enerscape::pontzer$Incline) & 
+  extr_slope <- ifelse(min_slope >= min(enerscape::pontzer$Incline) &
                          max_slope <= max(enerscape::pontzer$Incline),
     FALSE,
     TRUE)
   extr_rast <- en$rasters$Slope
   if (extr_slope) {
-    extr_rast[extr_rast >= min(enerscape::pontzer$Incline) & 
+    extr_rast[extr_rast >= min(enerscape::pontzer$Incline) &
                 extr_rast <= max(enerscape::pontzer$Incline)] <- NA
     extr_rast[!is.na(extr_rast)] <- 1
   } else {

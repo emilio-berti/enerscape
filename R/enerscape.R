@@ -9,6 +9,10 @@
 #' @param m species body mass (kg).
 #' @param unit if joules ('joule') or kilocalories ('kcal').
 #' @param neigh number of neighbor cells that are connected together.
+#' @param method method to use to compute the energy costs. 'ARC' refers to the
+#'   model from Pontzer (2016) and 'cycling' to the model for ciclist from di
+#'   Prampero et al. (1979).
+#' @param v speed of cyclist (km / h), only for \code{method = 'cycling'}.
 #' @return A list with elements a rasterStack of the digital elevation model,
 #'   slope, work, and conductance and the conductance as a transitionLayer for
 #'   path analysis.
@@ -22,17 +26,23 @@
 #' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
 #' @export
 #' @references Etten, J. van. (2017). R Package gdistance: Distances and Routes
-#' on Geographical Grids. Journal of Statistical Software, 76(1), 1–21.
-#' \url{https://doi.org/10.18637/jss.v076.i13}.
+#'   on Geographical Grids. Journal of Statistical Software, 76(1), 1–21.
+#'   \url{https://doi.org/10.18637/jss.v076.i13}.
 #'
-#' Pontzer, H. (2016). A unified theory for the energy cost of legged
-#' locomotion. Biology Letters, 12(2), 20150935. \url{
-#' https://doi.org/10.1098/rsbl.2015.0935}.
+#'   Pontzer, H. (2016). A unified theory for the energy cost of legged
+#'   locomotion. Biology Letters, 12(2), 20150935. \url{
+#'   https://doi.org/10.1098/rsbl.2015.0935}.
+#'
+#'   di Prampero, P. E., Cortili, G., Mognoni, P., & Saibene, F. (1979).
+#'   Equation of motion of a cyclist. Journal of Applied Physiology, 47(1),
+#'   201–206. \url{https://doi.org/10.1152/jappl.1979.47.1.201}
 enerscape <- function(
   dem,
   m,
   unit = "joule",
-  neigh = 16
+  neigh = 16,
+  method = "ARC",
+  v = NULL
 ) {
   if (is.null(dem) | is.null(m)) {
     stop("Missing mandatory input - see ?enerscape::enerscape for details")
@@ -57,9 +67,6 @@ enerscape <- function(
   oldw <- getOption("warn")
   options("warn" = -1)
   message("  | Calculating slope")
-  # slope <- gdistance::transition(dem, .calc_slope,
-  #                                directions = neigh,
-  #                                symm = FALSE)
   height <- gdistance::transition(dem,
                                   function(x) {
                                     x[2] - x[1]
@@ -75,12 +82,39 @@ enerscape <- function(
                           directions = neigh)
   message("  | Calculating work")
   work <- slope
-  work[adj] <- .calc_work(slope[adj], m, work_in_kcal = work_in_kcal)
+  if (method == "ARC") {
+    work[adj] <- .calc_arc(slope[adj], m, work_in_kcal)
+  } else if (method == "cycling") {
+    if (is.null(v)) {
+      stop("Argument v must be specified")
+    } else {
+      v <- v / 3.6
+    }
+    work[adj] <- .calc_cycling(height[adj], slope[adj], m, v, work_in_kcal)
+    work@transitionMatrix[work@transitionMatrix < 0] <- 0
+  } else {
+    stop("Argument method must be 'ARC' or 'cycling'")
+  }
   message("  | Calculating conductance (1 / work)")
   cond <- slope
-  cond[adj] <- .calc_cond(slope[adj], m, work_in_kcal = work_in_kcal)
+  if (method == "ARC") {
+    cond[adj] <- .calc_arc_cond(slope[adj], m, work_in_kcal)
+  } else if (method == "cycling") {
+    if (is.null(v)) {
+      stop("Argument v must be specified")
+    } else {
+      v <- v / 3.6
+    }
+    cond[adj] <- .calc_cycling_cond(height[adj], slope[adj], m, v, work_in_kcal)
+    cond@transitionMatrix[cond@transitionMatrix < 0] <- max(cond@transitionMatrix) * 10
+  } else {
+    stop("Argument method must be 'ARC' or 'cycling'")
+  }
   s <- gdistance::raster(slope, "colSums") / neigh
   w <- gdistance::raster(work, "colSums") / neigh
+  if (method == "cycling") {
+    w[w < 0] <- 0
+  }
   con <- gdistance::raster(cond, "colSums") / neigh
   ans <- raster::stack(dem, s, w, con)
   names(ans) <- c("DEM", "Slope", "Work", "Conductance")
