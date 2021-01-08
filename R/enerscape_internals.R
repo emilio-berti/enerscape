@@ -77,11 +77,12 @@
   VO2 <- (8.6 * 10^-3 * m +
             7.8 * 10^-3 * 1.8 * atm / temp * v^2 +
             1.87 * m * sin(slope / 180 * pi)) * v
-  work <- VO2 / 20.9 * en_res / abs(cos(slope / 180 * pi)) #20.9 J / mlO2
+  E <- VO2 * 20.9 #ml O2 to J
+  E <- E * en_res / abs(cos(slope * pi / 180)) / v
   if (work_in_kcal) {
-    work <- work / j_to_kcal
+    E <- E / j_to_kcal
   }
-  return(work)
+  return(E)
 }
 #' Compute conductance for a cyclist
 #'
@@ -104,9 +105,10 @@
   VO2 <- (8.6 * 10^-3 * m +
             7.8 * 10^-3 * 1.8 * atm / temp * v^2 +
             1.87 * m * sin(slope / 180 * pi)) * v
-  work <- VO2 / 20.9 * en_res / abs(cos(slope / 180 * pi)) #20.9 J / mlO2
+  E <- VO2 * 20.9 #ml O2 to J
+  E <- E * en_res / abs(cos(slope * pi / 180)) / v
   if (work_in_kcal) {
-    work <- work / j_to_kcal
+    E <- E / j_to_kcal
   }
-  return(1 / work)
+  return(1 / E)
 }

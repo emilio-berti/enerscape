@@ -14,7 +14,8 @@ Imports:
     shiny,
     gdistance,
     rgdal,
-    sp
+    sp,
+    Matrix
 Suggests:
     knitr,
     rmarkdown

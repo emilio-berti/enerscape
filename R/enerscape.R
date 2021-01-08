@@ -91,7 +91,10 @@ enerscape <- function(
       v <- v / 3.6
     }
     work[adj] <- .calc_cycling(height[adj], slope[adj], m, v, work_in_kcal)
-    work@transitionMatrix[work@transitionMatrix < 0] <- 0
+    zeros <- Matrix::which(work@transitionMatrix < 0, arr.ind = TRUE)
+    rw <- zeros[, 1]
+    cl <- zeros[, 2]
+    work@transitionMatrix[rw, cl] <- 0
   } else {
     stop("Argument method must be 'ARC' or 'cycling'")
   }
@@ -100,13 +103,12 @@ enerscape <- function(
   if (method == "ARC") {
     cond[adj] <- .calc_arc_cond(slope[adj], m, work_in_kcal)
   } else if (method == "cycling") {
-    if (is.null(v)) {
-      stop("Argument v must be specified")
-    } else {
-      v <- v / 3.6
-    }
     cond[adj] <- .calc_cycling_cond(height[adj], slope[adj], m, v, work_in_kcal)
-    cond@transitionMatrix[cond@transitionMatrix < 0] <- max(cond@transitionMatrix) * 10
+    zeros <- Matrix::which(cond@transitionMatrix < 0, arr.ind = TRUE)
+    rw <- zeros[, 1]
+    cl <- zeros[, 2]
+    val <- max(cond@transitionMatrix) * 10
+    #cond@transitionMatrix[rw, cl] <- val #computationally unfeasible
   } else {
     stop("Argument method must be 'ARC' or 'cycling'")
   }
