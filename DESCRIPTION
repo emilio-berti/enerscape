@@ -1,17 +1,16 @@
 Package: enerscape
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Compute energy landscapes
 Version: 0.1.0
 Author: Emilio Berti
 Maintainer: Emilio Berti <emilio.berti@idiv.de>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Copmute energy landscapes using a digital elevation model (DEM) 
+    raster and body mass (kg) of animals.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
     raster,
-    shiny,
     gdistance,
     rgdal,
     sp,
