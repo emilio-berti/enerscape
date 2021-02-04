@@ -14,10 +14,10 @@
   work_in_kcal = TRUE,
   j_to_kcal = 4184
 ) {
-  en_res <- get("en_res", envir = .GlobalEnv)
-    E_ar <- 8 * m ^ (-0.34)
-    E_mec <- 100 * (1 + sin((2 * slope - 74) / 180 * pi)) * m ^ (-0.12)
-    work <- (E_ar + E_mec) * m * en_res / abs(cos(slope * pi / 180))
+  en_res <- get("en_res", pkg.globals)
+  E_ar <- 8 * m ^ (-0.34)
+  E_mec <- 100 * (1 + sin((2 * slope - 74) / 180 * pi)) * m ^ (-0.12)
+  work <- (E_ar + E_mec) * m * en_res / abs(cos(slope * pi / 180))
   if (work_in_kcal) {
     work <- work / j_to_kcal
   }
@@ -36,7 +36,7 @@
   work_in_kcal = TRUE,
   j_to_kcal = 4184
 ) {
-  en_res <- get("en_res", envir = .GlobalEnv)
+  en_res <- get("en_res", pkg.globals)
   E_ar <- 8 * m ^ (-0.34)
   E_mec <- 100 * (1 + sin((2 * slope - 74) / 180 * pi)) * m ^ (-0.12)
   work <- (E_ar + E_mec) * m * en_res / abs(cos(slope * pi / 180))
@@ -68,7 +68,7 @@
   work_in_kcal = TRUE,
   j_to_kcal = 4184
 ) {
-  en_res <- get("en_res", envir = .GlobalEnv)
+  en_res <- get("en_res", pkg.globals)
   m <- m + 7 #add mass of bike
   temp <- (15.04 - 0.00649 * height) #air temperature
   atm <- 101.29 * ((temp + 273.1) / 288.08) ^ 5.256 #atmospheric pressure
@@ -96,7 +96,7 @@
   work_in_kcal = TRUE,
   j_to_kcal = 4184
 ) {
-  en_res <- get("en_res", envir = .GlobalEnv)
+  en_res <- get("en_res", pkg.globals)
   m <- m + 7 #add mass of bike
   temp <- (15.04 - 0.00649 * height) #air temperature
   atm <- 101.29 * ((temp + 273.1) / 288.08) ^ 5.256 #atmospheric pressure
