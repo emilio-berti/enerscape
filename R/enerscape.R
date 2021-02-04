@@ -10,7 +10,7 @@
 #' @param unit if joules ('joule') or kilocalories ('kcal').
 #' @param neigh number of neighbor cells that are connected together.
 #' @param method method to use to compute the energy costs. 'ARC' refers to the
-#'   model from Pontzer (2016) and 'cycling' to the model for ciclist from di
+#'   model from Pontzer (2016) and 'cycling' to the model for cyclist from di
 #'   Prampero et al. (1979).
 #' @param v speed of cyclist (km / h), only for \code{method = 'cycling'}.
 #' @return A list with elements a rasterStack of the digital elevation model,

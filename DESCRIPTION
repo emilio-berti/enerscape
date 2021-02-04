@@ -4,7 +4,7 @@ Title: Compute energy landscapes
 Version: 0.1.0
 Author: Emilio Berti
 Maintainer: Emilio Berti <emilio.berti@idiv.de>
-Description: Copmute energy landscapes using a digital elevation model (DEM) 
+Description: Compute energy landscapes using a digital elevation model (DEM) 
     raster and body mass (kg) of animals.
 License: GPL-3
 Encoding: UTF-8

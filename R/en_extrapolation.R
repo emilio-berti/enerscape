@@ -1,6 +1,6 @@
 #' Check if model extrapolates
 #'
-#' This check if compuation of the energy landscape extrapolates from the test
+#' This check if computation of the energy landscape extrapolates from the test
 #' set of enerscape::pontzer (2016).
 #' @param en an enerscape object.
 #' @param plot plot areas where slope is extrapolated.

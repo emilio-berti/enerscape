@@ -28,7 +28,7 @@
 #' Internal function for enerscape - calculate conductance
 #' @inherit .calc_arc
 #' @return A transition layer with values the conductance between cells, i.e.
-#'   the distance that can be travelled per unit of energy (1 / J or 1 / kcal).
+#'   the distance that can be traveled per unit of energy (1 / J or 1 / kcal).
 #' @export
 .calc_arc_cond <- function(
   slope,

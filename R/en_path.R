@@ -1,6 +1,6 @@
 #' Compute the energy costs for a chosen path
 #'
-#' This returns the distance and energy costs of travelling a chosen path.
+#' This returns the distance and energy costs of traveling a chosen path.
 #' Optionally, the path can be selected by specifying the number of nodes and
 #' clicking on the plot.
 #' @param en an enerscape object.
