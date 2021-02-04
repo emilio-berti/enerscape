@@ -17,7 +17,7 @@
 }
 \value{
 A transition layer with values the conductance between cells, i.e.
-  the distance that can be travelled per unit of energy (1 / J or 1 / kcal).
+  the distance that can be traveled per unit of energy (1 / J or 1 / kcal).
 }
 \description{
 Internal function for enerscape - calculate conductance

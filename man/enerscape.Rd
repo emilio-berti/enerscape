@@ -17,7 +17,7 @@ full path location of the file.}
 \item{neigh}{number of neighbor cells that are connected together.}
 
 \item{method}{method to use to compute the energy costs. 'ARC' refers to the
-model from Pontzer (2016) and 'cycling' to the model for ciclist from di
+model from Pontzer (2016) and 'cycling' to the model for cyclist from di
 Prampero et al. (1979).}
 
 \item{v}{speed of cyclist (km / h), only for \code{method = 'cycling'}.}

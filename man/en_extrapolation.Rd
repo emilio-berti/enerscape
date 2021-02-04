@@ -17,7 +17,7 @@ A list with booleans if body size or inclines extrapolates and a
   only if extrapolations are present.
 }
 \description{
-This check if compuation of the energy landscape extrapolates from the test
+This check if computation of the energy landscape extrapolates from the test
 set of enerscape::pontzer (2016).
 }
 \details{
