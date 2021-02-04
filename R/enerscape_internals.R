@@ -16,7 +16,7 @@
 ) {
   en_res <- get("en_res", envir = .GlobalEnv)
     E_ar <- 8 * m ^ (-0.34)
-    E_mec <- 50 * (1 + sin((2 * slope - 74) / 180 * pi)) * m ^ (-0.12)
+    E_mec <- 100 * (1 + sin((2 * slope - 74) / 180 * pi)) * m ^ (-0.12)
     work <- (E_ar + E_mec) * m * en_res / abs(cos(slope * pi / 180))
   if (work_in_kcal) {
     work <- work / j_to_kcal
