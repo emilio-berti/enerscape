@@ -57,8 +57,9 @@ enerscape <- function(
   # transition layers cannot accept optional arguments. The resolution is saved
   # as global variable and deleted before return. Deletion takes place in the
   # parent environment of the function.
-  pkg.globals <- new.env()
-  pkg.globals$en_res <- en_res
+  en_res <- raster::res(dem)[1]
+  # assign("enerscape", new.env())
+  # assign("en_res", raster::res(dem)[1], envir = enerscape)
   message(" - Raster cells are assumed to have same horizontal and vertical",
           " resolution and with planar coordinate reference system (e.g. UTM)")
   oldw <- getOption("warn")
