@@ -20,15 +20,15 @@
 #' @export
 #' @references Etten, J. van. (2017). R Package gdistance: Distances and Routes
 #'   on Geographical Grids. Journal of Statistical Software, 76(1), 1–21.
-#'   \url{https://doi.org/10.18637/jss.v076.i13}.
+#'   \doi{https://doi.org/10.18637/jss.v076.i13}.
 #'
 #'   Pontzer, H. (2016). A unified theory for the energy cost of legged
-#'   locomotion. Biology Letters, 12(2), 20150935. \url{
+#'   locomotion. Biology Letters, 12(2), 20150935. \doi{
 #'   https://doi.org/10.1098/rsbl.2015.0935}.
 #'
 #'   di Prampero, P. E., Cortili, G., Mognoni, P., & Saibene, F. (1979).
 #'   Equation of motion of a cyclist. Journal of Applied Physiology, 47(1),
-#'   201–206. \url{https://doi.org/10.1152/jappl.1979.47.1.201}
+#'   201–206. \doi{https://doi.org/10.1152/jappl.1979.47.1.201}
 en_path <- function(
   en,
   p = NULL,

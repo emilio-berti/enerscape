@@ -8,7 +8,7 @@
 #'   \item{Cost.of.Transport}{cost of transport}
 #'   \item{Source}{original source of data}
 #' }
-#' @source \url{https://doi.org/10.1098/rsbl.2015.0935}
+#' @source \doi{https://doi.org/10.1098/rsbl.2015.0935}
 #' @references
 #' #' Pontzer, H. (2016). A unified theory for the energy cost of legged
 #' locomotion. Biology Letters, 12(2), 20150935.

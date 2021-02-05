@@ -15,7 +15,7 @@ A data frame with 92 rows and 5 variables:
 }
 }
 \source{
-\url{https://doi.org/10.1098/rsbl.2015.0935}
+\doi{https://doi.org/10.1098/rsbl.2015.0935}
 }
 \usage{
 pontzer

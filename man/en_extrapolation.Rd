@@ -35,6 +35,6 @@ en_extrapolation(en, plot = TRUE)
 }
 \references{
 enerscape::pontzer, H. (2016). A unified theory for the energy
-  cost of legged locomotion. Biology Letters, 12(2), 20150935. \url{
+  cost of legged locomotion. Biology Letters, 12(2), 20150935. \doi{
   https://doi.org/10.1098/rsbl.2015.0935}.
 }
