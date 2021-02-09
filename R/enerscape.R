@@ -58,22 +58,19 @@ enerscape <- function(
   # as global variable and deleted before return. Deletion takes place in the
   # parent environment of the function.
   en_res <- raster::res(dem)[1]
-  # assign("enerscape", new.env())
-  # assign("en_res", raster::res(dem)[1], envir = enerscape)
   message(" - Raster cells are assumed to have same horizontal and vertical",
           " resolution and with planar coordinate reference system (e.g. UTM)")
-  oldw <- getOption("warn")
-  options("warn" = -1)
   message("  | Calculating slope")
-  height <- gdistance::transition(dem,
-                                  function(x) {
-                                    x[2] - x[1]
-                                  },
-                                  directions = neigh,
-                                  symm = FALSE)
+  height <- suppressWarnings( #this warning is printed as message before return
+    gdistance::transition(dem,
+                          function(x) {
+                            x[2] - x[1]
+                          },
+                          directions = neigh,
+                          symm = FALSE)
+  )
   slope <- gdistance::geoCorrection(height, scl = FALSE)
   slope <- atan(slope) * 180 / pi #convert slope ratio to degrees
-  options("warn" = oldw)
   adj <- raster::adjacent(dem,
                           1:raster::ncell(dem),
                           pairs = TRUE,

@@ -10,8 +10,9 @@
 #' @param plot if TRUE plot the path
 #' @return A list with elements the path, its travel distance and energy costs.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(raster)
+#' library(enerscape)
 #' data("volcano")
 #' dem <- raster(volcano)
 #' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
