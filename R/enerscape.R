@@ -55,8 +55,8 @@ enerscape <- function(
   }
   work_in_kcal <- ifelse(unit == "kcal", TRUE, FALSE)
   # transition layers cannot accept optional arguments. The resolution is saved
-  # as global variable and deleted before return. Deletion takes place in the
-  # parent environment of the function.
+  # as variable in this environment and called with 'get()' in
+  # enerscape_internals.R
   en_res <- raster::res(dem)[1]
   message(" - Raster cells are assumed to have same horizontal and vertical",
           " resolution and with planar coordinate reference system (e.g. UTM)")
@@ -103,7 +103,6 @@ enerscape <- function(
     rw <- zeros[, 1]
     cl <- zeros[, 2]
     val <- max(cond@transitionMatrix) * 10
-    #cond@transitionMatrix[rw, cl] <- val #computationally unfeasible
   } else {
     stop("Argument method must be 'ARC' or 'cycling'")
   }
@@ -114,7 +113,7 @@ enerscape <- function(
   }
   con <- gdistance::raster(cond, "colSums") / neigh
   ans <- raster::stack(dem, s, w, con)
-  names(ans) <- c("DEM", "Slope", "Work", "Conductance")
+  names(ans) <- c("DEM", "Slope", "EnergyScape", "Conductance")
   ans <- list(neighbors = neigh,
               mass = m,
               rasters = ans,
