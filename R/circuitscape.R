@@ -22,8 +22,8 @@ circuitscape_skeleton <- function(
       stop("points are not data.frame or matrix")
     }
   }
-  pr <- raster::rasterize(points, en$rasters$Work, na.rm = TRUE)
-  raster::writeRaster(en$rasters$Work, file.path(path, "/work.tif"),
+  pr <- raster::rasterize(points, en$rasters$EnergyScape, na.rm = TRUE)
+  raster::writeRaster(en$rasters$EnergyScape, file.path(path, "/work.tif"),
                       overwrite = TRUE)
   raster::writeRaster(pr, file.path(path, "/loc.tif"),
                       overwrite = TRUE)

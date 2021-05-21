@@ -24,7 +24,7 @@ Prampero et al. (1979).}
 }
 \value{
 A list with elements a rasterStack of the digital elevation model,
-  slope, work, and conductance and the conductance as a transitionLayer for
+  slope, energy landscape, and conductance and the conductance as a transitionLayer for
   path analysis.
 }
 \description{

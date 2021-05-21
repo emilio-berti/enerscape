@@ -18,9 +18,9 @@ omniscape_skeleton <- function(
     stop("Missing mandatory input")
   }
   if (aggr_fact > 1) {
-    w <- raster::aggregate(en$rasters$Work, aggr_fact)
+    w <- raster::aggregate(en$rasters$EnergyScape, aggr_fact)
   } else {
-    w <- en$rasters$Work
+    w <- en$rasters$EnergyScape
   }
   raster::writeRaster(w, file.path(path, "/work.tif"),
                       overwrite = TRUE)

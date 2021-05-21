@@ -14,7 +14,7 @@
 #'   Prampero et al. (1979).
 #' @param v speed of cyclist (km / h), only for \code{method = 'cycling'}.
 #' @return A list with elements a rasterStack of the digital elevation model,
-#'   slope, work, and conductance and the conductance as a transitionLayer for
+#'   slope, energy landscape, and conductance and the conductance as a transitionLayer for
 #'   path analysis.
 #' @details From the digital elevation model, transition slopes, energy costs
 #'   and conductances (1 / work) are computed based on the model described in

@@ -33,7 +33,7 @@ en_lcp <- function(
     stop("en must be an enerscape object")
   } else {
     x <- en$rasters$DEM
-    work <- en$rasters$Work
+    work <- en$rasters$EnergyScape
     cond <- en$cond_tr
   }
   ans <- list() #initialize return value

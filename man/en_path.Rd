@@ -26,8 +26,9 @@ Optionally, the path can be selected by specifying the number of nodes and
 clicking on the plot.
 }
 \examples{
-\dontrun{
+\donttest{
 library(raster)
+library(enerscape)
 data("volcano")
 dem <- raster(volcano)
 en <- enerscape(dem, 10, unit = "kcal", neigh = 16)

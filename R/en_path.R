@@ -16,7 +16,9 @@
 #' data("volcano")
 #' dem <- raster(volcano)
 #' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
-#' en_path(en, draw = TRUE, n = 10)
+# p <- coordinates(en$rasters$DEM)[sample(1:ncell(en$rasters$DEM), 5), ]
+# path <- sp::SpatialLines(list(sp::Lines(sp::Line(p), ID = "path")))
+# en_path(en, path)
 #' }
 #' @export
 #' @references Etten, J. van. (2017). R Package gdistance: Distances and Routes
@@ -51,7 +53,7 @@ en_path <- function(
   } else if (class(p)[1] != "SpatialLines") {
     stop("Path must be a SpatialLines object")
   }
-  w <- raster::extract(en$rasters$Work, p)[[1]]
+  w <- raster::extract(en$rasters$EnergyScape, p)[[1]]
   ans <- list(Path = p,
               Distance = sp::SpatialLinesLengths(p),
               Cost = sum(w))
