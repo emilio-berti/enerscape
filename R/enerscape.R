@@ -72,7 +72,7 @@ enerscape <- function(
   slope <- gdistance::geoCorrection(height, scl = FALSE)
   slope <- atan(slope) * 180 / pi #convert slope ratio to degrees
   adj <- raster::adjacent(dem,
-                          1:raster::ncell(dem),
+                          1:(raster::ncell(dem)),
                           pairs = TRUE,
                           directions = neigh)
   message("  | Calculating work")
