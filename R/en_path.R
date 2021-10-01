@@ -46,6 +46,7 @@ en_path <- function(
       graphics::par(mfrow = c(1, 1))
       raster::plot(en$rasters$DEM)
       p <- raster::click(n = n)
+      p <- matrix(p, ncol = 2, byrow = TRUE)
     } else {
       stop("Specify the path or draw it (draw = TRUE)")
     }
