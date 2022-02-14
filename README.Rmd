@@ -1,0 +1,49 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# enerscape
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/emilio-berti/enerscape/workflows/R-CMD-check/badge.svg)](https://github.com/emilio-berti/enerscape/actions)
+<!-- badges: end -->
+
+The goal of enerscape is to calculate energy landscapes for terrestrial animals.
+
+## Installation
+
+You can install the released version of enerscape from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("enerscape")
+```
+
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("emilio-berti/enerscape")
+```
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(raster)
+library(enerscape)
+data("volcano")
+dem <- raster(volcano)
+en <- enerscape(dem, 100, "kcal")
+en
+```
