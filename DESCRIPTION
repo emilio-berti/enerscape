@@ -1,0 +1,24 @@
+Package: enerscape
+Type: Package
+Title: Compute Energy Landscapes
+Version: 0.1.4
+Author: Emilio Berti
+Maintainer: Emilio Berti <emilio.berti@idiv.de>
+Description: Compute energy landscapes using a digital elevation model raster and body mass of animals. Vignette available at: <https://emilio-berti.github.io/enerscape.html>.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    raster,
+    gdistance,
+    rgdal,
+    rgeos,
+    sp,
+    Matrix
+Suggests:
+    knitr,
+    rmarkdown
+RoxygenNote: 7.1.1
+Depends: 
+    R (>= 2.10)
+
