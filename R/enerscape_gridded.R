@@ -1,257 +1,268 @@
-#' Create spatial grid
+#' @title Create a gridPolygon
 #'
-#' This creates a spatial grid from a rasterLayer (usually the DEM).
-#' This grid is then used to run \code{enerscape()} on each grid
-#' separately.
-#' @param ext extent of x, x@extent
-#' @param crs crs of x, x@crs
-#' @param horizontal_grids integer, how many horizontal lines should the grid have.
-#' @param vertical_grids integer, how many vertical lines should the grid have.
-#' @return A named list with the grid (\code{grid}), the xy coordinates
-#'  of its node points (\code{grid_xy}), horizontal (\code{horizontals}) and
-#'  vertical (\code{verticals}) spatial SpatialLines, and adjustment value
-#'  to get correct grid assignment (\code{adjust}). In most cases, you can ignore
-#'  this list and just pass it to \code{enerscape_gridded()} and
-#'  \code{enerscape_merge()} function as it is.
+#' @param mat matrix with coordinates.
+#' @param proj4 string, proj4string of the original raster.
+#' @param ID integer, ID of the polygon (can be anything as lons as unique).
+#'
+#' @return a SpatialPolygonsDataFrame.
+#'
+#' @details gridPolygon() is used within gridRaster() and is mostly for enerscape
+#' package internal functioning.
+#'
 #' @examples
-#' \dontrun{
-#' library(raster)
-#' library(enerscape)
-#' dem <- getData("alt", path = tmpDir(), country = "austria")
-#' dem <- projectRaster(dem, crs = crs("EPSG:31255"), res = c(1000, 1000))
-# en_grid <- make_grid(extent(dem), crs(dem), 10, 10)
-#' enerscape_gridded(dem, 10, grid = en_grid)
-#' en <- enerscape_merge(tmpDir(), en_grid, dem)
-#' }
-#' @export
-make_grid <- function(
-  ext,
-  crs,
-  horizontal_grids,
-  vertical_grids
+#' mat <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1, 0, 0), ncol = 2, byrow = TRUE)
+#' proj4 <- "+proj=longlat +datum=WGS84 +no_defs"
+#' gridPolygon(mat, proj4, ID = 1)
+gridPolygon <- function(
+  mat,
+  proj4,
+  ID
 ) {
-  # define region of interest
-  roi <- sp::Polygon(
-    matrix(c(ext@xmin, ext@ymin,
-             ext@xmax, ext@ymin,
-             ext@xmax, ext@ymax,
-             ext@xmin, ext@ymax,
-             ext@xmin, ext@ymin),
-           byrow = TRUE, ncol = 2)
+  pol <- sp::SpatialPolygons(
+    list(
+      sp::Polygons(
+        list(
+          sp::Polygon(
+            mat
+          )
+        ),
+        ID = 1
+      )
+    ),
+    proj4string = sp::CRS(proj4)
   )
-  roi <- sp::SpatialPolygons(list(sp::Polygons(list(roi), ID = 1)),
-                             proj4string = crs)
-  # create gridlines
-  grid <- sp::gridlines(roi,
-                        easts = pretty(sp::bbox(roi)[1, ], n = horizontal_grids),
-                        norths = pretty(sp::bbox(roi)[2, ], n = vertical_grids))
-  # horizontal and vertical gridlines used for splitting
-  horizontals <- grid[1]
-  verticals <- grid[2]
-  # node coordinates
-  h <- sapply(seq_along(horizontals@lines[[1]]@Lines),
-              function(i) {
-                unique(horizontals@lines[[1]]@Lines[[i]]@coords[, 2])
-              })
-  v <- sapply(seq_along(verticals@lines[[1]]@Lines),
-              function(i) {
-                unique(verticals@lines[[1]]@Lines[[i]]@coords[, 1])
-              })
-  grid_xy <- expand.grid(pretty(sp::bbox(roi)[1, ], n = horizontal_grids),
-                         pretty(sp::bbox(roi)[2, ], n = vertical_grids))
-  # adjustment to get correct polygon angle nodes
-  adjust <- length(unique(grid_xy[, 1]))
-  ans <- list(grid = grid,
-              grid_xy = grid_xy,
-              horizontals = horizontals,
-              verticals = verticals,
-              adjust = adjust)
-  class(ans) <- c("spatialGrid", "enerscape")
-  return(ans)
+  pol <- sp::SpatialPolygonsDataFrame(pol, data = data.frame(ID = ID))
+  return(pol)
+}
+#' @title Create spatial grid
+#'
+#' @param r RasterLayer.
+#' @param split.hor integer, number of horizontal splits.
+#' @param split.vert integer, number of vertical splits.
+#'
+#' @return a SpatialPolyonsDataFrame.
+#'
+#' @details gridRaster makes a spatial grid that will be used to divide
+#' the raster into smaller units for computations. The final grid may not
+#' necessarily be split into split.hor times split.vert blocks, but it can happen
+#' that the final grid has (split.hor - 1) times (split.vert - 1) blocks.
+#'
+#' @examples
+#' \donttest{
+#' library(raster)
+#' data("volcano")
+#' r <- raster(volcano)
+#' crs(r) <- "+proj=longlat +datum=WGS84 +no_defs"
+#' gridRaster(r, split.hor = 3, split.vert = 3)
+#' }
+gridRaster <- function(
+  r,
+  split.hor,
+  split.vert
+) {
+  # get proj4string of the CRS
+  proj4 <- sp::proj4string(r)
+  # get corner points
+  x <- seq(raster::xmin(r), raster::xmax(r), length.out = split.hor)
+  y <- seq(raster::ymin(r), raster::ymax(r), length.out = split.vert)
+  # create polygons
+  pols <- list()
+  grids <- c()
+  id <- 0
+  for (i in seq_len(split.hor - 1)) {
+    for (j in seq_len(split.vert - 1)) {
+      id <- id + 1
+      mat <- matrix(c(
+        x[i], y[j],
+        x[i + 1], y[j],
+        x[i + 1], y[j + 1],
+        x[i], y[j + 1],
+        x[i], y[j]
+      ),
+      ncol = 2,
+      byrow = TRUE)
+      # create the polygon for this coordinates
+      pol <- gridPolygon(mat, proj4, ID = id)
+      # create grids or append the polygon to it if it exists already
+      if (length(grids) == 0) {
+        grids <- pol
+      } else {
+        grids <- rbind(grids, pol)
+      }
+    }
+  }
+  return(grids)
 }
 
-#' Run enerscape for a SpatialGrid
+#' @title Split raster into blocks
 #'
-#' This runs enerscape for each block of a spatial grid sequentially.
-#' @inherit enerscape
-#' @param grid enerscape grid, as created using the \code{make_grid()} function.
-#' @param writedir directory to write EnergyScapes for each grid; default to tmpDir().
-#' @return NULL
-#' @details \code{enerscape_gridded()} runs enerscape for each block of the grid
-#'  sequentially and writes (only) the rasterLayer of the EnergyScape to the specified
-#'  folder, default to the raster temporary directory. This temporary files are
-#'  then merge back together by \code{enerscape_merge()}. This function also calculates
-#'  enerscape for the vertical and horizontal strips used to split \code{dem} into blocks,
-#'  which are then used to correct for artifacts of the splitting.
+#' @param x RasterLayer.
+#' @param y SpatialPolygonsDataFrame, polygon grid (as created using
+#'   gridRaster()),
+#' @param buffer TRUE/FALSE, if to create a small buffer around the polygon to
+#'   avoid missing values at the polygon border when merging back together.
+#' @param write TRUE/FALSE, if to write the raster to disk.
+#' @param out.dir string, output directory; default to tempdir().
+#'
+#' @details as splitting exactly at the spatialPolygons boundaries will create
+#' later artifacts at the polygons edge, it is better to always set
+#' buffer = TRUE, which will polygons buffered by twice the
+#' resolution of the raster to split before cropping.
+#'
+#' @return an enerscape rasterBlocks objects, which is a list of RasterLayers.
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(raster)
+#' data("volcano")
+#' r <- raster(volcano)
+#' crs(r) <- "+proj=longlat +datum=WGS84 +no_defs"
+#' gr <- gridRaster(r, split.hor = 3, split.vert = 3)
+#' splits <- splitRaster(r, gr)
+#' }
+splitRaster <- function(
+  x,
+  y,
+  buffer = TRUE,
+  write = FALSE,
+  out.dir = tempdir()
+) {
+  if (!write) ans <- list()
+  for (i in seq_along(y)) {
+    pol <- y[i, ]
+    if (buffer) pol <- raster::buffer(pol, max(raster::res(x)) * 2)
+    cropped <- raster::crop(x, pol)
+    if (write){
+      raster::writeRaster(cropped, paste0(out.dir, "/grid-", i, ".tif"))
+    } else {
+      ans[[i]] <- cropped
+    }
+  }
+  if (!write) {
+    attr(ans, "class") <- "rasterBlocks"
+    attr(ans, "package") <- "enerscape"
+    return(ans)
+  }
+}
+
+#' @title Merge split raster blocks
+#'
+#' @param x an enerscape rasterBlocks class, which is a list of raster blocks.
+#' @param out.dir string, output directory; default to tempdir().
+#' @param pattern string, regular pattern to subset files in out.dir.
+#'
+#' @details if x == NULL, rasterMerge() loads the rasters save to disk by
+#' rasterSplit()
+#'
+#' @return a RasterLayer.
+#'
+#' @examples
+#' \donttest{
+#' library(raster)
+#' data("volcano")
+#' r <- raster(volcano)
+#' crs(r) <- "+proj=longlat +datum=WGS84 +no_defs"
+#' gr <- gridRaster(r, split.hor = 3, split.vert = 3)
+#' splits <- splitRaster(r, gr)
+#' }
+mergeRaster <- function(
+  x = NULL,
+  out.dir = NULL,
+  pattern = ""
+) {
+  if (is.null(x) & is.null(out.dir)) stop("Either of x or out.dir must be specified.")
+  if (!is.null(x) & !is.null(out.dir)) stop("Only one of x or out.dir must be specified.")
+  if (is.null(x)) {
+    files <- list.files(out.dir, pattern = ".tif$", full.names = TRUE)
+    files <- files[grepl(pattern, files)]
+    if (length(files) == 0) {
+      stop("No RasterLayer found with pattern: ", pattern)
+    }
+    x <- list()
+    for (f in files) x[[which(files == f)]] <- raster::raster(f)
+  }
+  for (lyr in x) {
+    if (identical(lyr, x[[1]])) {
+      merged <- lyr
+    } else {
+      merged <- raster::merge(merged, lyr)
+    }
+  }
+  return(merged)
+}
+
+#' @title Runs enerscape on blocks of a RasterLayer.
+#'
+#' @inherit enerscape
+#' @param split.hor integer, number of horizontal splits.
+#' @param split.vert integer, number of vertical splits.
+#'   avoid missing values at the polygon border when merging back together.
+#' @param write TRUE/FALSE, if to write the raster to disk.
+#' @param out.dir string, output directory; default to tempdir().
+#'
+#' @details Split the DEM into blocks and run enerscape for each block
+#'  sequentially.
+#' This is useful when the DEM layer is particularly large. There are two
+#' options: the first is to manipulate all layers in memory (write = FALSE);
+#' the second is to write each layer to disk and load it when necessary.
+#' The former is faster, but consume more RAM.
+#'
+#' @examples
+#' \donttest{
 #' library(raster)
 #' library(enerscape)
-#' dem <- getData("alt", path = tmpDir(), country = "austria")
-#' dem <- projectRaster(dem, crs = crs("EPSG:31255"), res = c(1000, 1000))
-#' en_grid <- make_grid(extent(dem), crs(dem), 10, 10)
-#' enerscape_gridded(dem, 10, grid = en_grid)
-#' en <- enerscape_merge(tmpDir(), en_grid, dem)
+#' data("volcano")
+#' r <- raster(volcano)
+#' crs(r) <- "+proj=longlat +datum=WGS84 +no_defs"
+#' r <- projectRaster(r, crs = "EPSG:32759", res = c(1e3, 1e3))
+#' en <- enerscape(r, 1)$rasters$EnergyScape
+#' en_gr <- enerscape_gridded(r, 1, split.hor = 3, split.vert = 3)
 #' }
-#' @export
 enerscape_gridded <- function(
   dem,
   m,
-  grid,
+  split.hor,
+  split.vert,
   unit = "joule",
   neigh = 16,
   method = "ARC",
   v = NULL,
-  writedir = raster::tmpDir()
+  write = FALSE,
+  out.dir = raster::tmpDir()
 ) {
-  if (!all(c("spatialGrid", "enerscape") %in% class(grid))) {
-    stop("grid is not an enerscape grid list. Create the grid using make_grid()")
+  # make spatial grid
+  gr <- gridRaster(dem, split.hor, split.vert)
+  if (write) message("Single enerscape grids are written in ", out.dir)
+  # make raster blocks
+  if (write) {
+    blocks <- splitRaster(dem, gr, write = TRUE, out.dir = out.dir)
+    files <- list.files(out.dir, pattern = ".tif$", full.names = TRUE)
+    files <- files[grepl("grid-", files)]
+    files <- files[grepl("tif", files)]
+    blocks <- list()
+    for (f in files) blocks[[which(files == f)]] <- raster::raster(f)
+  } else {
+    blocks <- splitRaster(dem, gr)
   }
-  message("single enerscape grids are written in ", writedir)
-  # run enerscape for each polygon
-  for (i in seq_len(nrow(grid$grid_xy))) {
-    message(" - Running enerscape for grid ", i, " of ", nrow(grid$grid_xy))
-    if (i %% grid$adjust == 0) {
-      next
-    }
-    pts <- c(i, i + 1, i + grid$adjust, i + grid$adjust + 1)
-    pts <- pts[c(1, 3, 4, 2)]
-    if (max(pts) > nrow(grid$grid_xy)) {
-      next
-    }
-    pol <- sp::SpatialPolygons(
-      list(sp::Polygons(
-        list(sp::Polygon(
-          sp::SpatialPoints(grid$grid_xy[pts, ],
-                            proj4string = grid$grid@proj4string)
-        )), ID = 1
-      )), proj4string = grid$grid@proj4string
-    )
-    sub_dem <- raster::crop(dem, pol)
-    if (any(!is.na(raster::values(sub_dem)))) {
-      en <- suppressMessages(enerscape(sub_dem, m, unit, neigh, method, v))
-      raster::writeRaster(en$rasters$EnergyScape,
-                          paste0(writedir, "enerscape-", i, ".tif"))
-    }
-  }
-  # run enerscape for vertical corrections
-  for (i in seq_along(grid$verticals@lines[[1]]@Lines)) {
-    message(" - Calculating vertical correction ", i, " of ",
-            length(grid$verticals@lines[[1]]@Lines))
-    vert <- grid$verticals@lines[[1]]@Lines[i]
-    vert <- raster::buffer(sp::SpatialLines(
-      list(sp::Lines(
-        list(sp::Line(
-          vert[[1]]@coords)
-        ), ID = 1)
-      ),
-      proj4string = grid$grid@proj4string
-    ), raster::res(dem)[1] * 10)
-    vert <- raster::crop(vert, dem)
-    sub_dem <- raster::crop(dem, vert)
-    if (any(!is.na(raster::values(sub_dem)))) {
-      sub_dem <- raster::trim(raster::crop(sub_dem, vert))
-      en <- suppressMessages(enerscape(sub_dem, m, unit, neigh, method, v))
-      raster::writeRaster(en$rasters$EnergyScape,
-                          paste0(writedir, "enerscape_vertical-", i, ".tif"))
-    }
-  }
-  # run enerscape for horizontal corrections
-  for (i in seq_along(grid$horizontals@lines[[1]]@Lines)) {
-    message(" - Calculating horizontal correction ", i, " of ",
-            length(grid$horizontals@lines[[1]]@Lines))
-    hor <- grid$horizontals@lines[[1]]@Lines[i]
-    hor <- raster::buffer(sp::SpatialLines(
-      list(sp::Lines(
-        list(sp::Line(
-          hor[[1]]@coords)
-        ), ID = 1)
-      ),
-      proj4string = grid$grid@proj4string
-    ), raster::res(dem)[1] * 10)
-    hor <- raster::crop(hor, dem)
-    sub_dem <- raster::crop(dem, hor)
-    if (any(!is.na(raster::values(sub_dem)))) {
-      sub_dem <- raster::trim(raster::crop(sub_dem, hor))
-      en <- suppressMessages(enerscape(sub_dem, m, unit, neigh, method, v))
-      raster::writeRaster(en$rasters$EnergyScape,
-                          paste0(writedir, "enerscape_horizontal-", i, ".tif"))
-    }
-  }
-}
-
-#' Merge together EnergyScapes for a gridded enerscape
-#'
-#' This merge back together EnergyScapes computed using \code{enerscape_gridded()}
-#' correcting for artifacts generated by the splitting.
-#' @inherit enerscape_gridded
-#' @return rasterLayer of the merged and corrected EnergyScapes.
-#' @examples
-#' \dontrun{
-#' library(raster)
-#' library(enerscape)
-#' dem <- getData("alt", path = tmpDir(), country = "austria")
-#' dem <- projectRaster(dem, crs = crs("EPSG:31255"), res = c(1000, 1000))
-#' en_grid <- make_grid(extent(dem), crs(dem), 10, 10)
-#' enerscape_gridded(dem, 10, grid = en_grid)
-#' en <- enerscape_merge(tmpDir(), en_grid, dem)
-#' }
-#' @export
-enerscape_merge <- function(
-  writedir = raster::tmpDir(),
-  grid,
-  dem
-) {
-  grids <- list.files(writedir, pattern = "enerscape-", full.names = TRUE)
-  verts <- list.files(writedir, "enerscape_vertical-", full.names = TRUE)
-  hors <- list.files(writedir, "enerscape_horizontal-", full.names = TRUE)
-  template <- raster::raster(raster::extent(grid$grid),
-                             res = raster::res(raster::raster(grids[1])),
-                             crs = grid$grid@proj4string)
-  # add all enerscape grids
-  message(" - Merging enerscape grids together")
-  for (x in grids) {
-    r <- raster::raster(x)
-    template <- raster::merge(template, r)
-  }
-  # correct vertical artifacts
-  message(" - Correcting vertical artifacts")
-  for (v in verts) {
-    vert <- raster::raster(v)
-    correction_xy <- raster::xyFromCell(vert, seq_len(raster::ncell(vert)))
-    correction_xy <- correction_xy[correction_xy[, 1] > min(correction_xy[, 1]), ]
-    correction_xy <- correction_xy[correction_xy[, 1] > min(correction_xy[, 1]), ]
-    correction_xy <- correction_xy[correction_xy[, 1] < max(correction_xy[, 1]), ]
-    correction_xy <- correction_xy[correction_xy[, 1] < max(correction_xy[, 1]), ]
-    correction <- raster::extract(vert, correction_xy)[[1]]
-    cells <- raster::cellFromXY(template, correction_xy)
-    cells <- cells[!is.nan(cells)]
-    vals <- raster::cellFromXY(vert, correction_xy)
-    if (length(cells) == length(vals)) {
-      raster::values(template)[cells] <- raster::values(vert)[vals]
+  # run enerscape for each block
+  i <- 1
+  if (!write) ans <- list()
+  for (lyr in blocks) {
+    message(" - Running enerscape for grid ", i, " of ", length(blocks))
+    en <- suppressMessages(enerscape(lyr, m, unit, neigh, method, v))
+    en <- en$rasters$EnergyScape
+    en <- raster::crop(en, gr[i, ]) #crop to remove buffers
+    if (write) {
+      raster::writeRaster(en, paste0(out.dir, "enerscape-", i, ".tif"))
     } else {
-      stop("Vector to replace is not the same length - stopping")
+      ans[[i]] <- en
     }
+    i <- i + 1
   }
-  # correct horizontal artifacts
-  message(" - Correcting horizontal artifacts")
-  for (h in hors) {
-    hor <- raster::raster(h)
-    correction_xy <- raster::xyFromCell(hor, seq_len(raster::ncell(hor)))
-    correction_xy <- correction_xy[correction_xy[, 2] > min(correction_xy[, 2]), ]
-    correction_xy <- correction_xy[correction_xy[, 2] > min(correction_xy[, 2]), ]
-    correction_xy <- correction_xy[correction_xy[, 2] < max(correction_xy[, 2]), ]
-    correction_xy <- correction_xy[correction_xy[, 2] < max(correction_xy[, 2]), ]
-    correction <- raster::extract(hor, correction_xy)[[1]]
-    cells <- raster::cellFromXY(template, correction_xy)
-    cells <- cells[!is.nan(cells)]
-    vals <- raster::cellFromXY(hor, correction_xy)
-    if (length(cells) == length(vals)) {
-      raster::values(template)[cells] <- raster::values(hor)[vals]
-    } else {
-      stop("Vector to replace is not the same length - stopping")
-    }
+  if (write) {
+    en <- mergeRaster(out.dir = out.dir, pattern = "enerscape-")
+  } else {
+    en <- mergeRaster(ans)
   }
-  template <- raster::mask(template, dem)
-  return(template)
+  return(en)
 }

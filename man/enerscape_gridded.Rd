@@ -2,17 +2,19 @@
 % Please edit documentation in R/enerscape_gridded.R
 \name{enerscape_gridded}
 \alias{enerscape_gridded}
-\title{Run enerscape for a SpatialGrid}
+\title{Runs enerscape on blocks of a RasterLayer.}
 \usage{
 enerscape_gridded(
   dem,
   m,
-  grid,
+  split.hor,
+  split.vert,
   unit = "joule",
   neigh = 16,
   method = "ARC",
   v = NULL,
-  writedir = raster::tmpDir()
+  write = FALSE,
+  out.dir = raster::tmpDir()
 )
 }
 \arguments{
@@ -21,7 +23,10 @@ full path location of the file.}
 
 \item{m}{species body mass (kg).}
 
-\item{grid}{enerscape grid, as created using the \code{make_grid()} function.}
+\item{split.hor}{integer, number of horizontal splits.}
+
+\item{split.vert}{integer, number of vertical splits.
+avoid missing values at the polygon border when merging back together.}
 
 \item{unit}{if joules ('joule') or kilocalories ('kcal').}
 
@@ -33,7 +38,9 @@ Prampero et al. (1979).}
 
 \item{v}{speed of cyclist (km / h), only for \code{method = 'cycling'}.}
 
-\item{writedir}{directory to write EnergyScapes for each grid; default to tmpDir().}
+\item{write}{TRUE/FALSE, if to write the raster to disk.}
+
+\item{out.dir}{string, output directory; default to tempdir().}
 }
 \value{
 A list with elements a rasterStack of the digital elevation model,
@@ -41,25 +48,29 @@ A list with elements a rasterStack of the digital elevation model,
   path analysis.
 }
 \description{
-This runs enerscape for each block of a spatial grid sequentially.
+This is the main function to compute energy landscapes from a digital
+elevation model and body mass of animals based on the model from Pontzer
+(2016). The core of the computations are done using the \emph{gdistance}
+(Etten, 2017) package.
 }
 \details{
-\code{enerscape_gridded()} runs enerscape for each block of the grid
- sequentially and writes (only) the rasterLayer of the EnergyScape to the specified
- folder, default to the raster temporary directory. This temporary files are
- then merge back together by \code{enerscape_merge()}. This function also calculates
- enerscape for the vertical and horizontal strips used to split \code{dem} into blocks,
- which are then used to correct for artifacts of the splitting.
+Split the DEM into blocks and run enerscape for each block
+ sequentially.
+This is useful when the DEM layer is particularly large. There are two
+options: the first is to manipulate all layers in memory (write = FALSE);
+the second is to write each layer to disk and load it when necessary.
+The former is faster, but consume more RAM.
 }
 \examples{
-\dontrun{
+\donttest{
 library(raster)
 library(enerscape)
-dem <- getData("alt", path = tmpDir(), country = "austria")
-dem <- projectRaster(dem, crs = crs("EPSG:31255"), res = c(1000, 1000))
-en_grid <- make_grid(extent(dem), crs(dem), 10, 10)
-enerscape_gridded(dem, 10, grid = en_grid)
-en <- enerscape_merge(tmpDir(), en_grid, dem)
+data("volcano")
+r <- raster(volcano)
+crs(r) <- "+proj=longlat +datum=WGS84 +no_defs"
+r <- projectRaster(r, crs = "EPSG:32759", res = c(1e3, 1e3))
+en <- enerscape(r, 1)$rasters$EnergyScape
+en_gr <- enerscape_gridded(r, 1, split.hor = 3, split.vert = 3)
 }
 }
 \references{

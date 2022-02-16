@@ -47,3 +47,7 @@ dem <- raster(volcano)
 en <- enerscape(dem, 100, "kcal")
 en
 ```
+
+## Changes
+
+ * 0.2.0 functionalities for sequential EnergScapes computations by splitting rasters into grids.
