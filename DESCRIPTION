@@ -10,6 +10,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
+    Rcpp,
     raster,
     gdistance,
     rgdal,
@@ -18,8 +19,10 @@ Imports:
     Matrix
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
+LinkingTo: Rcpp
 RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
-
+Config/testthat/edition: 3
