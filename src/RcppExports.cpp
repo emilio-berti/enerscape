@@ -10,6 +10,19 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// distance
+NumericVector distance(NumericVector dem, double center, double res);
+RcppExport SEXP _enerscape_distance(SEXP demSEXP, SEXP centerSEXP, SEXP resSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type dem(demSEXP);
+    Rcpp::traits::input_parameter< double >::type center(centerSEXP);
+    Rcpp::traits::input_parameter< double >::type res(resSEXP);
+    rcpp_result_gen = Rcpp::wrap(distance(dem, center, res));
+    return rcpp_result_gen;
+END_RCPP
+}
 // energy
 NumericVector energy(NumericVector slope, NumericVector distance, double mass, double res, bool kcal);
 RcppExport SEXP _enerscape_energy(SEXP slopeSEXP, SEXP distanceSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
@@ -67,26 +80,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// distance
-NumericVector distance(NumericVector dem, double center, double res);
-RcppExport SEXP _enerscape_distance(SEXP demSEXP, SEXP centerSEXP, SEXP resSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type dem(demSEXP);
-    Rcpp::traits::input_parameter< double >::type center(centerSEXP);
-    Rcpp::traits::input_parameter< double >::type res(resSEXP);
-    rcpp_result_gen = Rcpp::wrap(distance(dem, center, res));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_enerscape_distance", (DL_FUNC) &_enerscape_distance, 3},
     {"_enerscape_energy", (DL_FUNC) &_enerscape_energy, 5},
     {"_enerscape_energyscape", (DL_FUNC) &_enerscape_energyscape, 5},
     {"_enerscape_neighbours", (DL_FUNC) &_enerscape_neighbours, 4},
     {"_enerscape_slope", (DL_FUNC) &_enerscape_slope, 3},
-    {"_enerscape_distance", (DL_FUNC) &_enerscape_distance, 3},
     {NULL, NULL, 0}
 };
 

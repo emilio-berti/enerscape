@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include "neighbours.h"
 #include "slope.h"
+#include "distance.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]

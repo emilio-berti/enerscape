@@ -19,14 +19,14 @@ NumericVector neighbours ( int i , int j , int n , NumericMatrix m ) {
     ans[3] = m(i + 1, j);
     return ans;
   } else if (n == 8) {
-    ans[0] = m(i - 1, j - 1);
+    ans[0] = m(i - 1, j - 1); //diag
     ans[1] = m(i, j - 1);
-    ans[2] = m(i + 1, j - 1);
+    ans[2] = m(i + 1, j - 1); //diag
     ans[3] = m(i - 1, j);
     ans[4] = m(i + 1, j);
-    ans[5] = m(i - 1, j + 1);
+    ans[5] = m(i - 1, j + 1); //diag
     ans[6] = m(i, j + 1);
-    ans[7] = m(i + 1, j + 1);
+    ans[7] = m(i + 1, j + 1); //diag
     return ans;
   } else {
     std::cout << "Number of neighoours must be 4 or 8.";
