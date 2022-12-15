@@ -13,3 +13,8 @@
 #' #' Pontzer, H. (2016). A unified theory for the energy cost of legged
 #' locomotion. Biology Letters, 12(2), 20150935.
 "pontzer"
+
+#' Monte Sirente Digital Elevation Model
+#'
+#' A matrix with the digital elevation mode of the Monte Sirente (Central Italy).
+"sirente"

@@ -14,15 +14,16 @@ omniscape_skeleton <- function(
   radius = NULL,
   aggr_fact = 1
 ) {
-  if (is.null(en) | is.null(path) | is.null(radius)) {
+  if (is.null(en) | is.null(radius)) {
     stop("Missing mandatory input")
   }
+  if (is.null(path)) path <- getwd()
   if (aggr_fact > 1) {
-    w <- raster::aggregate(en$rasters$EnergyScape, aggr_fact)
+    w <- aggregate(en, aggr_fact)
   } else {
-    w <- en$rasters$EnergyScape
+    w <- en
   }
-  raster::writeRaster(w, file.path(path, "/work.tif"),
+  writeRaster(w, file.path(path, "EnergyScape.tif"),
                       overwrite = TRUE)
   omni_file <- file(file.path(path, "omniscape.ini"), open = "w")
   if (!isOpen(omni_file)) {
@@ -30,7 +31,7 @@ omniscape_skeleton <- function(
   }
   writeLines(text = c(
     "[Required arguments]",
-    paste0("resistance_file = ", path, "/work.tif"),
+    paste0("resistance_file = ", path, "/EnergyScape.tif"),
     paste0("radius = ", radius),
     paste0("block_size = ", 1),
     paste0("project_name = ", path, "/omniscape"),

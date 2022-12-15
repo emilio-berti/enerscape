@@ -12,22 +12,22 @@ circuitscape_skeleton <- function(
   path = NULL,
   points = NULL
 ) {
-  if (is.null(en) | is.null(path) | is.null(points)) {
+  if (is.null(en) | is.null(points)) {
     stop("Missing mandatory input")
   }
-  if (class(points)[1] != "data.frame") {
-    if (class(points)[1] == "matrix") {
-      points <- as.data.frame(points)
+  if (is(points, "data.frame")) {
+      points <- as.matrix(points)
     } else {
       stop("points are not data.frame or matrix")
     }
-  }
-  pr <- raster::rasterize(points, en$rasters$EnergyScape, na.rm = TRUE)
-  raster::writeRaster(en$rasters$EnergyScape, file.path(path, "/work.tif"),
-                      overwrite = TRUE)
-  raster::writeRaster(pr, file.path(path, "/loc.tif"),
-                      overwrite = TRUE)
-  loc <-
+  if (is.null(path)) path <- getwd()
+  pr <- rasterize(points, en, na.rm = TRUE)
+  writeRaster(en,
+              file.path(path, "EnergyScape.tif"),
+              overwrite = TRUE)
+  writeRaster(pr,
+              file.path(path, "loc.tif"),
+              overwrite = TRUE)
   cs_file <- file(file.path(path, "circuitscape.ini"), open = "w")
   if (!isOpen(cs_file)) {
     stop("Connection to file cannot be established")
@@ -41,7 +41,7 @@ circuitscape_skeleton <- function(
     "version = 5.0.0",
     "",
     "[Habitat raster or graph]",
-    paste0("habitat_file = ", path, "/work.tif"),
+    paste0("habitat_file = ", path, "/EnergyScape.tif"),
     "habitat_map_is_resistances = true",
     "",
     "[Connection Scheme for raster habitat data]",

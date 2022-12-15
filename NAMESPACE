@@ -1,3 +1,8 @@
 useDynLib(enerscape, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
 exportPattern("^[[:alpha:]]+")
+
+importFrom("methods", "is")
+importFrom("terra",
+           "rast", "rasterize", "writeRaster", "aggregate",
+           "res", "crs", "crs<-", "ext", "ext<-")

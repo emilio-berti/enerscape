@@ -1,1 +1,80 @@
-[]
+[
+    {
+        "file": "/home/eb97ziwi/Proj/enerscape/src/distance.h",
+        "file_last_write": 1664895205.0,
+        "definitions": [
+            {
+                "usr": "c:@F@distance#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "distance(Rcpp::NumericVector, double, double)",
+                "file": "/home/eb97ziwi/Proj/enerscape/src/distance.h",
+                "line": 11,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/home/eb97ziwi/Proj/enerscape/src/enerscape.cpp",
+        "file_last_write": 1664895433.0,
+        "definitions": [
+            {
+                "usr": "c:@F@energy#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#S0_#d#d#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "energy(Rcpp::NumericVector, Rcpp::NumericVector, double, double, bool)",
+                "file": "/home/eb97ziwi/Proj/enerscape/src/enerscape.cpp",
+                "line": 16,
+                "column": 15,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@energyscape#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#I#d#d#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "energyscape(Rcpp::NumericMatrix, int, double, double, bool)",
+                "file": "/home/eb97ziwi/Proj/enerscape/src/enerscape.cpp",
+                "line": 49,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/home/eb97ziwi/Proj/enerscape/src/neighbours.h",
+        "file_last_write": 1664895233.0,
+        "definitions": [
+            {
+                "usr": "c:@F@neighbours#I#I#I#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "neighbours(int, int, int, Rcpp::NumericMatrix)",
+                "file": "/home/eb97ziwi/Proj/enerscape/src/neighbours.h",
+                "line": 12,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/home/eb97ziwi/Proj/enerscape/src/slope.h",
+        "file_last_write": 1664895257.0,
+        "definitions": [
+            {
+                "usr": "c:@F@slope#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "slope(Rcpp::NumericVector, double, double)",
+                "file": "/home/eb97ziwi/Proj/enerscape/src/slope.h",
+                "line": 11,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    }
+]

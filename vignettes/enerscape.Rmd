@@ -1,0 +1,90 @@
+---
+title: "enerscape"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{enerscape}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Changelog
+
+## 1.0.0
+
+This follows the transfer of functionalists of old GIS packages to _terra_, with _rgdal_, _rgeos_ scheduled to be retired in 2023: <https://r-spatial.org/r/2022/04/12/evolution.html>.
+
+I removed dependencies on gDistance, raster, sp, rgeos, and rgdal.
+Energy landscapes are now calculated using a zonal (kernel) based method, implemented in C++ functions.
+This is faster that previous versions, but it does not return the transition matrix or the conductance matrix.
+Because of this, least cost paths functions are not supported any more.
+Instead, use circuitscape or omniscape; see *circuitscape_skeleton()* and *omniscape_skeleton()* to generate the initialization files to run in Julia.
+
+The cyclist model is also not supported any more; custom models must be written in the C++ functions.
+I plan to add a customizable function soon to do that.
+
+# Energy Landscapes With Enerscape
+
+Energy landscapes are spatially explicit projections of the energy cost of travel (kcal or J) for an animal.
+In enerscape, energy landscapes depend on the body mass of the animal and the incline between locations, following the ARC model from Pontzer (2016): <https://doi.org/10.1098/rsbl.2015.0935>.
+For a general overview of energy landscapes, refer to Berti et al. (2021): <https://doi.org/10.1111/2041-210X.13734>.
+
+```{r setup}
+library(terra)
+library(enerscape)
+```
+
+Enerscape comes with the default dataset _sirente_; this is a matrix with values the digital elevation model (DEM) for Monte Sirente in Central Italy:
+
+```{r sirente, fig.width=6, fig.height=3.65}
+data("sirente")
+dem <- rast(sirente, 
+            crs = "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs",
+            extent = ext(879340, 885280, 4672880, 4676810))
+plot(dem)
+```
+
+I provided the correct coordinate reference system (CRS) and the extent of the DEM; in most cases, this will already be present in downloaded raster layers.
+
+Enerscape assumes that the coordinate system is in meters:
+
+```{r crs}
+crs(dem, proj = TRUE)
+```
+
+You **have** to check this by yourself to make sure _+units=m_ or enerscape results will not be meaningful.
+Enerscape checks if this is the case and returns a warning if _+units_ does not match _m_, but it will still return its output.
+
+The energy landscapes can be obtained with the _enerscape()_ function.
+There are two mandatory inputs: _dem_, which is the SpatRaster of the DEM, and _mass_, which is the body mass of the animal (kg).
+
+```{r enerscape}
+en <- enerscape(dem, 10, neigh = 4, unit = "kcal")
+```
+
+Before visualizing it, it is worth nothing that, from my experience, energy landscape values are usually right-skewed, i.e. with most cells having low values and few cells having high values.
+In such cases, it is useful to log-transform energy landscape for visualization:
+
+```{r visualize, fig.width=6, fig.height=3.65}
+en_log <- log(en)
+plot(en_log)
+terra::contour(dem, add = TRUE, nlevels = 5)
+```
+
+```{r zoom, fig.width=6, fig.height=3.65}
+en_log <- crop(en_log, ext(881306, 882853, 4674928, 4675984))
+plot(en_log)
+terra::contour(dem, add = TRUE, nlevels = 20)
+```
+
+# References
+
+Pontzer, H. (2016). A unified theory for the energy cost of legged locomotion. Biology letters, 12(2), 20150935.
+
+Berti, E., Davoli, M., Buitenwerf, R., Dyer, A., Hansen, O. L., Hirt, M., ... & Vollrath, F. (2022). The r package enerscape: A general energy landscape framework for terrestrial movement ecology. Methods in Ecology and Evolution, 13(1), 60-67.

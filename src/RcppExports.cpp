@@ -10,16 +10,16 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// distance
-NumericVector distance(NumericVector dem, double center, double res);
-RcppExport SEXP _enerscape_distance(SEXP demSEXP, SEXP centerSEXP, SEXP resSEXP) {
+// distances
+NumericVector distances(NumericVector x, double center, double res);
+RcppExport SEXP _enerscape_distances(SEXP xSEXP, SEXP centerSEXP, SEXP resSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type dem(demSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type center(centerSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
-    rcpp_result_gen = Rcpp::wrap(distance(dem, center, res));
+    rcpp_result_gen = Rcpp::wrap(distances(x, center, res));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -39,50 +39,50 @@ BEGIN_RCPP
 END_RCPP
 }
 // energyscape
-NumericMatrix energyscape(NumericMatrix m, int n, double mass, double res, bool kcal);
-RcppExport SEXP _enerscape_energyscape(SEXP mSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+NumericMatrix energyscape(NumericMatrix x, int n, double mass, double res, bool kcal);
+RcppExport SEXP _enerscape_energyscape(SEXP xSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type m(mSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
     Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
-    rcpp_result_gen = Rcpp::wrap(energyscape(m, n, mass, res, kcal));
+    rcpp_result_gen = Rcpp::wrap(energyscape(x, n, mass, res, kcal));
     return rcpp_result_gen;
 END_RCPP
 }
 // neighbours
-NumericVector neighbours(int i, int j, int n, NumericMatrix m);
-RcppExport SEXP _enerscape_neighbours(SEXP iSEXP, SEXP jSEXP, SEXP nSEXP, SEXP mSEXP) {
+NumericVector neighbours(int i, int j, int n, NumericMatrix x);
+RcppExport SEXP _enerscape_neighbours(SEXP iSEXP, SEXP jSEXP, SEXP nSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type i(iSEXP);
     Rcpp::traits::input_parameter< int >::type j(jSEXP);
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type m(mSEXP);
-    rcpp_result_gen = Rcpp::wrap(neighbours(i, j, n, m));
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(neighbours(i, j, n, x));
     return rcpp_result_gen;
 END_RCPP
 }
 // slope
-NumericVector slope(NumericVector dem, double center, double res);
-RcppExport SEXP _enerscape_slope(SEXP demSEXP, SEXP centerSEXP, SEXP resSEXP) {
+NumericVector slope(NumericVector x, double center, double res);
+RcppExport SEXP _enerscape_slope(SEXP xSEXP, SEXP centerSEXP, SEXP resSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type dem(demSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type center(centerSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
-    rcpp_result_gen = Rcpp::wrap(slope(dem, center, res));
+    rcpp_result_gen = Rcpp::wrap(slope(x, center, res));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_enerscape_distance", (DL_FUNC) &_enerscape_distance, 3},
+    {"_enerscape_distances", (DL_FUNC) &_enerscape_distances, 3},
     {"_enerscape_energy", (DL_FUNC) &_enerscape_energy, 5},
     {"_enerscape_energyscape", (DL_FUNC) &_enerscape_energyscape, 5},
     {"_enerscape_neighbours", (DL_FUNC) &_enerscape_neighbours, 4},

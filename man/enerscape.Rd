@@ -2,9 +2,9 @@
 % Please edit documentation in R/enerscape.R
 \name{enerscape}
 \alias{enerscape}
-\title{Compute the energy landscape}
+\title{Compute Energy Landscapes}
 \usage{
-enerscape(dem, m, unit = "joule", neigh = 16, method = "ARC", v = NULL)
+enerscape(dem, m, unit = "joule", neigh = 8)
 }
 \arguments{
 \item{dem}{raster file of the digital elevation model, either a raster or a
@@ -15,12 +15,6 @@ full path location of the file.}
 \item{unit}{if joules ('joule') or kilocalories ('kcal').}
 
 \item{neigh}{number of neighbor cells that are connected together.}
-
-\item{method}{method to use to compute the energy costs. 'ARC' refers to the
-model from Pontzer (2016) and 'cycling' to the model for cyclist from di
-Prampero et al. (1979).}
-
-\item{v}{speed of cyclist (km / h), only for \code{method = 'cycling'}.}
 }
 \value{
 A list with elements a rasterStack of the digital elevation model,
@@ -39,21 +33,15 @@ From the digital elevation model, transition slopes, energy costs
   Pontzer (2016).
 }
 \examples{
-library(raster)
+library(terra)
+library(enerscape)
+
 data("volcano")
-dem <- raster(volcano)
+dem <- rast(volcano)
 en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
 }
 \references{
-Etten, J. van. (2017). R Package gdistance: Distances and Routes
-  on Geographical Grids. Journal of Statistical Software, 76(1), 1–21.
-  \doi{https://doi.org/10.18637/jss.v076.i13}.
-
-  Pontzer, H. (2016). A unified theory for the energy cost of legged
+Pontzer, H. (2016). A unified theory for the energy cost of legged
   locomotion. Biology Letters, 12(2), 20150935. \doi{
   https://doi.org/10.1098/rsbl.2015.0935}.
-
-  di Prampero, P. E., Cortili, G., Mognoni, P., & Saibene, F. (1979).
-  Equation of motion of a cyclist. Journal of Applied Physiology, 47(1),
-  201–206. \doi{https://doi.org/10.1152/jappl.1979.47.1.201}
 }

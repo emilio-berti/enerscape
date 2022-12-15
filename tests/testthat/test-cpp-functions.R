@@ -30,7 +30,7 @@ test_that("Distance is correct", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
   n <- neighbours(1, 1, 4, m)
-  dist <- distance(n, m[2, 2], 1)
+  dist <- distances(n, m[2, 2], 1)
   s <- m[2, 2] - c(11, 2, 22, 13)
   s <- atan(s)
   d <- 1 / cos(s)
@@ -42,21 +42,11 @@ test_that("Energy works", {
   m <- matrix(1:100, 10, 10)
   n <- neighbours(1, 1, 4, m)
   sl <- slope(n, m[2, 2], 1)
-  dist <- distance(n, 1, 10)
+  dist <- distances(n, 1, 10)
   mass <- 1000
   en <- energy(sl, dist, mass, 1, FALSE)
   ar <- 8.0 * mass ^ -0.34
   mec <- 100.0 * (1.0 + sin((2.0 * sl - 74.0) / 180.0 * pi)) * mass ^ -0.12
   work <- (ar + mec) * mass * dist;
   expect_equal(en, work, tolerance = 1e-6)
-})
-
-test_that("Energy is correct", {
-  set.seed(1234)
-  m <- matrix(1:100, 10, 10)
-  e <- energyscape(m, 4, 10, .1)
-  dem <- raster(m)
-  en <- enerscape(dem, 10, "kcal", 4)
-  a <- as.matrix(en$rasters$EnergyScape)
-  expect_equal(a[(2:8), (2:8)], e[(2:8), (2:8)], tolerance = 1e-6)
 })
