@@ -4,3 +4,5 @@
 ^README\.Rmd$
 ^CRAN-RELEASE$
 ^\.github$
+^doc$
+^Meta$

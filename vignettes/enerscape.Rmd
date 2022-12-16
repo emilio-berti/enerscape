@@ -14,21 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Changelog
-
-## 1.0.0
-
-This follows the transfer of functionalists of old GIS packages to _terra_, with _rgdal_, _rgeos_ scheduled to be retired in 2023: <https://r-spatial.org/r/2022/04/12/evolution.html>.
-
-I removed dependencies on gDistance, raster, sp, rgeos, and rgdal.
-Energy landscapes are now calculated using a zonal (kernel) based method, implemented in C++ functions.
-This is faster that previous versions, but it does not return the transition matrix or the conductance matrix.
-Because of this, least cost paths functions are not supported any more.
-Instead, use circuitscape or omniscape; see *circuitscape_skeleton()* and *omniscape_skeleton()* to generate the initialization files to run in Julia.
-
-The cyclist model is also not supported any more; custom models must be written in the C++ functions.
-I plan to add a customizable function soon to do that.
-
 # Energy Landscapes With Enerscape
 
 Energy landscapes are spatially explicit projections of the energy cost of travel (kcal or J) for an animal.
@@ -82,6 +67,20 @@ en_log <- crop(en_log, ext(881306, 882853, 4674928, 4675984))
 plot(en_log)
 terra::contour(dem, add = TRUE, nlevels = 20)
 ```
+
+# Changelog
+
+## 1.0.0
+
+This follows the transfer of functionalists of old GIS packages to _terra_, with _rgdal_, _rgeos_ scheduled to be retired in 2023: <https://r-spatial.org/r/2022/04/12/evolution.html>. I removed dependencies on _gDistance_, _raster_, _sp_, _rgeos_, and _rgdal_.
+
+Energy landscapes are now calculated using a zonal (kernel) based method, implemented in C++ functions.
+This is faster that previous versions, but it does not return the transition matrix or the conductance matrix.
+Because of this, least cost paths functions are not supported any more.
+Instead, use circuitscape or omniscape; see *circuitscape_skeleton()* and *omniscape_skeleton()* to generate the initialization files to run in Julia.
+
+The cyclist model is also not supported any more; custom models must be written in the C++ functions.
+I plan to add a customizable function soon to do that.
 
 # References
 

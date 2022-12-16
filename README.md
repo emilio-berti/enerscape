@@ -6,70 +6,43 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/emilio-berti/enerscape/workflows/R-CMD-check/badge.svg)](https://github.com/emilio-berti/enerscape/actions)
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7445654.svg)](https://doi.org/10.5281/zenodo.7445654)
+
 <!-- badges: end -->
 
-The goal of enerscape is to calculate energy landscapes for terrestrial
-animals.
+Calculate Energy Landscapes For Terrestrial Animals.
+
+# Changelog
+
+## 1.0.0
+
+This follows the transfer of functionalists of old GIS packages to _terra_, with _rgdal_, _rgeos_ scheduled to be retired in 2023: <https://r-spatial.org/r/2022/04/12/evolution.html>. I removed dependencies on _gDistance_, _raster_, _sp_, _rgeos_, and _rgdal_.
+
+Energy landscapes are now calculated using a zonal (kernel) based method, implemented in C++ functions.
+This is faster that previous versions, but it does not return the transition matrix or the conductance matrix.
+Because of this, least cost paths functions are not supported any more.
+Instead, use circuitscape or omniscape; see *circuitscape_skeleton()* and *omniscape_skeleton()* to generate the initialization files to run in Julia.
+
+The cyclist model is also not supported any more; custom models must be written in the C++ functions.
+I plan to add a customizable function soon to do that.
 
 ## Installation
 
-You can install the released version of enerscape from
-[CRAN](https://CRAN.R-project.org) with:
+You can install the released version of enerscape from CRAN with:
 
 ``` r
 install.packages("enerscape")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from GitHub with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("emilio-berti/enerscape")
 ```
 
-## Example
+All releases are also archived on GitHub at <https://github.com/emilio-berti/enerscape/releases>.
 
-This is a basic example which shows you how to solve a common problem:
+From release 1.0.0, enerscape is also archived in Zenodo: <https://doi.org/10.5281/zenodo.7445654>.
 
-``` r
-library(raster)
-#> Loading required package: sp
-library(enerscape)
-data("volcano")
-dem <- raster(volcano)
-en <- enerscape(dem, 100, "kcal")
-#>  - Raster cells are assumed to have same horizontal and vertical resolution and with planar coordinate reference system (e.g. UTM)
-#>   | Calculating slope
-#>   | Calculating work
-#>   | Calculating conductance (1 / work)
-#>  - Do not use slope with negative values for distance calculations
-en
-#> $neighbors
-#> [1] 16
-#> 
-#> $mass
-#> [1] 100
-#> 
-#> $rasters
-#> class      : RasterStack 
-#> dimensions : 87, 61, 5307, 4  (nrow, ncol, ncell, nlayers)
-#> resolution : 0.01639344, 0.01149425  (x, y)
-#> extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#> crs        : NA 
-#> names      :           DEM,         Slope,   EnergyScape,   Conductance 
-#> min values :  9.400000e+01, -8.947524e+01,  4.775944e-04,  8.519589e-02 
-#> max values :     195.00000,      89.58103,      18.56610,     654.32092 
-#> 
-#> 
-#> $cond_tr
-#> class      : TransitionLayer 
-#> dimensions : 87, 61, 5307  (nrow, ncol, ncell)
-#> resolution : 0.01639344, 0.01149425  (x, y)
-#> extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#> crs        : NA 
-#> values      : conductance 
-#> matrix class: dgCMatrix 
-#> 
-#> attr(,"class")
-#> [1] "enerscape"
-```
