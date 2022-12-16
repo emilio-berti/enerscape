@@ -31,16 +31,23 @@ I plan to add a customizable function soon to do that.
 
 You can install the released version of enerscape from CRAN with:
 
-``` r
+```r
 install.packages("enerscape")
 ```
 
 And the development version from GitHub with:
 
-``` r
+```r
 # install.packages("devtools")
 devtools::install_github("emilio-berti/enerscape")
 ```
+
+To start with enerscape, check the vignette:
+```r
+vignette("enerscape")
+```
+
+## Releases
 
 All releases are also archived on GitHub at <https://github.com/emilio-berti/enerscape/releases>.
 

@@ -21,7 +21,11 @@ circuitscape_skeleton <- function(
       stop("points are not data.frame or matrix")
     }
   if (is.null(path)) path <- getwd()
-  pr <- rasterize(points, en, na.rm = TRUE)
+  points <- vect(points,
+                 crs = crs(en),
+                 atts = data.frame(ID = seq_len(nrow(points))))
+  # points <- buffer(points, res(en)[1] * 3)
+  pr <- rasterize(points, en, na.rm = TRUE, field = "ID")
   writeRaster(en,
               file.path(path, "EnergyScape.tif"),
               overwrite = TRUE)

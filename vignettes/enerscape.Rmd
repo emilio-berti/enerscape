@@ -68,6 +68,90 @@ plot(en_log)
 terra::contour(dem, add = TRUE, nlevels = 20)
 ```
 
+# Initialization files for Circuitscape/Omniscape
+
+Circuitscape and Omniscape are circuit theory approaches to calculate connectivity in landscapes.
+The main idea of these two algorithm is that resistances in the landscape (e.g. due to energy costs) behave like resistances in electric circuit.
+For instance, parallel resistances will give a lower overall resistance than each of the individual resistances (<https://en.wikipedia.org/wiki/Series_and_parallel_circuits#Resistance_units_2>).
+
+The major advantage of a circuit theory approach is that it consider all possible paths of travel, instead of focusing only on one, e.g. a least cost path.
+Circuity theory has, thus, more realistic assumptions on how animals behave and I preferred Circuitscape/Omniscape over least-cost path analysis.
+Following _rgeos_ and _rgdal_, I rewrote the core of the package in C++, removing the dependency also on _gdistance_.
+In doing so, I also removed the function to calculate least-cost paths using the transition matrix approach from _gdistance_.
+If you want to use these functions, check older releases on enerscape (<https://github.com/emilio-berti/enerscape/releases>; until 0.1.3, included).
+
+Currently, there are no implementations of Circuitscape/Omniscape in R. There are, however, two great Julia libraries that are extremely easy to use:
+
+  - Circuitscape.jl: <https://www.juliapackages.com/p/circuitscape>.
+  - Omniscape.jl: <https://www.juliapackages.com/p/omniscape>
+
+Both are one-liners in Julia, e.g. `run_omniscape("omniscape.ini")`. The major obstacle in using these libraries is to create the initialization file (_.ini_). 
+
+## Crcuitscape
+
+To create the initialization file for Circuitscape, enerscape has the dedicated function _circuitscape_skeleton()_:
+
+```{r circuitscape, eval=FALSE}
+# two random points
+p <- spatSample(en, 2, xy = TRUE)[, c("x", "y")]
+circuitscape_skeleton(en, path = tempdir(), points = p)
+```
+
+Circuitscape requires two locations (_points_) to calculate the connectivity among them. 
+A _circuitscape.ini_ file will be write to the _path_ directory.
+From within this directory, start Julia and run:
+
+```{r compute, eval=FALSE}
+julia> using Circuitscape
+julia> compute("circuitscape.ini")
+
+[ Info: 2022-12-16 10:05:18 : Precision used: Double
+[ Info: 2022-12-16 10:05:18 : Reading maps
+[ Info: 2022-12-16 10:05:18 : Resistance/Conductance map has 231472 nodes
+[ Info: 2022-12-16 10:05:21 : Solver used: AMG accelerated by CG
+[ Info: 2022-12-16 10:05:22 : Graph has 231472 nodes, 2 focal points and 1 connected components
+[ Info: 2022-12-16 10:05:22 : Total number of pair solves = 1
+[ Info: 2022-12-16 10:05:24 : Time taken to construct preconditioner = 2.510170134 seconds
+[ Info: 2022-12-16 10:05:24 : Time taken to construct local nodemap = 0.021110616 seconds
+[ Info: 2022-12-16 10:05:27 : Solving pair 1 of 1
+[ Info: 2022-12-16 10:05:27 : Time taken to solve linear system = 0.512068804 seconds
+[ Info: 2022-12-16 10:05:28 : Time taken to calculate current maps = 0.82549585 seconds
+[ Info: 2022-12-16 10:05:29 : Time taken to complete job = 11.5802219
+3×3 Matrix{Float64}:
+ 0.0  1.0       2.0
+ 1.0  0.0       0.559379
+ 2.0  0.559379  0.0
+```
+
+Output is in the same folder as the _circuitscape.ini_ file.
+
+## Omniscape
+
+Omniscape basically runs omniscape between all location within a window radius, repeating this step for all raster cells.
+Omniscape does not require input points, but it needs the radius of the moving window:
+
+```{r omniscape, eval=FALSE}
+omniscape_skeleton(en, path = tempdir(), radius = 10)
+```
+
+A _omniscape.ini_ file will be write to the _path_ directory.
+From within this directory, start Julia and run:
+
+```{r run, eval=FALSE}
+julia> using Oircuitscape
+julia> run_omniscape("circuitscape.ini")
+
+[ Info: Starting up Omniscape with 1 workers and double precision
+[ Info: Using Circuitscape with the cg+amg solver...
+[ Info: Solving moving window targets...
+ days,Progress: 100%|                                | Time: 0:08:08
+[ Info: Time taken to complete job: 490.2733 seconds
+[ Info: Outputs written to /tmp/RtmpXZb2Hv//tmp/RtmpXZb2Hv/omniscape
+(Union{Missing, Float64}[missing missing … missing missing; missing 3.4477693535486376 … 4.462051188132685 missing; … ; missing 10.365746449782868 … 4.186837622531591 missing; missing missing … missing missing], Union{Missing, Float64}[missing missing … missing missing; missing 0.652059842432581 … 0.743080786816455 missing; … ; missing 0.7753872880414857 … 0.7333620170587554 missing; missing missing … missing missing])
+```
+
+Output is in the folder _omniscape_ within the folder specified in _path_.
+
 # Changelog
 
 ## 1.0.0

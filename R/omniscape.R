@@ -23,8 +23,7 @@ omniscape_skeleton <- function(
   } else {
     w <- en
   }
-  writeRaster(w, file.path(path, "EnergyScape.tif"),
-                      overwrite = TRUE)
+  writeRaster(w, file.path(path, "EnergyScape.tif"), overwrite = TRUE)
   omni_file <- file(file.path(path, "omniscape.ini"), open = "w")
   if (!isOpen(omni_file)) {
     stop("Connection to file cannot be established")
