@@ -5,4 +5,4 @@ exportPattern("^[[:alpha:]]+")
 importFrom("methods", "is")
 importFrom("terra",
            "rast", "rasterize", "writeRaster", "aggregate",
-           "res", "crs", "crs<-", "ext", "ext<-")
+           "vect", "res", "crs", "crs<-", "ext", "ext<-")

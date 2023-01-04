@@ -5,7 +5,7 @@
 \alias{sirente}
 \title{Monte Sirente Digital Elevation Model}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 393 rows and 594 columns.
+An object of class \code{matrix} with 393 rows and 594 columns.
 }
 \usage{
 sirente

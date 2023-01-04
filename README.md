@@ -3,6 +3,8 @@
 
 # enerscape
 
+Calculate Energy Landscapes For Terrestrial Animals.
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/emilio-berti/enerscape/workflows/R-CMD-check/badge.svg)](https://github.com/emilio-berti/enerscape/actions)
@@ -10,8 +12,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7445654.svg)](https://doi.org/10.5281/zenodo.7445654)
 
 <!-- badges: end -->
-
-Calculate Energy Landscapes For Terrestrial Animals.
 
 # Changelog
 
