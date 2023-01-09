@@ -5,7 +5,7 @@ Title: Compute
 Version: 1.0.0
 Author: Emilio Berti
 Maintainer: Emilio Berti <emilio.berti@idiv.de>
-Description: Compute energy landscapes using a digital elevation model raster and body mass of animals. Vignette available at: <https://emilio-berti.github.io/enerscape.html>.
+Description: Compute energy landscapes using a digital elevation model raster and body mass of animals.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -18,7 +18,7 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 LinkingTo: Rcpp
-RoxygenNote: 7.2.3
+RoxygenNote: 7.2.0
 Depends: 
     R (>= 2.10)
 Config/testthat/edition: 3
