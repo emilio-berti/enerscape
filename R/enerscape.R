@@ -45,7 +45,7 @@ enerscape <- function(
   }
   # check units of DEM
   work_in_kcal <- ifelse(unit == "kcal", TRUE, FALSE)
-  stopifnot(res(dem)[1] == res(dem)[2])
+  stopifnot( abs(res(dem)[1] - res(dem)[2]) <= 1e-2) #tolerance = 1 cm 
   en_res <- res(dem)[1]
   message("DEM is assumed to have planar CRS in meters.")
   x <- matrix(dem, nrow = nrow(dem), ncol = ncol(dem), byrow = TRUE)
