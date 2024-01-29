@@ -28,7 +28,7 @@ NumericVector energy (
   NumericVector work(n);
   for (int i = 0; i < n; i++) {
     ar[i] = 8.0 * pow(mass, -0.34);
-    mec[i] = 100.0 * (1.0 + sin((2.0 * slope[i] - 74.0) / 180.0 * PI)) * pow(mass, -0.12);
+    mec[i] = 50.0 * (1.0 + sin((2.0 * slope[i] - 74.0) / 180.0 * PI)) * pow(mass, -0.12);
     work[i] = (ar[i] + mec[i]) * mass * distance[i];
     if (kcal) {
       work[i] = work[i] / KCAL;
