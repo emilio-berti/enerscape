@@ -29,9 +29,11 @@ Enerscape comes with the default dataset _sirente_; this is a matrix with values
 
 ```{r sirente, fig.width=6, fig.height=3.65}
 data("sirente")
-dem <- rast(sirente, 
-            crs = "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs",
-            extent = ext(879340, 885280, 4672880, 4676810))
+dem <- rast(
+  sirente, 
+  crs = "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs",
+  extent = ext(879340, 885280, 4672880, 4676810)
+)
 plot(dem)
 ```
 
