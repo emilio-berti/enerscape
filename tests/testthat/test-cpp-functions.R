@@ -46,7 +46,7 @@ test_that("Energy works", {
   mass <- 1000
   en <- energy(sl, dist, mass, 1, FALSE)
   ar <- 8.0 * mass ^ -0.34
-  mec <- 100.0 * (1.0 + sin((2.0 * sl - 74.0) / 180.0 * pi)) * mass ^ -0.12
+  mec <- 50.0 * (1.0 + sin((2.0 * sl - 74.0) / 180.0 * pi)) * mass ^ -0.12
   work <- (ar + mec) * mass * dist;
   expect_equal(en, work, tolerance = 1e-6)
 })
