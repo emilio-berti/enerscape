@@ -156,6 +156,10 @@ Output is in the folder _omniscape_ within the folder specified in _path_.
 
 # Changelog
 
+## 1.1.0
+
+This follows a correction on the Pontzer model: https://doi.org/10.1098/rsbl.2023.0492.
+
 ## 1.0.0
 
 This follows the transfer of functionalists of old GIS packages to _terra_, with _rgdal_, _rgeos_ scheduled to be retired in 2023: <https://r-spatial.org/r/2022/04/12/evolution.html>. I removed dependencies on _gDistance_, _raster_, _sp_, _rgeos_, and _rgdal_.
