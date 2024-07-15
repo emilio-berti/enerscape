@@ -14,18 +14,18 @@ NumericVector slope ( NumericVector x , double center , double res ) {
   NumericVector ans(n);
   double h;
   for (int i = 0; i < n; i++) {
-    h = center - x[i];
+    h = x[i] - center;
     ans[i] = atan(h / res) * 180 / PI;
   }
   //diagonal corrections
   if (n == 8) {
-    h = center - x[0];
+    h = x[0] - center;
     ans[0] = atan(h / (sqrt(2) * res)) * 180 / PI;
-    h = center - x[2];
+    h = x[2] - center;
     ans[2] = atan(h / (sqrt(2) * res)) * 180 / PI;
-    h = center - x[5];
+    h = x[5] - center;
     ans[5] = atan(h / (sqrt(2) * res)) * 180 / PI;
-    h = center - x[7];
+    h = x[7] - center;
     ans[7] = atan(h / (sqrt(2) * res)) * 180 / PI;
   }
   return ans;

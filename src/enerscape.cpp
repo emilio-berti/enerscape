@@ -72,7 +72,7 @@ NumericMatrix energyscape (
       sl = slope(neigh, x(i, j), res);
       dist = distances(neigh, x(i, j), res);
       en = energy(sl, dist, mass, res, kcal);
-      ans(i, j) = mean(en);
+      ans(i, j) = max(en);
     }
   }
   return ans;
