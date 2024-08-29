@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "The r package enerscape: A general energy landscape framework for terrestrial movement ecology",
+  author   = "Berti, Emilio and Davoli, Marco and Buitenwerf, Robert and Dyer, Alexander and Hansen, Oskar LP and Hirt, Myriam and Svenning, Jens-Christian and Terlau, J{\"o}rdis F and Brose, Ulrich and Vollrath, Fritz",
+  journal  = "Methods in Ecology and Evolution",
+  year     = "2022",
+  volume   = "13",
+  number   = "1",
+  pages    = "60--67",
+  doi      = "https://doi.org/10.1111/2041-210X.13734"
+)
