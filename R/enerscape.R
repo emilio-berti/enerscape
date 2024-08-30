@@ -1,4 +1,4 @@
-#' Compute Energy Landscapes
+data("sirente")#' Compute Energy Landscapes
 #'
 #' This is the main function to compute energy landscapes from a digital
 #' elevation model and body mass of animals based on the model from Pontzer
@@ -19,9 +19,11 @@
 #' library(terra)
 #' library(enerscape)
 #'
-#' data("volcano")
-#' dem <- rast(volcano)
-#' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
+#' data("sirente")
+#' dem <- rast(sirente)
+#' en <- enerscape(dem, 10, unit = "kcal", neigh = 8)
+#' plot(en, col = hcl.colors(100, "Inferno"))
+#' contour(dem, add = TRUE, nlevels = 5, col = hcl.colors(7, "Terrain"))
 #' @export
 #' @references
 #'   Pontzer, H. (2016). A unified theory for the energy cost of legged
@@ -35,13 +37,16 @@ enerscape <- function(
     neigh = 8
 ) {
   if (is.null(dem) | is.null(m)) {
-    stop("Missing mandatory input - see ?enerscape::enerscape for details.")
+    stop("Missing mandatory input - see ?enerscape for details.")
   }
   if (!is(dem, "SpatRaster")) {
-    stop("Digital elevation model must be a SpatRaster (terra).")
+    stop("'dem' must be a SpatRaster (terra).")
   }
   if (!unit %in% c("joule", "kcal")) {
-    stop("unit must be one of 'joule' or 'kcal'.")
+    stop("'unit' must be one of 'joule' or 'kcal'.")
+  }
+  if (neigh != 4 && neigh != 8) {
+    stop("'neigh' should be either 4 or 8.")
   }
   # check units of DEM
   work_in_kcal <- ifelse(unit == "kcal", TRUE, FALSE)
