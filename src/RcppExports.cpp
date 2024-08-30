@@ -39,8 +39,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // energyscape
-NumericMatrix energyscape(NumericMatrix x, int n, double mass, double res, bool kcal);
-RcppExport SEXP _enerscape_energyscape(SEXP xSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+NumericMatrix energyscape(NumericMatrix x, int n, double mass, double res, bool kcal, int out);
+RcppExport SEXP _enerscape_energyscape(SEXP xSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP, SEXP outSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -49,7 +49,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
     Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
-    rcpp_result_gen = Rcpp::wrap(energyscape(x, n, mass, res, kcal));
+    Rcpp::traits::input_parameter< int >::type out(outSEXP);
+    rcpp_result_gen = Rcpp::wrap(energyscape(x, n, mass, res, kcal, out));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -68,15 +69,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // slope
-NumericVector slope(NumericVector x, double center, double res);
-RcppExport SEXP _enerscape_slope(SEXP xSEXP, SEXP centerSEXP, SEXP resSEXP) {
+NumericVector slope(NumericVector x, double center, double res, int out);
+RcppExport SEXP _enerscape_slope(SEXP xSEXP, SEXP centerSEXP, SEXP resSEXP, SEXP outSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type center(centerSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
-    rcpp_result_gen = Rcpp::wrap(slope(x, center, res));
+    Rcpp::traits::input_parameter< int >::type out(outSEXP);
+    rcpp_result_gen = Rcpp::wrap(slope(x, center, res, out));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -84,9 +86,9 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_enerscape_distances", (DL_FUNC) &_enerscape_distances, 3},
     {"_enerscape_energy", (DL_FUNC) &_enerscape_energy, 5},
-    {"_enerscape_energyscape", (DL_FUNC) &_enerscape_energyscape, 5},
+    {"_enerscape_energyscape", (DL_FUNC) &_enerscape_energyscape, 6},
     {"_enerscape_neighbours", (DL_FUNC) &_enerscape_neighbours, 4},
-    {"_enerscape_slope", (DL_FUNC) &_enerscape_slope, 3},
+    {"_enerscape_slope", (DL_FUNC) &_enerscape_slope, 4},
     {NULL, NULL, 0}
 };
 

@@ -15,6 +15,14 @@ Calculate Energy Landscapes For Terrestrial Animals.
 
 # Changelog
 
+## 1.1.1
+
+Add options to calculate costs _from_ cell rather than _to_ it.
+
+## 1.1.0
+
+Update the enerscape model following https://doi.org/10.1098/rsbl.2023.0492.
+
 ## 1.0.0
 
 This follows the transfer of functionalists of old GIS packages to _terra_, with _rgdal_, _rgeos_ scheduled to be retired in 2023: <https://r-spatial.org/r/2022/04/12/evolution.html>. I removed dependencies on _gDistance_, _raster_, _sp_, _rgeos_, and _rgdal_.

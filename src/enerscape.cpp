@@ -14,10 +14,10 @@ using namespace Rcpp;
 //' @return Vector with the energy cost of locomotion (EnergyScape)
 // [[Rcpp::export]]
 NumericVector energy (
-    NumericVector slope ,
-    NumericVector distance ,
-    double mass ,
-    double res ,
+    NumericVector slope,
+    NumericVector distance,
+    double mass,
+    double res,
     bool kcal = true
 ) {
   const double PI =  3.1415926535;
@@ -44,6 +44,7 @@ NumericVector energy (
 //' @param mass body mass of species (kg).
 //' @param res numeric value (double) of the spatial resolution of the matrix.
 //' @param kcal (boolean) if to return the result in kCal (true) or J (false).
+//' @param out (integer) if to calculate the costs for moving into the cell (0) or from it (1).
 //' @return Matrix with the energy cost of locomotion (EnergyScape).
 // [[Rcpp::export]]
 NumericMatrix energyscape (
@@ -51,7 +52,8 @@ NumericMatrix energyscape (
     int n = 4,
     double mass = 0,
     double res = 0,
-    bool kcal = true
+    bool kcal = true,
+    int out = 0
 ) {
   if (mass == 0 || res == 0) {
     return 0;
@@ -69,7 +71,7 @@ NumericMatrix energyscape (
       if (neigh.size() == 0) {
         continue;
       }
-      sl = slope(neigh, x(i, j), res);
+      sl = slope(neigh, x(i, j), res, out);
       dist = distances(neigh, x(i, j), res);
       en = energy(sl, dist, mass, res, kcal);
       ans(i, j) = mean(en);

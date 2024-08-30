@@ -4,7 +4,7 @@
 \alias{enerscape}
 \title{Compute Energy Landscapes}
 \usage{
-enerscape(dem, m, unit = "joule", neigh = 8)
+enerscape(dem, m, unit = "joule", neigh = 8, direction = "in")
 }
 \arguments{
 \item{dem}{raster file of the digital elevation model, either a raster or a
@@ -15,6 +15,9 @@ full path location of the file.}
 \item{unit}{if joules ('joule') or kilocalories ('kcal').}
 
 \item{neigh}{number of neighbor cells that are connected together.}
+
+\item{direction}{character specifying if costs are to be calcualted for
+moving into the focal cell (`in`) or from it (`out`).}
 }
 \value{
 A list with elements a rasterStack of the digital elevation model,
@@ -36,9 +39,11 @@ From the digital elevation model, transition slopes, energy costs
 library(terra)
 library(enerscape)
 
-data("volcano")
-dem <- rast(volcano)
-en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
+data("sirente")
+dem <- rast(sirente)
+en <- enerscape(dem, 10, unit = "kcal", neigh = 8)
+plot(en, col = hcl.colors(100, "Inferno"))
+contour(dem, add = TRUE, nlevels = 5, col = hcl.colors(7, "Terrain"))
 }
 \references{
 Pontzer, H. (2016). A unified theory for the energy cost of legged

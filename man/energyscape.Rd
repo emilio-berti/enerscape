@@ -4,7 +4,7 @@
 \alias{energyscape}
 \title{Energy Landscape}
 \usage{
-energyscape(x, n = 4L, mass = 0, res = 0, kcal = TRUE)
+energyscape(x, n = 4L, mass = 0, res = 0, kcal = TRUE, out = 0L)
 }
 \arguments{
 \item{x}{matrix with values the elevation.}
@@ -16,6 +16,8 @@ energyscape(x, n = 4L, mass = 0, res = 0, kcal = TRUE)
 \item{res}{numeric value (double) of the spatial resolution of the matrix.}
 
 \item{kcal}{(boolean) if to return the result in kCal (true) or J (false).}
+
+\item{out}{(integer) if to calculate the costs for moving into the cell (0) or from it (1).}
 }
 \value{
 Matrix with the energy cost of locomotion (EnergyScape).

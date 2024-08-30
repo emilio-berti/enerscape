@@ -30,9 +30,10 @@ energy <- function(slope, distance, mass, res, kcal = TRUE) {
 #' @param mass body mass of species (kg).
 #' @param res numeric value (double) of the spatial resolution of the matrix.
 #' @param kcal (boolean) if to return the result in kCal (true) or J (false).
+#' @param out (integer) if to calculate the costs for moving into the cell (0) or from it (1).
 #' @return Matrix with the energy cost of locomotion (EnergyScape).
-energyscape <- function(x, n = 4L, mass = 0, res = 0, kcal = TRUE) {
-    .Call(`_enerscape_energyscape`, x, n, mass, res, kcal)
+energyscape <- function(x, n = 4L, mass = 0, res = 0, kcal = TRUE, out = 0L) {
+    .Call(`_enerscape_energyscape`, x, n, mass, res, kcal, out)
 }
 
 #' Neighbours
@@ -51,8 +52,9 @@ neighbours <- function(i, j, n, x) {
 #' @param x matrix with values
 #' @param center numeric value (double) with the value of the focal cell
 #' @param res numeric value (double) of the spatial resolution of the matrix
+#' @param out (integer) if to calculate the costs for moving into the cell (0) or from it (1).
 #' @return Vector with values the slopes (degrees) between x and center
-slope <- function(x, center, res) {
-    .Call(`_enerscape_slope`, x, center, res)
+slope <- function(x, center, res, out) {
+    .Call(`_enerscape_slope`, x, center, res, out)
 }
 

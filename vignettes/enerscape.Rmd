@@ -70,6 +70,15 @@ plot(en_log)
 terra::contour(dem, add = TRUE, nlevels = 20)
 ```
 
+# In or Out movement
+By default, enerscape calculates the cost of moving _into_ a cell.
+However, it is possible to calculate the cost of moving _from_ the cell since enerscape v1.1.1.
+This is achieved by using the optional argument `direction = "out"`.
+```{r out}
+en_out_log <- log(enerscape(dem, 10, neigh = 4, unit = "kcal", direction = "out"))
+plot(c(en_log, en_out_log))
+```
+
 # Initialization files for Circuitscape/Omniscape
 
 Circuitscape and Omniscape are circuit theory approaches to calculate connectivity in landscapes.

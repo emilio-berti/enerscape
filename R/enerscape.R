@@ -9,6 +9,8 @@ data("sirente")#' Compute Energy Landscapes
 #' @param m species body mass (kg).
 #' @param unit if joules ('joule') or kilocalories ('kcal').
 #' @param neigh number of neighbor cells that are connected together.
+#' @param direction character specifying if costs are to be calcualted for
+#'  moving into the focal cell (`in`) or from it (`out`).
 #' @return A list with elements a rasterStack of the digital elevation model,
 #'   slope, energy landscape, and conductance and the conductance as a transitionLayer for
 #'   path analysis.
@@ -34,7 +36,8 @@ enerscape <- function(
     dem,
     m,
     unit = "joule",
-    neigh = 8
+    neigh = 8,
+    direction = "in"
 ) {
   if (is.null(dem) | is.null(m)) {
     stop("Missing mandatory input - see ?enerscape for details.")
@@ -48,17 +51,27 @@ enerscape <- function(
   if (neigh != 4 && neigh != 8) {
     stop("'neigh' should be either 4 or 8.")
   }
+  if (direction != "in" && direction != "out") {
+    stop("'direction' must be either 'in' or 'out'.")
+  }
   # check units of DEM
   work_in_kcal <- ifelse(unit == "kcal", TRUE, FALSE)
-  stopifnot( abs(res(dem)[1] - res(dem)[2]) <= 1e-2 ) #tolerance = 1 cm 
+  stopifnot( abs(res(dem)[1] - res(dem)[2]) <= 1e-2 )  # tolerance = 1 cm 
   en_res <- res(dem)[1]
   message("DEM is assumed to have planar CRS in meters.")
+  out <- ifelse(direction == "in", 0L, 1L)
+  if (out) {
+    message("Costs are calculated for moving from the cell.")
+  }
   x <- matrix(dem, nrow = nrow(dem), ncol = ncol(dem), byrow = TRUE)
-  en <- energyscape(x,
-                    n = neigh,
-                    mass = m,
-                    kcal = work_in_kcal,
-                    res = en_res)
+  en <- energyscape(
+    x,
+    n = neigh,
+    mass = m,
+    kcal = work_in_kcal,
+    res = en_res,
+    out = out
+  )
   ans <- rast(en)
   names(ans) <- "EnergyScape"
   crs(ans) <- crs(dem)
