@@ -76,6 +76,7 @@ However, it is possible to calculate the cost of moving _from_ the cell since en
 This is achieved by using the optional argument `direction = "out"`.
 ```{r out}
 en_out_log <- log(enerscape(dem, 10, neigh = 4, unit = "kcal", direction = "out"))
+en_out_log <- crop(en_out_log, ext(881306, 882853, 4674928, 4675984))
 plot(c(en_log, en_out_log))
 ```
 
