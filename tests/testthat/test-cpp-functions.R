@@ -19,7 +19,7 @@ test_that("Slope is correct", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
   n <- neighbours(1, 1, 4, m)
-  sl <- slope(n, m[2, 2], 1)
+  sl <- slope(n, m[2, 2], 1, out = 0)
   s <- m[2, 2] - c(11, 2, 22, 13)
   s <- atan(s) * 180 / pi
   expect_equal(sl, s, tolerance = 1e-6)
@@ -41,7 +41,7 @@ test_that("Energy works", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
   n <- neighbours(1, 1, 4, m)
-  sl <- slope(n, m[2, 2], 1)
+  sl <- slope(n, m[2, 2], 1, out = 0)
   dist <- distances(n, 1, 10)
   mass <- 1000
   en <- energy(sl, dist, mass, 1, FALSE)
