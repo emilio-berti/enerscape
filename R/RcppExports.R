@@ -31,20 +31,22 @@ energy <- function(slope, distance, mass, res, kcal = TRUE) {
 #' @param res numeric value (double) of the spatial resolution of the matrix.
 #' @param kcal (boolean) if to return the result in kCal (true) or J (false).
 #' @param out (integer) if to calculate the costs for moving into the cell (0) or from it (1).
+#' @param direction (integer) for which direction to calculate costs: 0 for all, 1 for left, 2 for down, 3 for right, 4 for up.
 #' @return Matrix with the energy cost of locomotion (EnergyScape).
-energyscape <- function(x, n = 4L, mass = 0, res = 0, kcal = TRUE, out = 0L) {
-    .Call(`_enerscape_energyscape`, x, n, mass, res, kcal, out)
+energyscape <- function(x, n = 4L, mass = 0, res = 0, kcal = TRUE, out = 0L, direction = 0L) {
+    .Call(`_enerscape_energyscape`, x, n, mass, res, kcal, out, direction)
 }
 
 #' Neighbours
 #'
-#' @param i row index
-#' @param j column index
-#' @param n number of neighbours (4 or 8)
-#' @param x matrix with values
+#' @param i row index.
+#' @param j column index.
+#' @param n number of neighbours (4 or 8).
+#' @param x matrix with values.
+#' @param direction (integer) for which direction to calculate costs: 0 for all, 1 for left, 2 for down, 3 for right, 4 for up.
 #' @return Vector with values the neighours of x
-neighbours <- function(i, j, n, x) {
-    .Call(`_enerscape_neighbours`, i, j, n, x)
+neighbours <- function(i, j, n, x, direction) {
+    .Call(`_enerscape_neighbours`, i, j, n, x, direction)
 }
 
 #' Slopes

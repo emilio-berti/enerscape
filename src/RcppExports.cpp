@@ -39,8 +39,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // energyscape
-NumericMatrix energyscape(NumericMatrix x, int n, double mass, double res, bool kcal, int out);
-RcppExport SEXP _enerscape_energyscape(SEXP xSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP, SEXP outSEXP) {
+NumericMatrix energyscape(NumericMatrix x, int n, double mass, double res, bool kcal, int out, int direction);
+RcppExport SEXP _enerscape_energyscape(SEXP xSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP, SEXP outSEXP, SEXP directionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -50,13 +50,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
     Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
     Rcpp::traits::input_parameter< int >::type out(outSEXP);
-    rcpp_result_gen = Rcpp::wrap(energyscape(x, n, mass, res, kcal, out));
+    Rcpp::traits::input_parameter< int >::type direction(directionSEXP);
+    rcpp_result_gen = Rcpp::wrap(energyscape(x, n, mass, res, kcal, out, direction));
     return rcpp_result_gen;
 END_RCPP
 }
 // neighbours
-NumericVector neighbours(int i, int j, int n, NumericMatrix x);
-RcppExport SEXP _enerscape_neighbours(SEXP iSEXP, SEXP jSEXP, SEXP nSEXP, SEXP xSEXP) {
+NumericVector neighbours(int i, int j, int n, NumericMatrix x, int direction);
+RcppExport SEXP _enerscape_neighbours(SEXP iSEXP, SEXP jSEXP, SEXP nSEXP, SEXP xSEXP, SEXP directionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -64,7 +65,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type j(jSEXP);
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(neighbours(i, j, n, x));
+    Rcpp::traits::input_parameter< int >::type direction(directionSEXP);
+    rcpp_result_gen = Rcpp::wrap(neighbours(i, j, n, x, direction));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -86,8 +88,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_enerscape_distances", (DL_FUNC) &_enerscape_distances, 3},
     {"_enerscape_energy", (DL_FUNC) &_enerscape_energy, 5},
-    {"_enerscape_energyscape", (DL_FUNC) &_enerscape_energyscape, 6},
-    {"_enerscape_neighbours", (DL_FUNC) &_enerscape_neighbours, 4},
+    {"_enerscape_energyscape", (DL_FUNC) &_enerscape_energyscape, 7},
+    {"_enerscape_neighbours", (DL_FUNC) &_enerscape_neighbours, 5},
     {"_enerscape_slope", (DL_FUNC) &_enerscape_slope, 4},
     {NULL, NULL, 0}
 };

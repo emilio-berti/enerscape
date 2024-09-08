@@ -15,6 +15,12 @@ Calculate Energy Landscapes For Terrestrial Animals.
 
 # Changelog
 
+## 1.1.2
+
+Add options to calculates costs _from_ cell for _one_ specific direction (`left`, `bottom`, `right`, `up`).
+This calls an if statement inside `energyscape` and may results is significant slowdowns.
+I am investigating an alternative solution to this.
+
 ## 1.1.1
 
 Add options to calculate costs _from_ cell rather than _to_ it.

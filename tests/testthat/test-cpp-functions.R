@@ -1,15 +1,15 @@
 test_that("Neighbours are correct", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
-  n <- neighbours(1, 1, 4, m)
+  n <- neighbours(1, 1, 4, m, direction = 0)
   expect_identical(n, c(11, 2, 22, 13))
 })
 
 test_that("No neighbours for edges", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
-  n1 <- neighbours(0, 1, 4, m)
-  n2 <- neighbours(1, ncol(m) - 1, 4, m)
+  n1 <- neighbours(0, 1, 4, m, direction = 0)
+  n2 <- neighbours(1, ncol(m) - 1, 4, m, direction = 0)
   expect_length(n1, 0)
   expect_length(n2, 0)
 })
@@ -18,7 +18,7 @@ test_that("No neighbours for edges", {
 test_that("Slope is correct", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
-  n <- neighbours(1, 1, 4, m)
+  n <- neighbours(1, 1, 4, m, direction = 0)
   sl <- slope(n, m[2, 2], 1, out = 0)
   s <- m[2, 2] - c(11, 2, 22, 13)
   s <- atan(s) * 180 / pi
@@ -29,7 +29,7 @@ test_that("Slope is correct", {
 test_that("Distance is correct", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
-  n <- neighbours(1, 1, 4, m)
+  n <- neighbours(1, 1, 4, m, direction = 0)
   dist <- distances(n, m[2, 2], 1)
   s <- m[2, 2] - c(11, 2, 22, 13)
   s <- atan(s)
@@ -40,7 +40,7 @@ test_that("Distance is correct", {
 test_that("Energy works", {
   set.seed(1234)
   m <- matrix(1:100, 10, 10)
-  n <- neighbours(1, 1, 4, m)
+  n <- neighbours(1, 1, 4, m, direction = 0)
   sl <- slope(n, m[2, 2], 1, out = 0)
   dist <- distances(n, 1, 10)
   mass <- 1000

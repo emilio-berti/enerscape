@@ -17,7 +17,8 @@ full path location of the file.}
 \item{neigh}{number of neighbor cells that are connected together.}
 
 \item{direction}{character specifying if costs are to be calcualted for
-moving into the focal cell (`in`) or from it (`out`).}
+moving into the focal cell (`in`), from it (`out`), or for a specific direction
+,i.e. 'up', 'down', 'left', 'right'.}
 }
 \value{
 A list with elements a rasterStack of the digital elevation model,

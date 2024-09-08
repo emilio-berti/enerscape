@@ -4,16 +4,18 @@
 \alias{neighbours}
 \title{Neighbours}
 \usage{
-neighbours(i, j, n, x)
+neighbours(i, j, n, x, direction)
 }
 \arguments{
-\item{i}{row index}
+\item{i}{row index.}
 
-\item{j}{column index}
+\item{j}{column index.}
 
-\item{n}{number of neighbours (4 or 8)}
+\item{n}{number of neighbours (4 or 8).}
 
-\item{x}{matrix with values}
+\item{x}{matrix with values.}
+
+\item{direction}{(integer) for which direction to calculate costs: 0 for all, 1 for left, 2 for down, 3 for right, 4 for up.}
 }
 \value{
 Vector with values the neighours of x

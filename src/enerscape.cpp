@@ -45,6 +45,7 @@ NumericVector energy (
 //' @param res numeric value (double) of the spatial resolution of the matrix.
 //' @param kcal (boolean) if to return the result in kCal (true) or J (false).
 //' @param out (integer) if to calculate the costs for moving into the cell (0) or from it (1).
+//' @param direction (integer) for which direction to calculate costs: 0 for all, 1 for left, 2 for down, 3 for right, 4 for up.
 //' @return Matrix with the energy cost of locomotion (EnergyScape).
 // [[Rcpp::export]]
 NumericMatrix energyscape (
@@ -53,7 +54,8 @@ NumericMatrix energyscape (
     double mass = 0,
     double res = 0,
     bool kcal = true,
-    int out = 0
+    int out = 0,
+    int direction = 0
 ) {
   if (mass == 0 || res == 0) {
     return 0;
@@ -67,7 +69,7 @@ NumericMatrix energyscape (
   NumericMatrix ans(rows, cols);
   for (int i = 0 ; i < rows ; i++) {
     for (int j = 0 ; j < cols ; j++) {
-      neigh = neighbours(i, j, n, x);
+      neigh = neighbours(i, j, n, x, direction);
       if (neigh.size() == 0) {
         continue;
       }

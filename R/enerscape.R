@@ -10,7 +10,8 @@ data("sirente")#' Compute Energy Landscapes
 #' @param unit if joules ('joule') or kilocalories ('kcal').
 #' @param neigh number of neighbor cells that are connected together.
 #' @param direction character specifying if costs are to be calcualted for
-#'  moving into the focal cell (`in`) or from it (`out`).
+#'  moving into the focal cell (`in`), from it (`out`), or for a specific direction
+#'  ,i.e. 'up', 'down', 'left', 'right'.
 #' @return A list with elements a rasterStack of the digital elevation model,
 #'   slope, energy landscape, and conductance and the conductance as a transitionLayer for
 #'   path analysis.
@@ -51,18 +52,37 @@ enerscape <- function(
   if (neigh != 4 && neigh != 8) {
     stop("'neigh' should be either 4 or 8.")
   }
-  if (direction != "in" && direction != "out") {
-    stop("'direction' must be either 'in' or 'out'.")
+  if (neigh != 4 && direction %in% c("up", "down", "left", "right")) {
+    stop("'direction' different from 'in' or 'out' is valid only for 'neigh=4'.")
+  }
+  direction_choices <- c("in", "out", "up", "down", "left", "right")
+  if (!direction %in% direction_choices) {
+    stop(paste0("'direction' must be one of: ", paste(direction_choices, collapse = ", "), "."))
   }
   # check units of DEM
   work_in_kcal <- ifelse(unit == "kcal", TRUE, FALSE)
   stopifnot( abs(res(dem)[1] - res(dem)[2]) <= 1e-2 )  # tolerance = 1 cm 
   en_res <- res(dem)[1]
   message("DEM is assumed to have planar CRS in meters.")
-  out <- ifelse(direction == "in", 0L, 1L)
+  
+  # for all cases except 'in', costs are calculated from the focal cell
+  out <- ifelse(direction == "in", 0L, 1L) 
   if (out) {
     message("Costs are calculated for moving from the cell.")
   }
+  if (direction %in% c("up", "down", "left", "right")) {
+    message("Costs are calculated only for the ", direction, " direction.")
+    direction <- switch(
+      direction,
+      left = 1,
+      down = 2,
+      right = 3,
+      up = 4
+    )
+  } else {
+    direction <- 0  # all directions
+  }
+  
   x <- matrix(dem, nrow = nrow(dem), ncol = ncol(dem), byrow = TRUE)
   en <- energyscape(
     x,
@@ -70,7 +90,8 @@ enerscape <- function(
     mass = m,
     kcal = work_in_kcal,
     res = en_res,
-    out = out
+    out = out,
+    direction = direction
   )
   ans <- rast(en)
   names(ans) <- "EnergyScape"
