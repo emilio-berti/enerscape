@@ -23,7 +23,7 @@ Central Italy:
     )
     plot(dem)
 
-![](/home/eb97ziwi/enerscape/doc/enerscape_files/figure-markdown_strict/sirente-1.png)
+![](doc/enerscape_files/figure-markdown_strict/sirente-1.png)
 
 I provided the correct coordinate reference system (CRS) and the extent
 of the DEM; in most cases, this will already be present in downloaded
@@ -55,13 +55,13 @@ useful to log-transform energy landscape for visualization:
     plot(en_log)
     terra::contour(dem, add = TRUE, nlevels = 5)
 
-![](/home/eb97ziwi/enerscape/doc/enerscape_files/figure-markdown_strict/visualize-1.png)
+![](doc/enerscape_files/figure-markdown_strict/visualize-1.png)
 
     en_log <- crop(en_log, ext(881306, 882853, 4674928, 4675984))
     plot(en_log)
     terra::contour(dem, add = TRUE, nlevels = 20)
 
-![](/home/eb97ziwi/enerscape/doc/enerscape_files/figure-markdown_strict/zoom-1.png)
+![](doc/enerscape_files/figure-markdown_strict/zoom-1.png)
 
 # Initialization files for Circuitscape/Omniscape
 
@@ -164,7 +164,7 @@ people from Looney et al. (2019). This can be calculated using the
 walking speed (m/s). If `v` is not specified, it is assumed to be
 `v = 1.39`, which optimize the energy costs.
 
-![](/home/eb97ziwi/enerscape/doc/enerscape_files/figure-markdown_strict/human%20speed%20costs-1.png)
+![](doc/enerscape_files/figure-markdown_strict/human%20speed%20costs-1.png)
 
     en <- lapply(
       seq(0.5, 2.5, by = .5),
@@ -180,7 +180,7 @@ walking speed (m/s). If `v` is not specified, it is assumed to be
     en_log <- log(en)
     panel(en_log, nc = 3)
 
-![](/home/eb97ziwi/enerscape/doc/enerscape_files/figure-markdown_strict/humanscape-1.png)
+![](doc/enerscape_files/figure-markdown_strict/humanscape-1.png)
 
 # Changelog
 
