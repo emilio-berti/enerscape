@@ -35,6 +35,32 @@ energyscape <- function(x, n = 4L, mass = 0, res = 0, kcal = TRUE) {
     .Call(`_enerscape_energyscape`, x, n, mass, res, kcal)
 }
 
+#' Energy Landscape for walking people
+#'
+#' @param v speed
+#' @param slope vector with slopes
+#' @param distance vector with distances
+#' @param mass body mass of species (kg)
+#' @param res numeric value (double) of the spatial resolution of the matrix
+#' @param kcal (boolean) if to return the result in kCal (true) or J (false)
+#' @return Vector with the energy cost of locomotion (EnergyScape)
+energyHuman <- function(v, slope, distance, mass, res, kcal = TRUE) {
+    .Call(`_enerscape_energyHuman`, v, slope, distance, mass, res, kcal)
+}
+
+#' Energy Landscape
+#'
+#' @param x matrix with values the elevation.
+#' @param v speed
+#' @param n (integer) number of neighbours to consider (either 4 or 8).
+#' @param mass body mass of species (kg).
+#' @param res numeric value (double) of the spatial resolution of the matrix.
+#' @param kcal (boolean) if to return the result in kCal (true) or J (false).
+#' @return Matrix with the energy cost of locomotion (EnergyScape).
+energyscapeHuman <- function(x, v, n = 4L, mass = 0, res = 0, kcal = TRUE) {
+    .Call(`_enerscape_energyscapeHuman`, x, v, n, mass, res, kcal)
+}
+
 #' Neighbours
 #'
 #' @param i row index
@@ -54,5 +80,15 @@ neighbours <- function(i, j, n, x) {
 #' @return Vector with values the slopes (degrees) between x and center
 slope <- function(x, center, res) {
     .Call(`_enerscape_slope`, x, center, res)
+}
+
+#' Slopes in radians
+#'
+#' @param x matrix with values
+#' @param center numeric value (double) with the value of the focal cell
+#' @param res numeric value (double) of the spatial resolution of the matrix
+#' @return Vector with values the slopes (degrees) between x and center
+slopeRadiant <- function(x, center, res) {
+    .Call(`_enerscape_slopeRadiant`, x, center, res)
 }
 

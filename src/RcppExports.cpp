@@ -53,6 +53,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// energyHuman
+NumericVector energyHuman(double v, NumericVector slope, NumericVector distance, double mass, double res, bool kcal);
+RcppExport SEXP _enerscape_energyHuman(SEXP vSEXP, SEXP slopeSEXP, SEXP distanceSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type v(vSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type slope(slopeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type distance(distanceSEXP);
+    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
+    Rcpp::traits::input_parameter< double >::type res(resSEXP);
+    Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
+    rcpp_result_gen = Rcpp::wrap(energyHuman(v, slope, distance, mass, res, kcal));
+    return rcpp_result_gen;
+END_RCPP
+}
+// energyscapeHuman
+NumericMatrix energyscapeHuman(NumericMatrix x, double v, int n, double mass, double res, bool kcal);
+RcppExport SEXP _enerscape_energyscapeHuman(SEXP xSEXP, SEXP vSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type v(vSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
+    Rcpp::traits::input_parameter< double >::type res(resSEXP);
+    Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
+    rcpp_result_gen = Rcpp::wrap(energyscapeHuman(x, v, n, mass, res, kcal));
+    return rcpp_result_gen;
+END_RCPP
+}
 // neighbours
 NumericVector neighbours(int i, int j, int n, NumericMatrix x);
 RcppExport SEXP _enerscape_neighbours(SEXP iSEXP, SEXP jSEXP, SEXP nSEXP, SEXP xSEXP) {
@@ -80,13 +112,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// slopeRadiant
+NumericVector slopeRadiant(NumericVector x, double center, double res);
+RcppExport SEXP _enerscape_slopeRadiant(SEXP xSEXP, SEXP centerSEXP, SEXP resSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type center(centerSEXP);
+    Rcpp::traits::input_parameter< double >::type res(resSEXP);
+    rcpp_result_gen = Rcpp::wrap(slopeRadiant(x, center, res));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_enerscape_distances", (DL_FUNC) &_enerscape_distances, 3},
     {"_enerscape_energy", (DL_FUNC) &_enerscape_energy, 5},
     {"_enerscape_energyscape", (DL_FUNC) &_enerscape_energyscape, 5},
+    {"_enerscape_energyHuman", (DL_FUNC) &_enerscape_energyHuman, 6},
+    {"_enerscape_energyscapeHuman", (DL_FUNC) &_enerscape_energyscapeHuman, 6},
     {"_enerscape_neighbours", (DL_FUNC) &_enerscape_neighbours, 4},
     {"_enerscape_slope", (DL_FUNC) &_enerscape_slope, 3},
+    {"_enerscape_slopeRadiant", (DL_FUNC) &_enerscape_slopeRadiant, 3},
     {NULL, NULL, 0}
 };
 

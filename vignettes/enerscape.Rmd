@@ -89,7 +89,7 @@ Currently, there are no implementations of Circuitscape/Omniscape in R. There ar
 
 Both are one-liners in Julia, e.g. `run_omniscape("omniscape.ini")`. The major obstacle in using these libraries is to create the initialization file (_.ini_). 
 
-## Crcuitscape
+## Circuitscape
 
 To create the initialization file for Circuitscape, enerscape has the dedicated function _circuitscape_skeleton()_:
 
@@ -154,7 +154,71 @@ julia> run_omniscape("circuitscape.ini")
 
 Output is in the folder _omniscape_ within the folder specified in _path_.
 
+# Energy Lanscapes for Walking People
+As of enerscape 1.2 I implemented the energy cost model for walking people from Looney et al. (2019).
+This can be calculated using the `humanscape()` function.
+The arguments are the same as for `enerscape()`, except for an additional argument `v`, which is the walking speed (m/s).
+If `v` is not specified, it is assumed to be `v = 1.39`, which optimize the energy costs.
+
+```{r human speed costs, echo=FALSE, fig.width=6, fig.height=3.65}
+d <- data.frame(
+  v = seq(.1, 5.1, length.out = 41),
+  slope = seq(-25, 25, length.out = 41)
+)
+d <- expand.grid(d)
+d$cost <- NA
+for (i in seq_len(nrow(d))) {
+  d$cost[i] <- energyHuman(
+    v = d$v[i],
+    slope = d$slope[i] / 180 * pi,
+    distance = 1,
+    mass = 78,
+    res = 1
+  )
+}
+oldpar <- par(no.readonly = TRUE)
+par(mfrow = c(1, 2))
+with(
+  d[d$v == 1.1, ],
+  plot(
+    slope, cost,
+    main = "v = 1.1",
+    type = "b", pch = 21, bg = "dodgerblue", cex = 1,
+    xlab = expression("Slope "* (rad)),
+    ylab = expression("Energy cost "* (kcal))
+  )
+)
+with(
+  d[d$slope == 0, ],
+  plot(
+    v, cost, 
+    main = "Slope = 0",
+    type = "b", pch = 21, bg = "dodgerblue", cex = 1,
+    xlab = expression("Speed "* (m/s)),
+    ylab = expression("Energy cost "* (kcal))
+  )
+)
+abline(v = 1.39, lty = 2)
+text(x = 1.39, y = .2, "v = 1.39", srt = 90, adj = c(0, -0.5))
+par(oldpar)
+```
+
+```{r humanscape, fig.width=6, fig.height=3.65}
+en <- lapply(
+  seq(0.5, 2.5, by = .5),
+  \(v) humanscape(dem, 10, v = v, neigh = 4, unit = "kcal")
+)
+en <- rast(en)
+names(en) <- paste0("v = ", seq(0.5, 2.5, by = .5))
+en_log <- log(en)
+panel(en_log, nc = 3)
+```
+
 # Changelog
+
+## 1.2.0
+
+Add `humanscape()` to calculate energy costs of walking people.
 
 ## 1.1.0
 
@@ -177,3 +241,5 @@ I plan to add a customizable function soon to do that.
 Pontzer, H. (2016). A unified theory for the energy cost of legged locomotion. Biology letters, 12(2), 20150935.
 
 Berti, E., Davoli, M., Buitenwerf, R., Dyer, A., Hansen, O. L., Hirt, M., ... & Vollrath, F. (2022). The r package enerscape: A general energy landscape framework for terrestrial movement ecology. Methods in Ecology and Evolution, 13(1), 60-67.
+
+Looney, D. P., Santee, W. R., Hansen, E. O., Bonventre, P. J., Chalmers, C. R., & Potter, A. W. (2019). Estimating energy expenditure during level, uphill, and downhill walking. Med. Sci. Sports Exerc., 51(9), 1954-1960.

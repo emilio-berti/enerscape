@@ -1,11 +1,12 @@
-#' Compute Energy Landscapes
+#' Compute Energy Landscapes for Walking People
 #'
 #' This is the main function to compute energy landscapes from a digital
-#' elevation model and body mass of animals based on the model from Pontzer
-#' (2016).
+#' elevation model, body mass of a person, and walking speed from Looney 
+#' et al. (2019).
 #' @param dem raster file of the digital elevation model, either a raster or a
 #'   full path location of the file.
 #' @param m species body mass (kg).
+#' @param v walking speed (m/s).
 #' @param unit if joules ('joule') or kilocalories ('kcal').
 #' @param neigh number of neighbor cells that are connected together.
 #' @return A list with elements a rasterStack of the digital elevation model,
@@ -20,16 +21,16 @@
 #'
 #' data("volcano")
 #' dem <- rast(volcano)
-#' en <- enerscape(dem, 10, unit = "kcal", neigh = 16)
+#' en <- humanscape(dem, 10, 1, unit = "kcal", neigh = 16)
 #' @export
 #' @references
-#'   Pontzer, H. (2016). A unified theory for the energy cost of legged
-#'   locomotion. Biology Letters, 12(2), 20150935. \doi{
-#'   https://doi.org/10.1098/rsbl.2015.0935}.
-#'
-enerscape <- function(
+#' Looney, D. P., Santee, W. R., Hansen, E. O., Bonventre, P. J., Chalmers, C. R., & Potter, A. W. (2019).
+#' Estimating energy expenditure during level, uphill, and downhill walking.
+#' Med. Sci. Sports Exerc., 51(9), 1954-1960. \doi{https://doi.org/10.1249/MSS.0000000000002002}.
+humanscape <- function(
     dem,
     m,
+    v,
     unit = "joule",
     neigh = 8
 ) {
@@ -48,13 +49,16 @@ enerscape <- function(
   en_res <- res(dem)[1]
   message("DEM is assumed to have planar CRS in meters.")
   x <- matrix(dem, nrow = nrow(dem), ncol = ncol(dem), byrow = TRUE)
-  en <- energyscape(x,
-                    n = neigh,
-                    mass = m,
-                    kcal = work_in_kcal,
-                    res = en_res)
+  en <- energyscapeHuman(
+    x = x,
+    n = neigh,
+    v = v,
+    mass = m,
+    kcal = work_in_kcal,
+    res = en_res
+  )
   ans <- rast(en)
-  names(ans) <- "EnergyScape"
+  names(ans) <- "EnergyScapeHuman"
   crs(ans) <- crs(dem)
   ext(ans) <- ext(dem)
   ans[ans == 0] <- NA
