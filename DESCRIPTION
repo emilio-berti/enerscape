@@ -2,6 +2,8 @@ Package: enerscape
 Type: Package
 Title: Compute Energy Landscapes
 Version: 1.2.0
+Author: Emilio Berti
+Maintainer: Emilio Berti <emilio.berti@idiv.de>
 Authors@R: c(person(given = "Emilio", family = "Berti", role = c("aut",  "cre"), email = "emilio.berti@idiv.de"))
 Description: Compute energy landscapes using a digital elevation model
  and body mass of animals.
