@@ -48,8 +48,8 @@ NumericVector energy (
 // [[Rcpp::export]]
 NumericMatrix energyscape (
     NumericMatrix x,
-    int n = 4,
     double mass = 0,
+    int n = 4,
     double res = 0,
     bool kcal = true
 ) {

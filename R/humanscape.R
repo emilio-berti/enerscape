@@ -9,12 +9,7 @@
 #' @param v walking speed (m/s).
 #' @param unit if joules ('joule') or kilocalories ('kcal').
 #' @param neigh number of neighbor cells that are connected together.
-#' @return A list with elements a rasterStack of the digital elevation model,
-#'   slope, energy landscape, and conductance and the conductance as a transitionLayer for
-#'   path analysis.
-#' @details From the digital elevation model, transition slopes, energy costs
-#'   and conductances (1 / work) are computed based on the model described in
-#'   Pontzer (2016).
+#' @return EnergyScape raster.
 #' @examples
 #' library(terra)
 #' library(enerscape)
@@ -51,14 +46,14 @@ humanscape <- function(
   x <- matrix(dem, nrow = nrow(dem), ncol = ncol(dem), byrow = TRUE)
   en <- energyscapeHuman(
     x = x,
-    n = neigh,
-    v = v,
     mass = m,
+    v = v,
+    n = neigh,
     kcal = work_in_kcal,
     res = en_res
   )
   ans <- rast(en)
-  names(ans) <- "EnergyScapeHuman"
+  names(ans) <- "EnergyScape"
   crs(ans) <- crs(dem)
   ext(ans) <- ext(dem)
   ans[ans == 0] <- NA

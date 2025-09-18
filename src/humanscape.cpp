@@ -50,9 +50,9 @@ NumericVector energyHuman (
 // [[Rcpp::export]]
 NumericMatrix energyscapeHuman (
     NumericMatrix x,
+    double mass = 0,
     double v,
     int n = 4,
-    double mass = 0,
     double res = 0,
     bool kcal = true
 ) {
