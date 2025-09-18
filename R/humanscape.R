@@ -49,8 +49,8 @@ humanscape <- function(
     mass = m,
     v = v,
     n = neigh,
-    kcal = work_in_kcal,
-    res = en_res
+    res = en_res,
+    kcal = work_in_kcal
   )
   ans <- rast(en)
   names(ans) <- "EnergyScape"

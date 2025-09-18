@@ -169,11 +169,12 @@ d <- expand.grid(d)
 d$cost <- NA
 for (i in seq_len(nrow(d))) {
   d$cost[i] <- energyHuman(
+    mass = 78,
     v = d$v[i],
     slope = d$slope[i] / 180 * pi,
     distance = 1,
-    mass = 78,
-    res = 1
+    res = 1,
+    kcal = FALSE
   )
 }
 oldpar <- par(no.readonly = TRUE)
@@ -219,6 +220,8 @@ panel(en_log, nc = 3)
 ## 1.2.0
 
 Add `humanscape()` to calculate energy costs of walking people.
+
+Updating documentation.
 
 ## 1.1.0
 
