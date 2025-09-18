@@ -52,7 +52,7 @@ NumericMatrix energyscapeHuman (
     NumericMatrix x,
     double mass,
     double v,
-    int n = 4,
+    int n,
     double res,
     bool kcal
 ) {

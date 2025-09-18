@@ -49,7 +49,7 @@ NumericVector energy (
 NumericMatrix energyscape (
     NumericMatrix x,
     double mass,
-    int n = 4,
+    int n,
     double res,
     bool kcal
 ) {
