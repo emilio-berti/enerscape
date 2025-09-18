@@ -25,7 +25,7 @@
 humanscape <- function(
     dem,
     m,
-    v,
+    v = 1.39,
     unit = "joule",
     neigh = 8
 ) {
