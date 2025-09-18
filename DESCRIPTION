@@ -3,7 +3,10 @@ Type: Package
 Title: Compute
  Energy Landscapes
 Version: 1.2.0
-Author: Emilio Berti
+Authors@R: person(given = "Emilio",
+                  family = "Berti",
+                  role = c("aut", "cre"),
+                  email = "emilio.berti@idiv.de")
 Maintainer: Emilio Berti <emilio.berti@idiv.de>
 Description: Compute energy landscapes using a digital elevation model raster and body mass of animals.
 License: GPL-3
