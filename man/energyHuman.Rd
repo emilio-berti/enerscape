@@ -4,16 +4,16 @@
 \alias{energyHuman}
 \title{Energy Landscape for walking people}
 \usage{
-energyHuman(v, slope, distance, mass, res, kcal = TRUE)
+energyHuman(mass, v, slope, distance, res, kcal)
 }
 \arguments{
+\item{mass}{body mass of species (kg)}
+
 \item{v}{speed}
 
 \item{slope}{vector with slopes}
 
 \item{distance}{vector with distances}
-
-\item{mass}{body mass of species (kg)}
 
 \item{res}{numeric value (double) of the spatial resolution of the matrix}
 

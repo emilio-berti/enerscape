@@ -4,14 +4,14 @@
 \alias{energyscape}
 \title{Energy Landscape}
 \usage{
-energyscape(x, n = 4L, mass = 0, res = 0, kcal = TRUE)
+energyscape(x, mass, n, res, kcal)
 }
 \arguments{
 \item{x}{matrix with values the elevation.}
 
-\item{n}{(integer) number of neighbours to consider (either 4 or 8).}
-
 \item{mass}{body mass of species (kg).}
+
+\item{n}{(integer) number of neighbours to consider (either 4 or 8).}
 
 \item{res}{numeric value (double) of the spatial resolution of the matrix.}
 

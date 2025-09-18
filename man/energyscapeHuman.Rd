@@ -4,16 +4,16 @@
 \alias{energyscapeHuman}
 \title{Energy Landscape}
 \usage{
-energyscapeHuman(x, v, n = 4L, mass = 0, res = 0, kcal = TRUE)
+energyscapeHuman(x, mass, v, n, res, kcal)
 }
 \arguments{
 \item{x}{matrix with values the elevation.}
 
+\item{mass}{body mass of species (kg).}
+
 \item{v}{speed}
 
 \item{n}{(integer) number of neighbours to consider (either 4 or 8).}
-
-\item{mass}{body mass of species (kg).}
 
 \item{res}{numeric value (double) of the spatial resolution of the matrix.}
 

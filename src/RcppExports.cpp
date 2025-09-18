@@ -24,64 +24,64 @@ BEGIN_RCPP
 END_RCPP
 }
 // energy
-NumericVector energy(NumericVector slope, NumericVector distance, double mass, double res, bool kcal);
-RcppExport SEXP _enerscape_energy(SEXP slopeSEXP, SEXP distanceSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+NumericVector energy(double mass, NumericVector slope, NumericVector distance, double res, bool kcal);
+RcppExport SEXP _enerscape_energy(SEXP massSEXP, SEXP slopeSEXP, SEXP distanceSEXP, SEXP resSEXP, SEXP kcalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type slope(slopeSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type distance(distanceSEXP);
-    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
     Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
-    rcpp_result_gen = Rcpp::wrap(energy(slope, distance, mass, res, kcal));
+    rcpp_result_gen = Rcpp::wrap(energy(mass, slope, distance, res, kcal));
     return rcpp_result_gen;
 END_RCPP
 }
 // energyscape
-NumericMatrix energyscape(NumericMatrix x, int n, double mass, double res, bool kcal);
-RcppExport SEXP _enerscape_energyscape(SEXP xSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+NumericMatrix energyscape(NumericMatrix x, double mass, int n, double res, bool kcal);
+RcppExport SEXP _enerscape_energyscape(SEXP xSEXP, SEXP massSEXP, SEXP nSEXP, SEXP resSEXP, SEXP kcalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< double >::type mass(massSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
     Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
-    rcpp_result_gen = Rcpp::wrap(energyscape(x, n, mass, res, kcal));
+    rcpp_result_gen = Rcpp::wrap(energyscape(x, mass, n, res, kcal));
     return rcpp_result_gen;
 END_RCPP
 }
 // energyHuman
-NumericVector energyHuman(double v, NumericVector slope, NumericVector distance, double mass, double res, bool kcal);
-RcppExport SEXP _enerscape_energyHuman(SEXP vSEXP, SEXP slopeSEXP, SEXP distanceSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+NumericVector energyHuman(double mass, double v, NumericVector slope, NumericVector distance, double res, bool kcal);
+RcppExport SEXP _enerscape_energyHuman(SEXP massSEXP, SEXP vSEXP, SEXP slopeSEXP, SEXP distanceSEXP, SEXP resSEXP, SEXP kcalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< double >::type v(vSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type slope(slopeSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type distance(distanceSEXP);
-    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
     Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
-    rcpp_result_gen = Rcpp::wrap(energyHuman(v, slope, distance, mass, res, kcal));
+    rcpp_result_gen = Rcpp::wrap(energyHuman(mass, v, slope, distance, res, kcal));
     return rcpp_result_gen;
 END_RCPP
 }
 // energyscapeHuman
-NumericMatrix energyscapeHuman(NumericMatrix x, double v, int n, double mass, double res, bool kcal);
-RcppExport SEXP _enerscape_energyscapeHuman(SEXP xSEXP, SEXP vSEXP, SEXP nSEXP, SEXP massSEXP, SEXP resSEXP, SEXP kcalSEXP) {
+NumericMatrix energyscapeHuman(NumericMatrix x, double mass, double v, int n, double res, bool kcal);
+RcppExport SEXP _enerscape_energyscapeHuman(SEXP xSEXP, SEXP massSEXP, SEXP vSEXP, SEXP nSEXP, SEXP resSEXP, SEXP kcalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< double >::type v(vSEXP);
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type mass(massSEXP);
     Rcpp::traits::input_parameter< double >::type res(resSEXP);
     Rcpp::traits::input_parameter< bool >::type kcal(kcalSEXP);
-    rcpp_result_gen = Rcpp::wrap(energyscapeHuman(x, v, n, mass, res, kcal));
+    rcpp_result_gen = Rcpp::wrap(energyscapeHuman(x, mass, v, n, res, kcal));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -4,14 +4,14 @@
 \alias{energy}
 \title{Energy Landscape}
 \usage{
-energy(slope, distance, mass, res, kcal = TRUE)
+energy(mass, slope, distance, res, kcal)
 }
 \arguments{
+\item{mass}{body mass of species (kg)}
+
 \item{slope}{vector with slopes}
 
 \item{distance}{vector with distances}
-
-\item{mass}{body mass of species (kg)}
 
 \item{res}{numeric value (double) of the spatial resolution of the matrix}
 

@@ -17,19 +17,12 @@ full path location of the file.}
 \item{neigh}{number of neighbor cells that are connected together.}
 }
 \value{
-A list with elements a rasterStack of the digital elevation model,
-  slope, energy landscape, and conductance and the conductance as a transitionLayer for
-  path analysis.
+EnergyScape raster.
 }
 \description{
 This is the main function to compute energy landscapes from a digital
 elevation model and body mass of animals based on the model from Pontzer
 (2016).
-}
-\details{
-From the digital elevation model, transition slopes, energy costs
-  and conductances (1 / work) are computed based on the model described in
-  Pontzer (2016).
 }
 \examples{
 library(terra)

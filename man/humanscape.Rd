@@ -4,7 +4,7 @@
 \alias{humanscape}
 \title{Compute Energy Landscapes for Walking People}
 \usage{
-humanscape(dem, m, v, unit = "joule", neigh = 8)
+humanscape(dem, m, v = 1.39, unit = "joule", neigh = 8)
 }
 \arguments{
 \item{dem}{raster file of the digital elevation model, either a raster or a
@@ -19,19 +19,12 @@ full path location of the file.}
 \item{neigh}{number of neighbor cells that are connected together.}
 }
 \value{
-A list with elements a rasterStack of the digital elevation model,
-  slope, energy landscape, and conductance and the conductance as a transitionLayer for
-  path analysis.
+EnergyScape raster.
 }
 \description{
 This is the main function to compute energy landscapes from a digital
 elevation model, body mass of a person, and walking speed from Looney 
 et al. (2019).
-}
-\details{
-From the digital elevation model, transition slopes, energy costs
-  and conductances (1 / work) are computed based on the model described in
-  Pontzer (2016).
 }
 \examples{
 library(terra)

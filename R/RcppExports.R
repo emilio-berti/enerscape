@@ -19,8 +19,8 @@ distances <- function(x, center, res) {
 #' @param res numeric value (double) of the spatial resolution of the matrix
 #' @param kcal (boolean) if to return the result in kCal (true) or J (false)
 #' @return Vector with the energy cost of locomotion (EnergyScape)
-energy <- function(slope, distance, mass, res, kcal = TRUE) {
-    .Call(`_enerscape_energy`, slope, distance, mass, res, kcal)
+energy <- function(mass, slope, distance, res, kcal) {
+    .Call(`_enerscape_energy`, mass, slope, distance, res, kcal)
 }
 
 #' Energy Landscape
@@ -31,8 +31,8 @@ energy <- function(slope, distance, mass, res, kcal = TRUE) {
 #' @param res numeric value (double) of the spatial resolution of the matrix.
 #' @param kcal (boolean) if to return the result in kCal (true) or J (false).
 #' @return Matrix with the energy cost of locomotion (EnergyScape).
-energyscape <- function(x, n = 4L, mass = 0, res = 0, kcal = TRUE) {
-    .Call(`_enerscape_energyscape`, x, n, mass, res, kcal)
+energyscape <- function(x, mass, n, res, kcal) {
+    .Call(`_enerscape_energyscape`, x, mass, n, res, kcal)
 }
 
 #' Energy Landscape for walking people
@@ -44,8 +44,8 @@ energyscape <- function(x, n = 4L, mass = 0, res = 0, kcal = TRUE) {
 #' @param res numeric value (double) of the spatial resolution of the matrix
 #' @param kcal (boolean) if to return the result in kCal (true) or J (false)
 #' @return Vector with the energy cost of locomotion (EnergyScape)
-energyHuman <- function(v, slope, distance, mass, res, kcal = TRUE) {
-    .Call(`_enerscape_energyHuman`, v, slope, distance, mass, res, kcal)
+energyHuman <- function(mass, v, slope, distance, res, kcal) {
+    .Call(`_enerscape_energyHuman`, mass, v, slope, distance, res, kcal)
 }
 
 #' Energy Landscape
@@ -57,8 +57,8 @@ energyHuman <- function(v, slope, distance, mass, res, kcal = TRUE) {
 #' @param res numeric value (double) of the spatial resolution of the matrix.
 #' @param kcal (boolean) if to return the result in kCal (true) or J (false).
 #' @return Matrix with the energy cost of locomotion (EnergyScape).
-energyscapeHuman <- function(x, v, n = 4L, mass = 0, res = 0, kcal = TRUE) {
-    .Call(`_enerscape_energyscapeHuman`, x, v, n, mass, res, kcal)
+energyscapeHuman <- function(x, mass, v, n, res, kcal) {
+    .Call(`_enerscape_energyscapeHuman`, x, mass, v, n, res, kcal)
 }
 
 #' Neighbours

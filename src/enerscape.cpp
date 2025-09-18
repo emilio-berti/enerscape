@@ -14,11 +14,11 @@ using namespace Rcpp;
 //' @return Vector with the energy cost of locomotion (EnergyScape)
 // [[Rcpp::export]]
 NumericVector energy (
+    double mass,
     NumericVector slope,
     NumericVector distance,
-    double mass,
     double res,
-    bool kcal = true
+    bool kcal
 ) {
   const double PI =  3.1415926535;
   const double KCAL = 4184.0;
@@ -71,7 +71,7 @@ NumericMatrix energyscape (
       }
       sl = slope(neigh, x(i, j), res);
       dist = distances(neigh, x(i, j), res);
-      en = energy(sl, dist, mass, res, kcal);
+      en = energy(mass, sl, dist, res, kcal);
       ans(i, j) = mean(en);
     }
   }
