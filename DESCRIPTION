@@ -2,9 +2,8 @@ Package: enerscape
 Type: Package
 Title: Compute Energy Landscapes
 Version: 1.2.0
-Author: Emilio Berti
 Maintainer: Emilio Berti <emilio.berti@idiv.de>
-Authors@R: c(person(given = "Emilio", family = "Berti", role = c("aut",  "cre"), email = "emilio.berti@idiv.de"))
+Authors@R: c(person("Emilio", "Berti", role = c("aut", "cre"), email = "emilio.berti@idiv.de"), person("Marco", "Davoli", role = "ctb"), person("Robert", "Buitenwerf", role = "ctb"), person("Alexander", "Dyer", role = "ctb"), person("Oskar L.P.", "Hansen", role = "ctb"), person("Myriam", "Hirt", role = "ctb"), person("Jens-Christian", "Svenning", role = "ctb"), person("Joerdis F.", "Terlau", role = "ctb"), person("Ulrich", "Brose", role = "ctb"), person("Fritz", "Vollrath", role = "ctb"))
 Description: Compute energy landscapes using a digital elevation model
  and body mass of animals.
 License: GPL-3
@@ -20,7 +19,7 @@ Suggests:
     testthat (>= 3.0.0)
 LinkingTo: Rcpp
 RoxygenNote: 7.3.3
-Depends: 
+Depends:
     R (>= 2.10)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
